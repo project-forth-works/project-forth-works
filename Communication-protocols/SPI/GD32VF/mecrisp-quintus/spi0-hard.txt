@@ -1,0 +1,261 @@
+\ Filename: spi0-hard.txt
+\ Date: June 2021
+\ For Mecrisp-Quintus by Matthias Koch.
+\ https://sourceforge.net/projects/mecrisp/
+\ Chip: Gigadevices GD32VF103, Board: Longan-Nano
+\ Pinout: 48
+\ Author: M.B.
+
+\ The GD32VF103 comes with three built-in modules for SPI connections
+\ This is for SPI0 module. It is only ment for master mode of corse the
+\ module it self can run as slave or multi master.
+\
+\ It is wired as follow:
+
+\ wiring SPI0
+ \ | Alternate function | REMAP = 0 | REMAP = 1   |
+ \ |--------------------+-----------+-------------|
+ \ | SPI0_NSS           | PA4       | PA15 (JTDI) |
+ \ | SPI0_SCK           | PA5       | PB3  (JTDO) |
+ \ | SPI0_MISO          | PA6       | PB4         |
+ \ | SPI0_MOSI          | PA7       | PB5         |
+ \ |--------------------+-----------+-------------|
+
+\ Step 1: initialize the clock for this module.
+\ Step 2: initialize the GPIO pins for this module.
+\ Step 3: initialize the module itself.
+\ 
+\ All configurations are done by placing a bitmask into register SPI0_CTL0.
+\ The word spi0-configure is made for this.
+\ The CS (SS) line. (CS=Chip select, sometimes also SS=Slave Select. The manual
+\ NSS to indicate that it has a negative logig i.e. low means active.)
+\ This line decides if the peripheral device is active or not.
+\ That allows to use the clockline and MISO, MOSI lines for different
+\ devices by just activating a separate CS line for every device (thus: BUS).
+\ The module has a built-in CS line called NSS. The module can be configured
+\ to use this line or not (SWNSSEN, SWNSS). So you're free to use every
+\ other free gpio pin for that.
+\ The words {SPI0, SPI0}, are defined in a way that one can configure them
+\ to use either the built-in NSS line or to use an other chosen line. For
+\ that purpose the words spi0-software-CS, (spi0-CS-hook), (spi0+CS-hook) 
+\ were implemented. They allow to switch to a software CS line.
+\ I've put an example with instructions for this in sp1-software-CS.fs
+\ 
+\ The words spi0+dma and spi0-dma allow to invoke the DMA features of
+\ the hardware module.
+
+\ --------------------------------------------------------------------------
+\ ---------------- code ----------------------------------------------------
+\ --------------------------------------------------------------------------
+
+\ registers. Comment out if you have them already installed
+
+$40010000                 Constant APB2_BUS_BASE
+$40010000                 Constant AFIO_EC
+AFIO_EC       $00000004 + Constant AFIO_PCF0
+APB2_BUS_BASE $00000800 + Constant GPIO_BASE
+    GPIO_BASE $00000000 + Constant GPIOA  
+    GPIO_BASE $00000400 + Constant GPIOB
+
+
+    GPIOA   0 + Constant GPIOA_CTL0
+    GPIOA $10 + Constant GPIOA_BOP
+    GPIOA $14 + Constant GPIOA_BC
+
+    GPIOB   0 + Constant GPIOB_CTL0
+    GPIOB $10 + Constant GPIOB_BOP
+    GPIOB $14 + Constant GPIOB_BC
+
+     $40021000 Constant RCU_BASE
+RCU_BASE $18 + Constant RCU_APB2EN
+
+      $40013000 Constant SPI0_BASE
+      SPI0_BASE Constant SPI0_CTL0
+  SPI0_BASE 4 + Constant SPI0_CTL1
+  SPI0_BASE 8 + Constant SPI0_STAT
+SPI0_BASE $0c + Constant SPI0_DATA
+
+\ RCU_APB2EN 
+\ |1098|7654|3210|9876|5432|1098|7654|3210
+\ |xxxx|xxxx|xxxx|xxxx|x0x0|000x|x000|00x0 reset=0, x=reserved
+\ |    |    |    |    | +  |    |    |     USART0RST 0=NO RESET 1=RESET USART0
+\ |    |    |    |    |   +|    |    |     SPI0RST     "           "    SPI0
+\ |    |    |    |    |    |+   |    |     TIMER0RST   "           "    TIMER0
+\ |    |    |    |    |    | +  |    |     ADC1RST     "           "    ADC1
+\ |    |    |    |    |    |  + |    |     ADC0RST     "           "    ADC0
+\ |    |    |    |    |    |    | +  |     PERST       "           "    GPIOE
+\ |    |    |    |    |    |    |  + |     PDRST       "           "    GPIOD
+\ |    |    |    |    |    |    |   +|     PCRST       "           "    GPIOC
+\ |    |    |    |    |    |    |    |+    PBRST       "           "    GPIOB
+\ |    |    |    |    |    |    |    | +   PARST       "           "    GPIOA
+\ |    |    |    |    |    |    |    |   + AFRST       "           "    Alternate function
+\ |0000|0000|0000|0001|1010|1010|1011|0001 Example
+
+  \ To switch the portpins high-low we use the BC and BOC registers. 
+  \ They work 'atomar' and we don't have to care about the other bits 
+  \ in the OCD-registers. 
+
+  \ 000: PCLK/2
+  \ 001: PCLK/4
+  \ 010: PCLK/8
+  \ 011: PCLK/16
+  \ 100: PCLK/32
+  \ 101: PCLK/64
+  \ 110: PCLK/128
+  \ 111: PCLK/256
+
+  \  SPI0_CTL0
+  \  Xaaa.bbbb.cccc.dddd BDEN
+  \  aXaa.bbbb.cccc.dddd BDOEN
+  \  aaXa.bbbb.cccc.dddd CRCEN
+  \  aaaX.bbbb.cccc.dddd CRCNT
+
+  \  aaaa.Xbbb.cccc.dddd FF16
+  \  aaaa.bXbb.cccc.dddd RO
+  \  aaaa.bbXb.cccc.dddd SWNSSEN
+  \  aaaa.bbbX.cccc.dddd SWNSS
+
+  \  aaaa.bbbb.Xccc.dddd LF
+  \  aaaa.bbbb.cXcc.dddd SPIEN
+  \  aaaa.bbbb.ccXX.Xddd PSC
+  \  aaaa.bbbb.cccc.dXdd MSTMOD
+  \  aaaa.bbbb.cccc.ddXd CKPL
+  \  aaaa.bbbb.cccc.dddX CKPH
+
+  \ %0000.0011.0100.0111 drop Constant spi0-default \ clk/2
+  \ %0000.0011.0100.1111 drop Constant spi0-default \ clk/4 normfall
+  \ %0000.0011.0101.0111 drop Constant spi0-default \ clk/8
+  \ %0000.0011.0101.1111 drop Constant spi0-default \ clk/16
+  \ %0000.0011.0110.0111 drop Constant spi0-default \ clk/32
+  \ %0000.0011.0110.1111 drop Constant spi0-default \ clk/64
+  \ %0000.0011.0111.0111 drop Constant spi0-default \ clk/128
+  \ %0000.0011.0111.1111 drop Constant spi0-default \ clk/256 testen
+%0000.0000.0100.1111 drop Constant spi0-default \ hardware-CS
+%0000.0011.0100.1111 drop Constant spi0-sw-CS   \ software-CS
+
+
+: spi0-disable ( -- )  \ to write to CTL0 spi must be enabled
+  %1000000 SPI0_CTL0 bic!
+;
+
+: spi0-enable ( -- ) \ switch on spi
+  %1000000 SPI0_CTL0 bis!
+;
+
+: spi0-config ( mask -- ) \ write configuration mask to  CTL0
+  spi0-disable \ make CTL0 register writeable
+  SPI0_CTL0 !  \ store bitmask
+  spi0-enable  \ enable spi0
+;
+
+: spi0-clock-init ( -- )
+  %100.0000 drop SPI0_CTL0 bic! \ disable SPI0
+  %1.0000.0000.0000 drop        \ enable SPI clock
+  %1                            \ enable alternate function clock
+  or RCU_APB2EN bis!            \ into REGISTER
+;
+
+: spi0-gpio-init ( -- )         \ init GPIO unmapped
+  ( B = AF output mode push-pull 50MHz )
+  ( 4 = floating input)
+  $FFFF0000 GPIOA_CTL0  bic!    \ clear pins 7(MOSI) 6(MISO) 5(SCLK) 4(NSS) 
+  $B4BB0000 GPIOA_CTL0  bis!    \ set   pins 7(MOSI) 6(MISO) 5(SCLK) 4(NSS) 
+;
+
+: spi0-gpio-init-remapped ( -- ) \ use PA15 , BP3, PB4, PB5
+  %111 24 lshift AFIO_PCF0 bic!
+  %100 24 lshift AFIO_PCF0 bis!  \ release JTAG
+  $F0000000 GPIOA_CTL1 bic!      \ clear pin A15(NSS)
+  $B0000000 GPIOA_CTL1 bis!      \ set pin A15(NSS) alternate function
+  $00FFF000 GPIOB_CTL0 bic!      \ clear pins B5(MOSI) B4(MISO) B3(SCLK)
+  $00B4B000 GPIOB_CTL0 bis!      \ set (AF) pins B5(MOSI) B4(MISO) B3(SCLK)
+;
+
+: spi0-remap ( -- )
+  %1 AFIO_PCf0 bis!             \ set mapping
+  spi0-gpio-init-remapped
+;
+
+: spi0-unmap ( -- )
+  %1 AFIO_PCf0 bis!             \ unset mapping
+  spi0-gpio-init
+;
+
+: spi0-conf-ok? ( -- f )
+    spi0_stat @ %100000 and \ get conf_error flag
+    %100000 <>
+;
+
+: spi0-transmit? ( -- f )   \ transmitbuffer ready/empty?
+    spi0_stat @ %10 and \ get TBE flag
+    %10 =
+; 
+
+: spi0-receive? ( -- f ) \ recievebuffer ready/full?
+    spi0_stat @ 1 and 0<>
+;
+
+: spi0-wait-idle ( -- flag ) \ is spi module idle?
+  BEGIN
+    spi0-transmit? spi0-receive? 0= and
+  UNTIL
+;
+
+: spi0+dma ( -- )
+  spi0-wait-idle
+  %10 SPI0_CTL1 bis!
+;
+
+: spi0-dma ( -- )
+  spi0-wait-idle
+  %10 SPI0_CTL1 bic!
+;
+
+: spi0-i/o ( n -- n )
+  BEGIN spi0-transmit?   UNTIL \ !!!***@@@///&&&%%%!!!
+  spi0_data h!
+  BEGIN spi0-receive? UNTIL
+  spi0_data h@ 
+;
+
+: spi0-in ( -- n ) 0 spi0-i/o ;
+
+: spi0-out ( n -- ) spi0-i/o drop ;
+
+: spi0-CS-hardware? ( -- flag )
+  %1000000000 SPI0_CTL0 bit@
+;
+
+' spi0-enable  Variable (spi0+CS-hook)
+' spi0-disable Variable (spi0-CS-hook)
+
+: spi0-software-CS ( cfa cfa -- ) \ 
+  (spi0-CS-hook) !
+  (spi0+CS-hook) !
+;
+
+: {spi0 ( -- )
+  spi0-CS-hardware?
+  IF
+    spi0-enable
+  ELSE
+    (spi0+CS-hook) @ execute
+  THEN
+;
+
+: spi0} ( -- )
+  spi0-CS-hardware?
+  IF
+    spi0-disable 
+  ELSE
+    (spi0-CS-hook) @ execute
+  THEN
+;
+  
+: spi0-setup ( -- )
+  spi0-clock-init
+  spi0-gpio-init
+  spi0-default spi0-config
+  %100 spi0_ctl1 bis!
+  spi0-dma
+;

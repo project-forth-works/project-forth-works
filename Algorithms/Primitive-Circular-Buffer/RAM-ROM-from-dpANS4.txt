@@ -1,0 +1,22 @@
+E.5 ROMed application disciplines and conventions
+
+When a Standard System provides a data space which is uniformly readable and writeable we may term this environment “RAM-only”.
+
+Programs designed for ROMed application must divide data space into at least two parts: a writeable and readable uninitialized part, called “RAM”, and a read-only initialized part, called “ROM”. A third possibility, a writeable and readable initialized part, normally called “initialized RAM”, is not addressed by this discipline. A Standard Program must explicitly initialize the RAM data space as needed.
+
+The separation of data space into RAM and ROM is meaningful only during the generation of the ROMed program. If the ROMed program is itself a standard development system, it has the same taxonomy as an ordinary RAM-only system.
+
+The words affected by conversion from a RAM-only to a mixed RAM and ROM environment are:
+
+, (comma) ALIGN ALIGNED ALLOT C, CREATE HERE UNUSED
+(VARIABLE always accesses the RAM data space.)
+
+With the exception of , (comma) and C, these words are meaningful in both RAM and ROM data space.
+
+To select the data space, these words could be preceded by selectors RAM and ROM. For example:
+
+ROM CREATE ONES 32 ALLOT ONES 32 1 FILL RAM
+
+would create a table of ones in the ROM data space. The storage of data into RAM data space when generating a program for ROM would be an ambiguous condition.
+
+A straightforward implementation of these selectors would maintain separate address counters for each space. A counter value would be returned by HERE and altered by , (comma), C,, ALIGN, and ALLOT, with RAM and ROM simply selecting the appropriate address counter. This technique could be extended to additional partitions of the data space.

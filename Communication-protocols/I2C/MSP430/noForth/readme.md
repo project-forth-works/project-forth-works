@@ -1,0 +1,19 @@
+# I2C for noForth on the MSP430 
+![p30(u) - i2c bitbang usci input and output to pcf8574](https://user-images.githubusercontent.com/11397265/122937875-9ab1ad00-d372-11eb-9eab-5bcbd29c8512.jpg)  
+**I2C on the MSP430G2553**
+
+All driver files are from the [Egel Project, from chapter 30ff](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e03x).
+This code example works with all added driver versions of the noForth I2C implementation:
+```
+\ Example with clock & 24C32 EEPROM
+: {EEADDR   ( a -- )            \ Address EEprom
+    b-b  A0 {i2write i2out ;    \ High EE-addr. & low EE-addr.
+
+\ Read data b from 24C32 EEPROM byte-address addr. 
+: EC@       ( addr -- b )
+    {eeaddr  {i2read)  i2in} ;  \ Address EE & rep. start & read data
+
+\ Write data b to 24C32 EEPROM byte-address addr.
+: EC!       ( b addr -- )
+    {eeaddr  i2out}  {poll} ;   \ Address EE & write data
+```
