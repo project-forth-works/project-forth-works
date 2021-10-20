@@ -137,7 +137,7 @@ hex
     #processes 0 do  steps 2/  i tank !  loop ; \ Tanks half full!
 
 \ Some processes do not need <perform process>, for example
-\ when the <store process data> is used by ab interrupt
+\ when the <store process data> is used by an interrupt
 \ routine or an other task! The added WS2812 noForth example
 \ however do output the data to the WS2812 leds there!
 : ONE-STEP      ( -- )
