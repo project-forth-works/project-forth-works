@@ -28,7 +28,7 @@ explanation...
 ```
 variable seed - any value but 0x0 is acceptable as seed.
 
-: XORshift
+Function: XORshift
    get value from seed
    
    make a copy of the value
@@ -42,9 +42,6 @@ variable seed - any value but 0x0 is acceptable as seed.
    return the result on stack
    
    store the final result in the variable seed for a next cycle
-  
-;
-
 ``` 
 ### Minimal Forth with extensions version
 
@@ -85,7 +82,7 @@ longer the wrap-to-zero period. With two 32 bit seeds, the wrap-to-zero period i
 variable seed1
 variable seed2
 
-: XORshift
+Function: XORshift
    get value from seed1
 
    make a copy of the value
@@ -100,7 +97,6 @@ variable seed2
    
    move value of seed2 to variable seed1
    OR the final result with the value in seed2 for a next cycle
-;
 ```
 
 ### Minimal Forth with extensions version 
