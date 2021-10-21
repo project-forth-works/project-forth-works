@@ -40,9 +40,11 @@ v: fresh
 
 false [if]  \ Clock high level version = 300 kHz, low level version = 1 MHz
 
-: CLOCK        ( -- )      20 4001080C **bis  20 4001080C **bic ; \ PA5_OCTL  SPI clock
-: {SPI)        ( -- )      1 4001100C **bic ;                     \ PC0_OCTL  SPI on, CS=low
-: SPI}         ( -- )      1 4001100C **bis ;                     \ PCO_OCTL  SPI off, CS=high
+: CLOCK-HI     ( -- )      20 4001080C **bis ;      \ PA5_OCTL  SPI clock
+: CLOCK-LOW    ( -- )      20 4001080C **bic ;      \ PA5_OCTL  SPI clock
+: CLOCK        ( -- )      clock-hi  clock-low ;
+: {SPI)        ( -- )      1 4001100C **bic ;       \ PC0_OCTL  SPI on, CS=low
+: SPI}         ( -- )      1 4001100C **bis ;       \ PCO_OCTL  SPI off, CS=high
 
 \ Write a bit to the SPI-bus, read abit from the SPI-bus
 : WRITE-BIT    ( b -- )
@@ -51,6 +53,24 @@ false [if]  \ Clock high level version = 300 kHz, low level version = 1 MHz
 : READ-BIT     ( -- 0|1 )  40 40010808 bit** 0<> 1 and ; \ PA0_STAT
 
 [else]
+
+code CLOCK-HI     ( -- )
+    sun 4001080C li     \ PORTA_ODR  Port-A output address
+    day 20 li           \ Bit-5 mask
+    w sun ) .mov        \ Read Port-A
+    w day .or           \ Set bit-0
+    sun ) w .mov        \ Write Port-A
+    next
+end-code
+
+code CLOCK-LOW    ( -- )
+    sun 4001080C li     \ PORTA_ODR  Port-A output address
+    day -21 li          \ Bit-5 inverted mask
+    w sun ) .mov        \ Read Port-A
+    w day .and          \ Clear bit-5
+    sun ) w .mov        \ Write Port-A
+    next
+end-code
 
 code CLOCK      ( -- )
     sun 4001080C li     \ PORTA_ODR  Port-A output address
@@ -109,13 +129,16 @@ end-code
 [then]
 
 : SPI-I/O       ( b0 -- b1 )
-    8 for  dup write-bit  2*  read-bit or  clock  next  FF and ;
+    8 for
+        dup write-bit  2*  clock-hi
+        read-bit or  clock-lo
+    next  FF and ;
 
 : SPI-OUT       ( b -- )
     8 for  dup write-bit  2*  clock  next  drop ;
 
 : SPI-IN        ( -- b )
-    0  8 for  2*  read-bit or  clock  next ;
+    0  8 for  2*  clock-hi  read-bit or  clock-lo  next ;
 
 : {SPI          ( b -- )        {spi) spi-out ;
 
