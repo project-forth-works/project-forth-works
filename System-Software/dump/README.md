@@ -84,6 +84,6 @@ The dump utility can do so by trying to show this forbidden memory. Triggered me
 terminate your session. If necessary a suitable test for the validity of used addresses might be reasonable on such systems so that
 dump can issue a normal error message (or display dummy data) in theses cases and leave the system / session otherwise intact.
 
-Your system might lack right justified noumber output even base for printing numbers. The sample implementation in
+Your system might lack right justified number output even BASE for printing numbers in other radix systems. The sample implementation in
 [twomoredumps.f](https://github.com/embeddingforth/embeddingForth/tree/main/System-Software/dump/twomoredumps.f) show how to circumvent this.
 
