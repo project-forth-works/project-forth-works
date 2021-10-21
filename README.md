@@ -2,7 +2,7 @@
 
 ## What this project is all about ...
 
-Forth thrives largely on open source but our problem lies in the saying 'When you have seen one Forth, you have seen one Forth'. Here we like to embrace our differences.  
+Forth thrives largely on open source but our problem lies in the saying '****When you have seen one Forth, you have seen one Forth****'. Here we like to embrace our differences.  
 
 This project is an attempt to spread ideas, algorithms, protocols, applications and hardware drivers. The idea is to start with describing the idea, then the algorithm in pseudo code and an example in Minimal Forth with extensions. Links to information, a description of pitfalls, etc. We hope that examples in a lot of Forth dialects and CPU variants will be added.  
 
