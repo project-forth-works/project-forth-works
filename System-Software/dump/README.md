@@ -13,7 +13,7 @@ The DUMP utility is normally called `DUMP` and is invoked with parameters which 
 ## DUMP Implementation
 
 One way to implement DUMP is to iterate in a loop line by line through memory. Say you want to display 16 bytes in each line, then this loop will start
-at the start address and increment the address by 16 in each loop iteration.
+at the start address and increment the address by 16 in each loop iteration. (If you want a different number of bytes in each line, adjust accordingly).
 
 When you display memory in a single line you first output the current address and then have two loops that run one after the other iterating both from 0 to 15.
 The first loop outputs bytes with two hexadecimal digits (or in decimal, or whatever you intend) and the second loop ouputs the indivual bytes as ASCII characters.
@@ -35,6 +35,12 @@ Function: dump-line ( address -- )
   
   LOOP i from 0 to 15:
      output byte in memory at (address+i) as an ASCII character, "." if that character is a control character (byte<32)
+     
+Function: dump ( address length -- )
+   WHILE length is positive:
+        dump-line at address
+        increase address by 16
+        decrease length by 16
 ```
 
 ## Minimal Forth implementation of DUMP:
