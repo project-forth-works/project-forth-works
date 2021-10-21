@@ -7,8 +7,8 @@
   - [**MSP430 assembler**](https://github.com/embeddingforth/Applications/tree/main/MSP430-assembler)  
     Compact universal MSP430 assembler (the 27 basic opcodes).
 - File Systems
-
 - Device Drivers (Displays, Sensors, Motors, ...)
+- Tools (like DUMP, ...)
 
 
 
