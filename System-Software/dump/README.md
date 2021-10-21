@@ -1,69 +1,4 @@
-# Template for a new ideas called «name»
-
-## «name» idea
-
-*Explain in a few words what the idea of this description is.*
-*The reader should understand what this is about so that s/he can decide whether or not it is worthwhile to continue reading.*
-
-*What is the problem. How is the problem solved?*
-
-*Continue also to explain background information and the idea proper. Is there a trick?* 
-
-## Implementation
-
-*Discuss a typical (possibly naïve) implementation that best allows to understand the implementation.* 
-*More sophisticated/optimized implementations can be presented later. Most system specific implementations will be optimized.*
-
-## Implementation in pseudo code
-
-*Use pseudo code following this style:
-```
-Function: «name» ( input parameters -- results )
-  «prose text descripting operations in this function»
- 
-  Set «variable» to «description of value»
-  «imperative subject object ...»
-  
-  IF «condition»:
-     ...
-  ELSE:
-     ...
-  
-  WHILE «condition»:
-     ...
-```
-*For defining words use:*
-```
-Function  
-	Define: ( u -- )
-		Reserve RAM space 
-		allocate ROM space 
-	Action: ( -- a )
-		Leave start address of this 
-```
-
-## Minimal Forth implementation:
-
-*Try to implement the pseudo code using the words in [Minimal Forth](http://www.euroforth.org/ef15/papers/knaggs.pdf) mentioning and explaining all additional words that
-your implementation requires*
-
-*Also show how your implementation is used by giving some examples.*
-
-
-## Various other Implementations
-
-*Present additional (possibly more sophisticated) implementations, e.g for a specific microcontroller boards, a specific Forth system or in Standard Forth.*
-*Try to state precisely what implementations you present and what requirements they have. No need to be portable here: Embrace the difference*
-
-
-## Background information
-
-*Please give references to data sheets, background articles or articles for follow up reading.*
-
---- 
-# Example following this structure
-
-# DUMP memory algorithm
+# DUMP memory algorithm: display content of main memory
 
 ## DUMP idea
 
@@ -128,11 +63,19 @@ We extended Minimal Forth to [Minimal Forth & extensions](https://github.com/emb
 more useful small Forth.
 
 A DUMP utility in *Minimal Forth & extensions* can be found in [hex-dump-MinForth+ext.f](hex-dump-MinForth+ext.f)
+The second inner loop displaying the ASCII characters has been factored into the useful word PEMIT ( c-addr u -- ).
 
 
 ## Various DUMP Implementations
 
 Other DUMP implementations can be found in the sub directories of [Algorithms/DUMP](https://github.com/embeddingforth/Algorithms/DUMP).
+
+## Possible issues with DUMP
+
+Some systems have hardware memory protection that is triggered if you access memory outside the reseved area.
+The dump utility can do so by trying to show this forbidden memory. Triggered memory protect might stop the current process and
+terminate your session. If necessary a suitable test for the validity of used addresses might be reasonable on such systems so that
+dump can issue a normal error message (or display dummy data) in theses cases and leave the system / session otherwise intact.
 
 
 ## Background information
@@ -141,3 +84,5 @@ More about the DUMP utility can found at the [Wikipedia page for hexdump](https:
 
 Some Forth DUMP implementations display a fixed amount of bytes and leave the updated address on the stack so that
 you can invoke DUMP repeatedly to display successive regions of memory.
+
+
