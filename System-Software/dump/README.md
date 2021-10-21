@@ -68,8 +68,7 @@ The second inner loop displaying the ASCII characters has been factored into the
 
 ## Various DUMP Implementations
 
-Other DUMP implementations can be found in the sub directories of [Algorithms/DUMP](https://github.com/embeddingforth/Algorithms/DUMP).
-
+Other DUMP implementations can be found in the sub directories of [Algorithms/DUMP](https://github.com/embeddingforth/embeddingForth/tree/main/System-Software/dump).
 
 ## Background information
 
@@ -84,4 +83,7 @@ Some systems have hardware memory protection that is triggered if you access mem
 The dump utility can do so by trying to show this forbidden memory. Triggered memory protect might stop the current process and
 terminate your session. If necessary a suitable test for the validity of used addresses might be reasonable on such systems so that
 dump can issue a normal error message (or display dummy data) in theses cases and leave the system / session otherwise intact.
+
+Your system might lack right justified noumber output even base for printing numbers. The sample implementation in
+[twomoredumps.f](https://github.com/embeddingforth/embeddingForth/tree/main/System-Software/dump/twomoredumps.f) show how to circumvent this.
 
