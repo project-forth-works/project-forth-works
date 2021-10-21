@@ -14,16 +14,17 @@
 \ 4430: 01 78 05 56 00 4F 00 00 83 84 4E 4F 4F 50 00 44 | x V O    NOOP D|
 
 : BOUNDS    ( a u -- ae ab )  over + swap ;
-: PEMIT     ( c -- )          dup 7F < and  BL max  emit ;    \ Protected EMIT
-: PTYPE     ( a u -- )        bounds do i c@ pemit loop ;     \ Protected TYPE
 : .BYTE     ( c -- )          0 <# # # #> type space ;        \ Print hex byte
 : .ADDR     ( x -- )          0 <# # # # # #> type ;          \ Print 16-bit hex address
 \ : .ADDR     ( x -- )          0 <# # # # # # # #> type ;    \ Print 24-bit hex address
 
+: LDUMP     ( a u -- )        bounds do  i c@ .byte  loop ;   \ Dump one line in hex.
+: PEMIT     ( c -- )          dup 7F < and  BL max  emit ;    \ Protected EMIT
+: PTYPE     ( a u -- )        bounds do i c@ pemit loop ;     \ Protected TYPE
+
 : DUMP  ( a u -- )
     hex  0 do
-        cr  dup .addr ." : "                \ Print address (six wide)
-        dup 10 bounds do  i c@ .byte  loop  \ Dump 16 bytes in hex.
+        cr  dup .addr ." : " dup 10 ldump   \ Print address & dump 16 bytes line in hex.
         [char] | emit  dup 10 ptype ." | "  \ Print 16 bytes in visible ASCII
         10 +  key? if leave then            \ Adjust address & test for key
     10 +loop  drop ;                        \ Next 16 bytes
