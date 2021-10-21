@@ -40,10 +40,11 @@ Function: SPI-I/O ( x -- y )
 8 loop
   write bit-7 level from x to I/O port
   shift x left
+  rising clock pulse on I/O port
   read bit-6 level from I/O port
   Move bit-6 to bit-0 position
   Add bit-0 to y
-  rising clock pulse on I/O port
+  falling clock pulse on I/O port
 Leave only low 8-bits
 
 Function: SPI-OUT  ( byte -- )
@@ -95,9 +96,8 @@ For a machine with byte wide I/O ports.
     B0 P1DIR c!         \ P1.4, P1.6 & P1.7 are outputs, P1.5 is input
     20 P1OUT *bic ;     \ Start with clock low
 
-: CLOCK     ( -- )  
-    20 P1OUT *bis       \ Generate rising clock pulse
-    20 P1OUT *bic ;
+: CLOCK-HI     ( -- )       20 P1OUT *bis ; \ Generate rising clock pulse
+: CLOCK-LOW    ( -- )       20 P1OUT *bic ;
 
 : WRITE-BIT ( b -- )
     80 and if           \ Test if bit-7 high?
@@ -113,7 +113,8 @@ For a machine with byte wide I/O ports.
 : SPI-I/O   ( b1 -- b2 )
   8 0 do                \ Output 8-bits in a loop
     dup write-bit  2*   \ Send & shift byte left
-    read-bit  clock
+    clock-hi  read-bit
+    clock-low
   loop
   FF and ;              \ Leave only received byte
 
