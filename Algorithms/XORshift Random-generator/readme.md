@@ -12,17 +12,30 @@ to 16, 32 or 64 bits (or larger...)
 
 ## Principle of the Marsaglia algorithm
 
-A random number is generated from a seed as follows:  
+A random number is generated from a seed as follows:
 - Take a copy of the seed
 - Shift that copy left with a certain number of bits
 xor the original seed and the shifted seed to form the result
 of the first step
 - These steps are repeated twice, each time with the output of
 the previous step as input, but with a right shift and finally
-with a left shift.  
+with a left shift.
+
+The actual number of bits used for the 3 shifts is critical.
+For a 32bit generator there are exactly 648 valid combinations. The
+favorite combination of Marsaglia was (13, 17, 5) which is
+used here.
+
+For 16bit generators only a few valid combinations
+exist: (7, 9, 13) and (7, 9, 8).
+
+For 64 bit generators 2200 valid combinations exist. Examples are: (24, 31, 35)
+or (19, 41, 21) and many others. See the link below for exact details
+
 
 The Forth-code is probably easier to understand than this
 explanation...
+
 
 ### The algorithm in pseudo-code
 ```
@@ -30,23 +43,21 @@ variable seed - any value but 0x0 is acceptable as seed.
 
 Function: XORshift
    get value from seed
-   
+
    make a copy of the value
    lshift copy with n bits
    xor with the original
-   
-   repeat with the output of the previous cycle and a rshift with m bits
-   
-   repeat with the output of the previous cycle and a lshift with o bits
-   
-   return the result on stack
-   
-   store the final result in the variable seed for a next cycle
-``` 
-### Minimal Forth with extensions version
 
-The Forth-code is probably easier to understand than the above
-explanations.
+   repeat with the output of the previous cycle and a rshift with m bits
+
+   repeat with the output of the previous cycle and a lshift with o bits
+
+   return the result on stack
+
+   store the final result in the variable seed for a next cycle
+```
+
+### Minimal Forth with extensions version
 
 ```
 \ 32bit version with 1 seed in a variable
@@ -75,7 +86,7 @@ This way of adding more seeds can be done at infinitum. The more seeds you add, 
 longer the wrap-to-zero period. With two 32 bit seeds, the wrap-to-zero period is 2^64-1 values.
 
 
-### The algorithm in pseudo-code
+### The algorithm with 2 seeds in pseudo-code
 ```
 \ 2 seeds version
 
@@ -88,18 +99,18 @@ Function: XORshift
    make a copy of the value
    lshift copy with n bits
    xor with the original value
-   
+
    repeat with the output of the previous cycle and a rshift with m bits
-   
+
    repeat with the output of the previous cycle and a lshift with o bits
-   
+
    return final the result on stack
-   
+
    move value of seed2 to variable seed1
    OR the final result with the value in seed2 for a next cycle
 ```
 
-### Minimal Forth with extensions version 
+### Minimal Forth with extensions version
 ```
 \ 32 bit version with 2 seeds in values:
 
@@ -116,9 +127,9 @@ Function: XORshift
   ;                      \ the old seed1 and update seed1
 ```
 
-#### For 16 bit Forths:  
-The only change to the code are the 3 shift-factors. Here (7, 9, 13) are used.
-You can also use (7, 9, 8)  
+#### For 16 bit Forths:
+The only change to the code are the 3 shift-factors. Here (7, 9, 13) are
+used. You can also use (7, 9, 8).
 
 ```
 2345 value SEED0
@@ -133,33 +144,27 @@ You can also use (7, 9, 8)
   dup seed1 xor to seed1 ;
 ```
 
-#### A few points to note:  
+#### A few points to note:
 
-The actual number of bits used for the 3 shifts is critical.
-For a 32bit generator there are exactly 648 valid combinations. The
-favorite combination of Marsaglia was (13, 17, 5) which is
-used here.
+There is no limit to the number of seeds. If you want to use a thousand
+seeds, you can. The method functions fine with that. In that case it
+would be more efficient to put the seeds in a table and read and write to
+the table with two pointers. But it is hard to imagine a use-case where
+there is a need for more than 256 bits of seeds, so for instance eight
+32 bit seeds. This gives a wrap-to-zero period of 2^256-1. Even if
+you generate  1 bilion values per second, the universe would cease to
+exist before the generator wraps to the start.
 
-For 16bit generators only a few valid combinations
-exist: (7, 9, 13) and (7, 9, 8).
+It is good practise to pre-load the generator after re-seeding by
+generating  dummy random numbers. For each seed you use, generate at
+least 4 dummy numbers. So with 2 seeds 8 dummy numbers would be the
+minimum. This pre-loading ensures that in all cases a good quality stream
+of numbers is generated.
 
-For 64 bit generators 2200 valid combinations exist. Examples are: (24, 31, 35)
-or (19, 41, 21) and many others. See the link below for exact details.  
+At least one seed must have one of the bits set for the generator to work.
 
-With two 32b seeds the period is 2^64-1.  
+#### Finally a handy word:
 
-There is no limit to the number of seeds you can use. If you want to use
-a thousand seeds, you can. The method functions fine with that. In that case
-it would be more efficient to put the seeds in a table and read and write to
-the table with two pointers. But is hard to imagine a use-case where there
-is a need for more than 256 bits of seeds, so for instance eight 32 bit seeds. This
-gives a wrap-to-zero period of 2^256-1. Even if you generate 1 bilion values per second,
-the universe will cease to exist before it starts repeating.
-
-At least one seed must have one of the bits set for the generator to work.  
-
-#### Finally a handy word: 
- 
 ```
 \ CHOOSE - limits the output of a random-generator to a range
          between 0 and u1 in a correct way.
@@ -169,8 +174,8 @@ At least one seed must have one of the bits set for the generator to work.
 
 ### Links:
 
-- Description of [DIEHARD](https://en.wikipedia.org/wiki/Diehard_tests) test  
-- George Marsaglia, “[XORShift Random Number Generators](https://www.jstatsoft.org/index.php/jss/article/view/v008i14/xorshift.pdf)”, Journal of Statistical Software 2003.  
+- Description of [DIEHARD](https://en.wikipedia.org/wiki/Diehard_tests) test
+- George Marsaglia, “[XORShift Random Number Generators](https://www.jstatsoft.org/index.php/jss/article/view/v008i14/xorshift.pdf)”, Journal of Statistical Software 2003.
 - [Chapter 70 of the Egel-project](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e070)
 shows some other random-generators and a grafical test based on DIEHARD to show the effect of low-quality generators.
 
