@@ -70,13 +70,6 @@ The second inner loop displaying the ASCII characters has been factored into the
 
 Other DUMP implementations can be found in the sub directories of [Algorithms/DUMP](https://github.com/embeddingforth/Algorithms/DUMP).
 
-## Possible issues with DUMP
-
-Some systems have hardware memory protection that is triggered if you access memory outside the reseved area.
-The dump utility can do so by trying to show this forbidden memory. Triggered memory protect might stop the current process and
-terminate your session. If necessary a suitable test for the validity of used addresses might be reasonable on such systems so that
-dump can issue a normal error message (or display dummy data) in theses cases and leave the system / session otherwise intact.
-
 
 ## Background information
 
@@ -85,4 +78,10 @@ More about the DUMP utility can found at the [Wikipedia page for hexdump](https:
 Some Forth DUMP implementations display a fixed amount of bytes and leave the updated address on the stack so that
 you can invoke DUMP repeatedly to display successive regions of memory.
 
+### Possible pitfalls with DUMP
+
+Some systems have hardware memory protection that is triggered if you access memory outside the reseved area.
+The dump utility can do so by trying to show this forbidden memory. Triggered memory protect might stop the current process and
+terminate your session. If necessary a suitable test for the validity of used addresses might be reasonable on such systems so that
+dump can issue a normal error message (or display dummy data) in theses cases and leave the system / session otherwise intact.
 
