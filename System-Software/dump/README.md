@@ -18,8 +18,8 @@ at the start address and increment the address by 16 in each loop iteration. (If
 When you display memory in a single line you first output the current address and then have two loops that run one after the other iterating both from 0 to 15.
 The first loop outputs bytes with two hexadecimal digits (or in decimal, or whatever you intend) and the second loop ouputs the indivual bytes as ASCII characters.
 
-As some characters might control the ouput in a special way (so called control character such as 07 bell, 0A linefeed, 0C formfeed) ist is wise to just ouput a period 
-instead of the actualt character, in order to get a well formatted display.
+As some characters might control the output in a special way (so called control character such as 07 bell, 0A linefeed, 0C formfeed) it is wise to just ouput a period 
+instead of the actual character, in order to get a well formatted display.
 
 
 ## Pseudo code for the DUMP implementation
@@ -89,8 +89,7 @@ you can invoke DUMP repeatedly to display successive regions of memory.
 
 ### Possible pitfalls with DUMP
 
-Some systems have hardware memory protection that is triggered if you access memory outside the reseved area.
+Some systems have hardware memory protection that is triggered if you access memory outside the reserved area.
 The dump utility can do so by trying to show this forbidden memory. Triggered memory protect might stop the current process and
 terminate your session. If necessary a suitable test for the validity of used addresses might be reasonable on such systems so that
 dump can issue a normal error message (or display dummy data) in theses cases and leave the system / session otherwise intact.
-
