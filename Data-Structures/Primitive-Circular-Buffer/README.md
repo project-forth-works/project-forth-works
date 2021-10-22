@@ -28,7 +28,7 @@ Index                   0      1             k-1
 
 ```
 
-This simple implementation has *only a single index* that identifies both, the location of the oldest value as well as the location where the newest value is to be stored. Because of this it always stores *exactly k* values. (More sophisticated implementations for general cicular buffers manage a read and a write location and can store *from 0 up to k* values.)
+This simple implementation has *only a single index* that identifies both, the location of the oldest value as well as the location where the newest value is to be stored. Because of this it always stores *exactly k* values. (More sophisticated implementations for general circular buffers manage a read and a write location and can store *from 0 up to k* values.)
 
 When storing a new value it is written in the buffer at index position idx overwriting the old value that is stored there. After that idx is increased. If it exceeds the buffer capacity it restarts at 0. So the index runs around in circles given the circular buffer its name.
 
