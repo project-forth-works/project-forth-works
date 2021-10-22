@@ -18,15 +18,18 @@
 : .ADDR     ( x -- )          0 <# # # # # #> type ;          \ Print 16-bit hex address
 \ : .ADDR     ( x -- )          0 <# # # # # # # #> type ;    \ Print 24-bit hex address
 
-: LDUMP     ( a u -- )        bounds do  i c@ .byte  loop ;   \ Dump one line in hex.
 : PEMIT     ( c -- )          dup 7F < and  BL max  emit ;    \ Protected EMIT
 : PTYPE     ( a u -- )        bounds do i c@ pemit loop ;     \ Protected TYPE
 
+: DUMP-LINE ( a u -- )
+    over .addr ." : "                \ Print addres in hex
+    2dup bounds do  i c@ .byte  loop \ Dump one line in hex
+    [char] | emit  ptype ." | " ;    \ Print 16 bytes in visible ASCII
+
 : DUMP  ( a u -- )
     hex  0 do
-        cr  dup .addr ." : " dup 10 ldump   \ Print address & dump 16 bytes line in hex.
-        [char] | emit  dup 10 ptype ." | "  \ Print 16 bytes in visible ASCII
-        10 +  key? if leave then            \ Adjust address & test for key
-    10 +loop  drop ;                        \ Next 16 bytes
+        cr  dup 10 dump-line
+        10 +  key? if leave then     \ Adjust address & test for any key to stop
+    10 +loop  drop ;                 \ Next 16 bytes
 
 \ End ;;;
