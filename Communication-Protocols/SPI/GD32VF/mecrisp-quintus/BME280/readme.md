@@ -13,6 +13,6 @@ There are other sensor ICs in the world that will show the real values for tempe
 - Load BME280.fs  
 
 
-Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
+[Datasheet of the BME280](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf)
 
 mb
