@@ -6,7 +6,7 @@ Forth thrives largely on open source but our problem lies in the saying '****Whe
 
 This project is an attempt to spread ideas, algorithms, protocols, applications and hardware drivers. The idea is to start with describing the idea, then the algorithm in pseudo code and an example in Minimal Forth with extensions. Links to information, a description of pitfalls, etc. We hope that examples in a lot of Forth dialects and CPU variants will be added.  
 
-It can also be the place to ask for help with a stranded project. To do that, you must upload the project and describe it in the appropriate category. How to do that is explained below.  
+It can also be the place to ask for help with a stranded project. To do that, you must upload the project and describe it in the appropriate category.  
 
 ### We have until now the following categories:
 
