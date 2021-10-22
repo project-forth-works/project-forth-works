@@ -1,4 +1,4 @@
-![EmbeddingForth-7b](https://user-images.githubusercontent.com/11397265/138279169-0532b875-8a37-46fa-9de5-783b6bb12c38.jpg)
+![EmbeddingForth-7b](https://user-images.githubusercontent.com/11397265/138279169-0532b875-8a37-46fa-9de5-783b6bb12c38.jpg "EmbeddingForth")
 
 ## What this project is all about ...
 
