@@ -15,7 +15,7 @@ is used for (LCD) displays, (Flash) memory chips, SD-cards, etc.
 This example has the clock signal low at rest, the data is transmitted at  
 a low to high clock pulse. The data is 8-bits long, the highest bit (MSB) is sent first. Here we have shown one of four modes. They differ in the timings of raising or falling edges of the clock pulses.
 
-![nrf24l01 read register 00](https://user-images.githubusercontent.com/11397265/119979076-bbc4ef00-bfba-11eb-8c2f-2d682f33ed0d.jpg)
+![nrf24l01 read register 00](https://user-images.githubusercontent.com/11397265/119979076-bbc4ef00-bfba-11eb-8c2f-2d682f33ed0d.jpg "SPI logic analyzer tracks")
 
 It is possible to configure in many variants but this version is common. (The clock rate is arbitrary. If you like you can send bytes just by tipping wires by hand. Ofcourse there is a maximum speed. It depends on the speed of the peripheral hardware (data sheet)) and/or the maximum speed your CPU can handle.  
 More information about SPI [on this wikipedia page](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface).
