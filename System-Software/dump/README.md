@@ -69,7 +69,7 @@ We extended Minimal Forth to [Minimal Forth & extensions](https://github.com/emb
 more useful small Forth.
 
 A DUMP utility in *Minimal Forth & extensions* can be found in [hex-dump-MinForth+ext.f](hex-dump-MinForth+ext.f)
-The second inner loop displaying the ASCII characters has been factored into the useful word PEMIT ( c-addr u -- ).
+This example is factored using the pseudo code description. The character output has been factored into the useful word PEMIT ( char -- ) too.
 
 
 ## Various DUMP Implementations
