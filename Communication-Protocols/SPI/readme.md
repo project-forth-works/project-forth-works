@@ -29,7 +29,7 @@ Function: SPI-SETUP ( -- )
 ```
 
 Name | Function
- -------- | ------------ 
+ :--------: | ------------ 
 `SPI-I/O `|Send 8-bit value x and receive 8-bit value y via SPI  
 `SPI-OUT `|Send the 8-bit value byte via SPI  
 `SPI-IN  `|Receive the 8-bit value byte via SPI  
