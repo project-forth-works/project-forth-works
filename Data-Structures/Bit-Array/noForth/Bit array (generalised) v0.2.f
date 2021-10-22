@@ -52,15 +52,15 @@ hex
     r> >adr  swap move ;    \ Move to destination array
 
 \ Leave number of bits set in bit array a
-: COUNT*    ( a -- +n )     \ Counted noted nodes
+: COUNT*    ( a -- +n )     \ Counted noted high bits
     0  over >len 0 ?do
-        over i swap get*    \ Node present?
+        over i swap get*    \ Bits present?
         if  1+  then        \ Add 1 when found
     loop  nip ;
 
 \ Leave the number of the first used item in bit array a on the stack and erase it
 : >NEXT?    ( a -- false | nr true )
-    dup >len 0 ?do             \ Test all bits
+    dup >len 0 ?do              \ Test all bits
         i over get* if          \ Bit set?
             i swap *clr         \ Yes clear bit
             i true unloop exit  \ Leave bit-nr & true, ready
