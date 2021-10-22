@@ -19,7 +19,7 @@
     After each byte an ACK is received, a NAK is received when it is the last byte
 - Stop condition
 
-![t30i - i2c read and write with pcf8574](https://user-images.githubusercontent.com/11397265/120920036-121de600-c6bd-11eb-9e0c-0ab8664f9c47.jpg)
+![t30i - i2c read and write with pcf8574](https://user-images.githubusercontent.com/11397265/120920036-121de600-c6bd-11eb-9e0c-0ab8664f9c47.jpg "I2C logic analyzer tracks")
 
 
 ### Pseudo code for low level bitbang I2C ###
