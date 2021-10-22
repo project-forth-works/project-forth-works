@@ -21,7 +21,7 @@ At the moment there are two examples:
 
 Also in every SPI code suitable for the **BME280** you will find a short hint how to wire the **BME280** to the GD32VF103 in this special case to the Longan Nano.
 
-**[sd-card.fs](https://github.com/embeddingforth/Communication-protocols/blob/main/SPI/GD32VF/mecrisp-quintus/sd-card-bitbang/sdcard.fs)** This shows how to access a sd-card plugged in into the **lonangn nano** board. It uses a software SPI.
+**[sd-card.fs](https://github.com/embeddingforth/Communication-protocols/blob/main/SPI/GD32VF/mecrisp-quintus/sd-card-bitbang/sdcard.fs)** This shows how to access a sd-card plugged in into the **Longan Nano** board. It uses a software SPI.
 
 
 ### Files
