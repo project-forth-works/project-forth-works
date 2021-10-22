@@ -5,7 +5,7 @@
 A DUMP utility is a software tool that allows to inspect main memory and display it in a user readable form.
 Typically output is composed of several lines that have the structure:
 
-«address» representation of bytes starting in memory at address in hex or in another «radix» ASCII representation of these bytes»
+«address» representation of bytes starting in memory at address in hex or in another «radix» ASCII representation of these bytes.
 
 The DUMP utility is normally called `DUMP` and is invoked with parameters which specify what memory to inspect, often start address and length.
 
