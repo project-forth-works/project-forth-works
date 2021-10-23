@@ -13,6 +13,11 @@ The implementation assumes a byte addressed machine. The number of bits is round
 
 This i a one cell array on a machine with 16-bit cell size. Three of the 16-bits are high. Note that only 4 cells (8 bytes) are required to keep track of 64 flags.  
 
+A note on `?ABORT` noForth uses the name of the word in which ?ABORT is included as the error message. 
+In the example code below, the message "Error from LOC" is printed. 
+This is useful for adding clear error messages to small embedded systems.
+It is also an extra motivation to use meaningfull names :)  
+
 ## Pseudo code for a bit array
 
 ```
@@ -47,6 +52,7 @@ Function: ZERO   ( addr -- )
 : **BIC  ( mask addr -- )   >r  invert  r@ @ and  r> ! ;
 : BIT**  ( mask addr -- 0|b ) @ and ;
 : @+     ( a1 -- a2 x )     dup cell+  swap @ ;
+: ?ABORT ( fl -- )          0= 0= throw ;
 
 1 cells 8 * constant #BITS  \ Bits in a cell
 
@@ -54,15 +60,13 @@ Function: ZERO   ( addr -- )
 : >ADR   ( a1 -- a2 )       cell+ @ ;   \ Start address of bit array a1
 
 : LOC           ( nr a1 -- bit a2 )     \ Bit location in cell address
-  2dup >len < if            \ Valid bit flag check
+  2dup >len < 0= ?abort     \ Valid bit flag check
     @+ 1- >r  @             \ nr adr 
     >r  dup #bits 1- and    \ nr bit-nr
     1 swap lshift           \ nr bit-mask 
     swap #bits /            \ nr / bits in a cell
     r> swap  r> and cells + \ Mask excess bits, leave bit-array offset
-  else                      \ Leave bit & word-adr
-    swap drop  0 swap       \ Dummy data
-  then ;
+  then ;                    \ Leave bit & word-adr
 
 : BITARRAY
   create      ( +n "name"-- )  ( exec: -- a )
