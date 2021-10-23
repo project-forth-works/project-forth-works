@@ -34,7 +34,8 @@ hex
                             \ Leave bit & word-adr
 : BITARRAY
     create      ( +n "name"-- )  ( exec: -- a )
-        #bits /mod swap if 1+ then  dup , \ Round to the next cell
+        #bits /mod                  \ Calculate length in cells & remainder
+        swap if 1+ then  dup ,      \ Round length to the next cell
         here , cells allot ;        \ Save RAM pointer, reserve RAM in ROM Forth
 \       here cell+ , cells allot ;  \ Save pointer, reserve RAM in RAM Forth
 
@@ -44,10 +45,12 @@ hex
 : ZERO      ( a -- )          dup >adr  swap >len 8 /  0 fill ; \ Erase bit-map a
 
 
+
 \ Additional routines:
+\ COPY any bit array to another, use the length of the shortest array!
 : COPY      ( a1 a2 -- )    \ Copy array a1 to array a2
     dup zero  >r            \ Erase target array a2
-    dup >adr  swap >len     \ Get addrres & length of origin array
+    dup >adr  swap >len     \ Get address & length of origin array
     r@ >len  min  8 /       \ Use shortest length in bytes
     r> >adr  swap move ;    \ Move to destination array
 
@@ -58,17 +61,18 @@ hex
         if  1+  then        \ Add 1 when found
     loop  nip ;
 
-\ Leave the number of the first used item in bit array a on the stack and erase it
+\ Leave the number of the first used item in bit array a on the stack and erase it!
 : >NEXT?    ( a -- false | nr true )
     dup >len 0 ?do              \ Test all bits
         i over get* if          \ Bit set?
             i swap *clr         \ Yes clear bit
             i true unloop exit  \ Leave bit-nr & true, ready
         then
-    loop  drop  false ;     \ Nothing found
+    loop  drop  false ;         \ Nothing found
 
 
-\ Example:
+
+\ An example:
 
 40 bitarray BITMAP  \ Demo bit arrays
 13 bitarray SIGNALS \ Note that this one is rounded to one cell (32 bits)
@@ -103,7 +107,7 @@ BITMAP SIGNALS copy \ Copy BITMAP to SIGNALS
     dup .bitarray
     cr  ." Used bits "                  \ Show & consume only
     dup >len 0 do
-        dup >next? if  .  then          \ The bits set in array a
+        dup >next? if  .  then          \ the bits set in array a
     loop  drop ;
 
 \ End ;;;
