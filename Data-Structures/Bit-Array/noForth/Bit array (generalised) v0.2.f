@@ -1,6 +1,7 @@
 (* Bit array for compact noting of precence or on/off state
 
-   The origimal idea of this is from Albert Nijhof.
+   The origimal idea of this is from Albert Nijhof,
+   this implementation (c) 2021 Willem Ouwerkerk.
    This code assumes that the dataspace is reserved & addressed in
    words. To keep track of 64 entries one only needs 8 bytes.
 
