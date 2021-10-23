@@ -80,6 +80,6 @@ Function: ZERO   ( addr -- )
 : ZERO   ( a -- )           dup >adr  swap >len 8 /  0 fill ; \ Erase bit-map 
 ```
 ## Implementations
-Have a look at the sub directories for implementations for different systems. Note that because Minimal Forth has no error recovery, the word `LOC` leaves dummy data.  
+Have a look at the sub directories for implementations for different systems. 
 
 
