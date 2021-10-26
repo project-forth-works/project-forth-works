@@ -57,7 +57,7 @@ Function: XORshift
    store the final result in the variable seed for a next cycle
 ```
 
-### Minimal Forth with extensions version
+### Simple Forth
 
 ```
 \ 32bit version with 1 seed in a variable
