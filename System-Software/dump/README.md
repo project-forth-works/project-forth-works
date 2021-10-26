@@ -65,7 +65,7 @@ x 100 dump
 As the original Minimal Forth has no output facility other than `emit` and `.s` (specificly no number formatting and no `.` or `.r´)
 this implementation seems to be over complicated.
 
-We extended Minimal Forth to [Simple Forth](https://github.com/embeddingforth/embeddingForth.github.io/blob/main/minimalforth.md) to get a
+We extended Minimal Forth to [**Simple Forth**](https://github.com/embeddingforth/embeddingForth.github.io/blob/main/minimalforth.md) to get a
 more useful small Forth.
 
 A DUMP utility in *Simple Forth* can be found in [hex-dump-MinForth+ext.f](hex-dump-MinForth+ext.f)
