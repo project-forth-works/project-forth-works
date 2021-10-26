@@ -1,8 +1,8 @@
 # Communication-protocols
 Description and implementation of communication protocols
 
-- [SPI](https://github.com/embeddingforth/Communication-protocols/tree/main/SPI)
-- [I2C](https://github.com/embeddingforth/Communication-protocols/tree/main/I2C)
+- [SPI](SPI)
+- [I2C](I2C)
 - RS232/RS485, etc.
 - 1-Wire
 - USB
