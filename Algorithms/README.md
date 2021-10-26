@@ -5,6 +5,6 @@
 - Handling unreliable measurements
   - Averaging, Moving average, median
 - Bresenham
-  - [PiliPlop](https://github.com/embeddingforth/Algorithms/tree/main/PiliPlop)
+  - [PiliPlop](PiliPlop)
 - String handling
 - Networking
