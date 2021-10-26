@@ -105,7 +105,7 @@ Function: GO ( x0 .. xp -- )
       Perform ONE-STEP
 ```
 
-## Minimal forth (with extensions)
+## Simple Forth
 
 ```
 hex
