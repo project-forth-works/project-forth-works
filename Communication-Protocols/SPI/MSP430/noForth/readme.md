@@ -19,13 +19,13 @@
 
 | File name | Commands | Purpose |  
 | ------------------- | ------------------- | ---------------------- |
-| [SPI-loopback MSP430.f](https://github.com/embeddingforth/Communication-protocols/blob/main/SPI/MSP430/noForth/SPI-loopback%20msp430.F)  | `COUNTER` | A counter as simplest loopback test |
-| [SPI OLED display.f](https://github.com/embeddingforth/Communication-protocols/blob/main/SPI/MSP430/noForth/SPI%20OLED%20display.f)     | `DEMO`    | Show text on a graphic OLED display |
-| [Flash driver MSP430.f](https://github.com/embeddingforth/Communication-protocols/blob/main/SPI/MSP430/noForth/Flash%20driver%20MSP430.f)    | `4 SPI-SETUP`| Activate SPI-interface to Flash memory chip| 
+| [SPI-loopback MSP430.f](SPI-loopback%20msp430.F)  | `COUNTER` | A counter as simplest loopback test |
+| [SPI OLED display.f](SPI%20OLED%20display.f)     | `DEMO`    | Show text on a graphic OLED display |
+| [Flash driver MSP430.f](Flash%20driver%20MSP430.f)    | `4 SPI-SETUP`| Activate SPI-interface to Flash memory chip| 
 |                        | `FILL1 0 write-sector` | Fill buffer with pattern en write to Flash sector 0 |  
 |                        | `0. 100 FDUMP` |  Dump sector 0 showing the written contents, etc. |
-| [WS2812 simple G2553.f](https://github.com/embeddingforth/Communication-protocols/blob/main/SPI/MSP430/noForth/WS2812%20simple%20G2553.f)    | `SHOW` for MSP430G2553  | Display five different colors on max. 40 WS2812 leds |
-| [WS2812 simple FR5949.f](https://github.com/embeddingforth/Communication-protocols/blob/main/SPI/MSP430/noForth/WS2812%20simple%20FR5949.f)   | `SHOW` for MSP430FR59xx | the number of LEDs maybe changed by editing `#LEDS` |
+| [WS2812 simple G2553.f](WS2812%20simple%20G2553.f)    | `SHOW` for MSP430G2553  | Display five different colors on max. 40 WS2812 leds |
+| [WS2812 simple FR5949.f](WS2812%20simple%20FR5949.f)   | `SHOW` for MSP430FR59xx | the number of LEDs maybe changed by editing `#LEDS` |
 
 ```
 ```
