@@ -3,7 +3,7 @@
 
 - [Assemblers](Assemblers)  
   - ARM, MSP430, etc.
-- [Disassemblers](diassemblers)
+- [Disassemblers](disassemblers)
   - MSP430, etc. 
 - File Systems
   - FAT16
