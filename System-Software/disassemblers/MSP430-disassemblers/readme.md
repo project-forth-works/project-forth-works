@@ -1,7 +1,9 @@
 # Disassemblers
 
 - [MSP430 disassembler  ](MSP430-disassembler-v0.2.f)  
-Compact universal MSP430 disassembler (the 27 basic opcodes).  
+Compact universal MSP430 disassembler (the 27 basic opcodes). 
+Note that the check on CFA's `dasa @ @+ =` is only correct for ITC code. 
+For other systems these lines need adaptation.  
 Not in SimpleForth: `WITHIN  CELL-  1-  @+  <>`  
 
 An example of its use disassemble `DUP`, `?DUP` & `DROP` in noForth:
@@ -35,5 +37,5 @@ das dup
  | `DAS`   | `DAS DUP` | Disassemble from the word `DUP` |
  | `MDAS`  | `<addr> MDAS` | Disassemble from `<addr>` |
  
- Each time the space bar is hit a new line is disassembled. When any other key is hitr the disassembly stops!
+ Each time the space bar is hit, a new line is disassembled. When any other key is hit the disassembly stops!
  
