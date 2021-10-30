@@ -19,6 +19,7 @@
 \ #0 #1 #2 #-1     #0 #1 #2 #-1      Constants using CG
 \
 \ Not in SimpleForth: WITHIN  CELL-  1-  @+  <>
+\ Note that the check on CFA's 'dasa @ @+ =' is only correct for ITC code.
 
 chere
 
