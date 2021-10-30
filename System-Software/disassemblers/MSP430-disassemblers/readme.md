@@ -1,7 +1,8 @@
 # Disassemblers
 
-- [MSP430 disassembler  ](MSP430-disassemblers)  
-Compact universal MSP430 disassembler (the 27 basic opcodes).
+- [MSP430 disassembler  ](MSP430-disassembler-v0.2.f)  
+Compact universal MSP430 disassembler (the 27 basic opcodes).  
+Not in SimpleForth: `WITHIN  CELL-  1-  @+  <>`  
 
 An example of its use disassemble `DUP`, `?DUP` & `DROP` in noForth:
 ```
