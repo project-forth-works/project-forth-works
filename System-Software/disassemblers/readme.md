@@ -1,5 +1,5 @@
 # Disassemblers
 
-- MSP430 disassembler  
+- MSP430 disassemblers  
 Compact universal MSP430 disassembler (the 27 basic opcodes).
 - Etc.
