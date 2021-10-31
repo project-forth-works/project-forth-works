@@ -8,7 +8,7 @@ This project is an attempt to spread ideas, algorithms, protocols, applications 
 
 It can also be the place to ask for help with a stranded project. To do that, you must upload the project and describe it in the appropriate category.  
 
-Click [here if you want to start with **EmbeddingForth**](https://embeddingforth.github.io/)
+Click [here if you want to read more about **EmbeddingForth**](https://embeddingforth.github.io/)
 ```
 ```
 ### We have until now the following categories:
