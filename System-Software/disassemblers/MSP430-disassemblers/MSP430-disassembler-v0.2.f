@@ -33,7 +33,7 @@ variable IDATA      \ Offset to inline assembler data
 
 : .MNEMO    ( reg a u -- )
     drop  swap 2* 2* + 4
-    dup 0 do  2dup + 1- c@ bl = +  loop
+    dup 0 do  2dup + 1- c@ bl = +  loopv \ -trailing
     type space ;
 
 :  .W&W     ( -- )                  \ Print where and what
