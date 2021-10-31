@@ -26,7 +26,7 @@ chere
 hex  \ until the end
 variable DASA       \ Address to disassemble
 variable IDATA      \ Offset to inline assembler data
-: PCHAR     ( ch1 -- ch2 )      dup 7F < and  bl max ; \ Convert ch1 to printable char ch2
+: PEMIT     ( ch -- )           dup 7F < and  bl max  emit ; \ Output ch as printable char
 : @CODE     ( -- opc )          dasa @ cell- @ ;    \ Fetch one machine code
 : >MDATA    ( +n -- opc-data )  @code swap rshift ; \ Get data field from machine code
 : @IDATA    ( -- inl# )         idata @  dasa @ + @  2 idata +! ; \ Inline opcode data
@@ -38,10 +38,9 @@ variable IDATA      \ Offset to inline assembler data
 
 :  .W&W     ( -- )                  \ Print where and what
     cr dasa @  dup 5 u.r ." : "     \ Print address
-    dup  2 0 do                     \ Print text
-        count pchar emit
-    loop  drop space
-    @  5 u.r  3 spaces  2 dasa +! ; \ Print content
+    dup  2 0 do  count pemit  loop  \ Print text
+    drop space  @  5 u.r  3 spaces  \ Print content
+    2 dasa +! ;
 
 : .DST      ( adr-mode reg -- )     \ Print register name & addressing mode
     over 1 = if 
