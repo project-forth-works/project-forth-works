@@ -26,6 +26,7 @@ chere
 hex  \ until the end
 variable DASA       \ Address to disassemble
 variable IDATA      \ Offset to inline assembler data
+: PCHAR     ( ch1 -- ch2 )      dup 7F < and  bl max ; \ Convert ch1 to printable char ch2
 : @CODE     ( -- opc )          dasa @ cell- @ ;    \ Fetch one machine code
 : >MDATA    ( +n -- opc-data )  @code swap rshift ; \ Get data field from machine code
 : @IDATA    ( -- inl# )         idata @  dasa @ + @  2 idata +! ; \ Inline opcode data
@@ -38,9 +39,7 @@ variable IDATA      \ Offset to inline assembler data
 :  .W&W     ( -- )                  \ Print where and what
     cr dasa @  dup 5 u.r ." : "     \ Print address
     dup  2 0 do                     \ Print text
-        count  dup 7F bl within if
-            drop  bl
-         then  emit
+        count pchar emit
     loop  drop space
     @  5 u.r  3 spaces  2 dasa +! ; \ Print content
 
@@ -60,9 +59,7 @@ variable IDATA      \ Offset to inline assembler data
         drop  dup 3 = if  4 -  then  ." #" .  exit
     then
     over 2 and  over 2 = and if  ." #"  1- swap lshift .  exit  then \ sr #4 #8
-    over 3 = over 0= and if
-        2drop  @idata u.  ." # "  exit
-    then  .dst ;
+    2dup + 3 = if  2drop  @idata u.  ." # "  exit  then  .dst ;
 
 : B/W       ( -- )      @code 40 and if  ." .b "  then ;
 
@@ -77,7 +74,7 @@ variable IDATA      \ Offset to inline assembler data
     s" MOV ADD ADDCSUBCSUB CMP DADDBIT BIC BIS BIX BIA " .mnemo ;
 
 : JMP-OP    ( -- )
-    @code 3FF and  200 over and \ Negative distance?
+    @code 3FF and  dup 1FF >    \ Negative distance?
     if  FC00 or  then  s>d >r   \ Backward?
     2* dasa @ +                 \ Calculate destination
     0A >mdata 7 and  dup
@@ -90,7 +87,7 @@ variable IDATA      \ Offset to inline assembler data
     then 
     5 spaces  [char] +  r> 2* - emit  [char] > emit  u. ;
 
-\ Decode one instruction, address has to be in dasa
+\ Decode one instruction, the address has to be in dasa
 : DAS+      ( -- )              \ Disassemble next instruction
     dasa @ @+ = if  .w&w ." --- cfa ---"  then
     .w&w   0 idata !
