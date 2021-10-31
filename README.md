@@ -13,19 +13,9 @@ Click [here if you want to read more about **EmbeddingForth**](https://embedding
 ```
 ### We have until now the following categories:
 
-- [****Algorithms****](https://github.com/embeddingforth/embeddingForth/tree/main/Algorithms)
-  - Random numbers
-  - Etc.
-- [****Communication-Protocols****](https://github.com/embeddingforth/embeddingForth/tree/main/Communication-Protocols)
-  - SPI
-  - Etc.
-- [****Data-Structures****](https://github.com/embeddingforth/embeddingForth/tree/main/Data-Structures)
-  - Primitive circular buffer
-  - Etc. 
-- [****System-Software****](https://github.com/embeddingforth/embeddingForth/tree/main/System-Software)
-  - Assembler
-  - Etc. 
-- [****User-Applications****](https://github.com/embeddingforth/embeddingForth/tree/main/User-Applications)
-  - Games
-  - Etc. 
+- [****Algorithms****](Algorithms) ; Random numbers, etc.
+- [****Communication-Protocols****](Communication-Protocols) ; SPI, etc.
+- [****Data-Structures****](Data-Structures) ; Primitive circular buffer, etc. 
+- [****System-Software****](System-Software) ; Assemblers, Disassembler, etc.
+- [****User-Applications****](User-Applications) ; Games, Robotics, etc. 
 
