@@ -16,6 +16,6 @@ Click [here if you want to read more about **EmbeddingForth**](https://embedding
 - [****Algorithms****](Algorithms) ; Random numbers, etc.
 - [****Communication-Protocols****](Communication-Protocols) ; SPI, etc.
 - [****Data-Structures****](Data-Structures) ; Primitive circular buffer, etc. 
-- [****System-Software****](System-Software) ; Assemblers, Disassembler, etc.
+- [****System-Software****](System-Software) ; Assembler, Disassembler, etc.
 - [****User-Applications****](User-Applications) ; Games, Robotics, etc. 
 
