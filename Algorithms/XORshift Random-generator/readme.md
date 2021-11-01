@@ -57,7 +57,7 @@ Function: XORshift
    store the final result in the variable seed for a next cycle
 ```
 
-### Simple Forth
+### JustForth
 
 ```
 \ 32bit version with 1 seed in a variable
@@ -110,7 +110,7 @@ Function: XORshift
    OR the final result with the value in seed2 for a next cycle
 ```
 
-### Minimal Forth with extensions version
+### JustForth version
 ```
 \ 32 bit version with 2 seeds in values:
 
