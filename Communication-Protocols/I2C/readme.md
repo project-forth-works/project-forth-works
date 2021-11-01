@@ -139,7 +139,7 @@ Function: PCF8574-WRITE ( byte dev-addr -- )
 Function: PCF8574-READ  ( dev-addr -- byte )
   {i2c-read  i2c-in i2c-stop}
 ```
-### Minimal Forth low level part of bitbang example
+### JustForth low level part of bitbang example
 
 This example has the I2C interface pins connected like this.
 ```
@@ -154,7 +154,7 @@ This is because it only has push/pull outputs and I2C needs an open colector (or
 code mimics open collector ports.
 
 ![Minimal forth example reading EEPROM](https://user-images.githubusercontent.com/11397265/123260134-83e79380-d4f5-11eb-86e8-8f3c6d46b4ba.jpg)  
-**Minimal forth example reading EEPROM**
+**JustForth example reading EEPROM**
 
 ```
 : ABORT" ( flag ccc -- )         
@@ -271,7 +271,7 @@ variable DEV
     i2c-setup  >dev  {i2ack?} . ;
 ```
 
-### I2C minimal Forth with high level factorisation
+### I2C JustForth with high level factorisation
 
 This example is for an 8-bit PCF8574 like I/O-expander:
 ```
