@@ -61,7 +61,7 @@ Function: SPI}      ( -- )
   Set chip enable bit on I/O port
 ```
 
-### Minimal Forth bitbang example 
+### JustForth bitbang example 
 This example has the SPI interface pins connected like this.
 ```
 MOSI (Data out)               = bit-7 
