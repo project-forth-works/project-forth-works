@@ -46,7 +46,7 @@ Function: GET*  ( bit-nr addr – mask|0 )
 Function: ZERO   ( addr -- )
 	Clear the bit array starting at address completely
 ```
-## Minimal Forth bit array example:
+## JustForth bit array example:
 ```
 : **BIS  ( mask addr -- )   tuck @ or  swap ! ;
 : **BIC  ( mask addr -- )   >r  invert  r@ @ and  r> ! ;
