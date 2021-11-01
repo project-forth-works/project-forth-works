@@ -17,7 +17,6 @@ CHERE ROM! ?ABORT
 : ROM!   ( x -- )    {W  !  W} ;       \ Store 'x' in flash or FRAM
 : ?ABORT ( f -- )    if  quit  then ;  \ Replace noForth style compact error message
 
-Missing ANSI standard words: STATE POSTPONE IMMEDIATE #
 ``` 
 
 
