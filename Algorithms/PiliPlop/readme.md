@@ -105,14 +105,11 @@ Function: GO ( x0 .. xp -- )
       Perform ONE-STEP
 ```
 
-## Simple Forth
+## JustForth
 
 ```
 hex
-: ABS   ( n -- u )          dup 0< if negate then ;
-: +!	( n a -- )          >r  r@ @ +  r> ! ;
-: MS    ( u -- )            ?dup if  0 do  190 0 do loop  loop  then ; \ 190 is system dependent!
-
+\ Not is JustForth: ABS  MS  +!
 3 constant #PROCESSES
 : VARIABLES    create here ,  cells allot  does> @ swap cells + ; \ Array of cells
 
