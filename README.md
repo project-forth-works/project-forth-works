@@ -4,7 +4,7 @@
 
 Forth thrives largely on open source but our problem lies in the saying '****When you have seen one Forth, you have seen one Forth****'. Here we like to embrace our differences.  
 
-This project is an attempt to spread ideas, algorithms, protocols, applications and hardware drivers. The idea is to start with describing the idea, then the algorithm in pseudo code and an example in Simple Forth. Links to information, a description of pitfalls, etc. We hope that examples in a lot of Forth dialects and CPU variants will be added.  
+This project is an attempt to spread ideas, algorithms, protocols, applications and hardware drivers. The idea is to start with describing the idea, then the algorithm in pseudo code and an example in JustForth. Links to information, a description of pitfalls, etc. We hope that examples in a lot of Forth dialects and CPU variants will be added.  
 
 It can also be the place to ask for help with a stranded project. To do that, you must upload the project and describe it in the appropriate category.  
 
