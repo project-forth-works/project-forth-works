@@ -4,7 +4,7 @@
 \ 30mei2017 - NEXT deleted
 \ 27feb2018 - test for "distance too large" added in JCODE
 \ 02mar2018 - state=smart # in noForth C and CC
-\ 05sep2021 - Adapted to minimal Forth
+\ 05sep2021 - Adapted to Generic Forth
 \
 \   When state is true, the core word # is compiled,
 \   when state is false, the assembler # is executed.
@@ -15,7 +15,13 @@
 \           : test chere -4 tos add ;
 \
 \ Assumptions: A cell is 16-bit wide
-\ Extra words: CHERE ROM! ?ABORT  STATE POSTPONE IMMEDIATE #
+\
+\ Missing words in Generic Forth are: CHERE ROM! ?ABORT
+\ : CHERE  ( -- a )    Leave flash or FRAM address on the stack ; 
+\ : {W     ( -- )      enable write access to flash or FRAM ;
+\ : W}     ( -- )      disable write access to flash or FRAM ;
+\ : ROM!   ( x -- )    {W  !  W} ;       \ Store 'x' in flash or FRAM
+\ : ?ABORT ( f -- )    if  quit  then ;  \ Replace noForth style compact error message
 
 hex     \ until the end
 \ ----- Register names & addressing modes
