@@ -18,8 +18,9 @@
 \ #4 #8            #4 #8             Constants using RS
 \ #0 #1 #2 #-1     #0 #1 #2 #-1      Constants using CG
 \
-\ Not in JustForth: WITHIN  CELL-  1-  @+  <>
+\ Not in Generic Forth: WITHIN  CELL-  1-  @+  <>
 \ Note that the check on CFA's 'dasa @ @+ =' is only correct for ITC code.
+\ Lines starting with ( ) have implementation specific dependencies.
 
 chere
 
@@ -88,7 +89,7 @@ variable IDATA      \ Offset to inline assembler data
 
 \ Decode one instruction, the address has to be in dasa
 : DAS+      ( -- )              \ Disassemble next instruction
-    dasa @ @+ = if  .w&w ." --- cfa ---"  then
+( ) dasa @ @+ = if  .w&w ." --- cfa ---"  then
     .w&w   0 idata !
     0C >mdata dup 0= if         \ Invalid opcode type?
         drop  ." ?"
@@ -101,11 +102,11 @@ variable IDATA      \ Offset to inline assembler data
             else
                 two-op          \ No, two arg. opcode
     then then then
-    @code 4630 = if ." --->>" cr then   \ Execute?
+( ) @code 4630 = if ." --->>" cr then   \ Execute?
     begin  idata @ while  -2 idata +!   \ Inline data, yes adjust IDATA
-    dasa @ @+ <> while  .w&w            \ Stop on new code definition, otherwise print data
+( ) dasa @ @+ <> while  .w&w            \ Stop on new code definition, otherwise print data
     repeat  then 
-    dasa @ @+ = if cr  then ;           \ New code definition found?
+( ) dasa @ @+ = if cr  then ;           \ New code definition found?
 
 \ ----- User words
 : MDAS      ( adr -- )
