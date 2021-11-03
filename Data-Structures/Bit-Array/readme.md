@@ -46,13 +46,15 @@ Function: GET*  ( bit-nr addr – mask|0 )
 Function: ZERO   ( addr -- )
 	Clear the bit array starting at address completely
 ```
-## JustForth bit array example:
+## Generic Forth bit array example:
 ```
+Extra words: @+  
+: ?ABORT ( fl -- )          0= 0= throw ;
+
+Words with hardware dependencies:
 : **BIS  ( mask addr -- )   tuck @ or  swap ! ;
 : **BIC  ( mask addr -- )   >r  invert  r@ @ and  r> ! ;
 : BIT**  ( mask addr -- 0|b ) @ and ;
-: @+     ( a1 -- a2 x )     dup cell+  swap @ ;
-: ?ABORT ( fl -- )          0= 0= throw ;
 
 1 cells 8 * constant #BITS  \ Bits in a cell
 
