@@ -1,16 +1,10 @@
 \ PiliPlop used on WS2812 to flow smooth from one color to another
 
 hex
-\ Minimal Forth & extensions needs these additional words:
+\ Generic Forth needs these additional words: UMIN  ABS  +!  1+  */  MS
 \ Note that MS is a software timed loop and the value 190 should
 \ be adjusted for each individual Forth system! This value is
 \ about correct for an 8 MHz compact noForth system.
-\ : UMIN  ( u1 u2 -- u3 )     2dup u> if swap then drop ;
-\ : ABS   ( n -- u )          dup 0< if negate then ;
-\ : +!    ( n a -- )          >r  r@ @ +  r> ! ;
-\ : 1+    ( n1 -- n2 )        1 + ;
-\ : */    ( n1 n2 n3 -- n4 )  */mod swap drop ;
-\ : MS    ( u -- )            ?dup if  0 do  190 0 do loop  loop  then ;
 
 3 constant #COLORS
 : VARIABLES    create here ,  cells allot  does> @ swap cells + ; \ Array of cells
