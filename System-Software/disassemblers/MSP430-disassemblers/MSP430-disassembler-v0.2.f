@@ -22,8 +22,6 @@
 \ Note that the check on CFA's 'dasa @ @+ =' is only correct for ITC code.
 \ Lines starting with ( ) have implementation specific dependencies.
 
-chere
-
 hex  \ until the end
 variable DASA       \ Address to disassemble
 variable IDATA      \ Offset to inline assembler data
@@ -115,6 +113,5 @@ variable IDATA      \ Offset to inline assembler data
 : DAS       ( ccc -- )      '  mdas ;
 
 cr .( MSP430 disassembler loaded )
-chere swap - dm u.
 
 \ ;;;
