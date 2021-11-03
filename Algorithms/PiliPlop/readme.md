@@ -105,7 +105,7 @@ Function: GO ( x0 .. xp -- )
       Perform ONE-STEP
 ```
 
-## JustForth
+## Generic Forth
 
 ```
 hex
