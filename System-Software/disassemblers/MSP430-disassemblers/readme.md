@@ -4,9 +4,9 @@
 Compact universal MSP430 disassembler (the 27 basic opcodes). 
 Note that the check on CFA's `dasa @ @+ =` is only correct for ITC code. 
 For other systems these lines need adaptation.  
-Not in SimpleForth: `WITHIN  CELL-  1-  @+  <>`  
+Not in Generic Forth: `WITHIN  CELL-  1-  @+  <>`  
 
-An example of its use disassemble `DUP`, `?DUP` & `DROP` in noForth:
+An example of its use, disassemble `DUP`, `?DUP` & `DROP` in noForth:
 ```
 das dup
  4BF0:  K  4BF2   --- cfa ---
