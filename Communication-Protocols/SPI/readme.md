@@ -61,7 +61,7 @@ Function: SPI}      ( -- )
   Set chip enable bit on I/O port
 ```
 
-### JustForth bitbang example 
+### Generic Forth bitbang example 
 This example has the SPI interface pins connected like this.
 ```
 MOSI (Data out)               = bit-7 
@@ -83,7 +83,9 @@ For a machine with byte wide I/O ports.
 
 **The used addresses are for port-1 of the MSP430G2553:**
 ```
-: TUCK  ( x1 x2 -- x2 x1 x2 )   swap over ;
+Extra words: TUCK  
+
+Words with hardware dependencies:
 : *BIS  ( mask addr -- )        tuck c@ or  swap c! ; 
 : *BIC  ( mask addr -- )        >r  invert  r@ c@ and  r> c! ;
 : BIT*  ( mask addr -- b )      c@ and ;
