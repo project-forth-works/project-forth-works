@@ -7,7 +7,7 @@ in the same time frame, you need something like PiliPlop. It uses a Bresenham li
 Original idea [Albert Nijhof](https://home.hccnet.nl/anij/ec/ec207a.html). Examples are:  
 
   - A plotter
-  - [Walking robot](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e11x)
+  - [Walking robots](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e11x)
   - [Robot arm](https://home.hccnet.nl/willem.ouwerkerk/)
   - Flowing RGB light patterns (see picture below)
   - Etc.
