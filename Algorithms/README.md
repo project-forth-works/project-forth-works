@@ -1,7 +1,7 @@
 # Algorithms
 
 - Random number generators
-  - [XORshift Random-generator](XORshift Random-generator)
+  - [Random generator](XORshift%20Random-generator)
 - Handling unreliable measurements
   - Averaging, Moving average, median
 - Bresenham
