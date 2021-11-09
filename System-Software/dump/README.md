@@ -68,7 +68,7 @@ this implementation seems to be over complicated.
 We extended Minimal Forth to [**GenericForth**](https://github.com/Project-Forth-Works/Project-Forth-Works.github.io/blob/main/minimalforth.md) to get a
 more useful small Forth.
 
-A DUMP utility in *GenericForth* can be found in [hex-dump-MinForth+ext.f](hex-dump-MinForth+ext.f)
+A DUMP utility in *GenericForth* can be found in [dump-GenericForth.f](dump-GenericForth.f)
 This example is factored using the pseudo code description. The character output has been factored into the useful word PEMIT ( char -- ) too.
 
 
