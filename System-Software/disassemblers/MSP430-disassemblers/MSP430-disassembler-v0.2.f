@@ -3,7 +3,7 @@
 \ an    -- 05mei12 -- 430 disassembler
 \ an jan2016 - XOR> and AND> changed to BIX and BIA
 \ an 30mei2017 - stopper per line
-\ wo 29oct2021 - adapted for EmbeddingForth
+\ wo 29oct2021 - adapted for Project-Forth-Works
 
 \ This disassembler output uses noForth assembler notation.
 \ MSP assembly     disassembles to

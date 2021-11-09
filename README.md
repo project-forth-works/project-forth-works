@@ -1,4 +1,4 @@
-![EmbeddingForth-7b](https://user-images.githubusercontent.com/11397265/138279169-0532b875-8a37-46fa-9de5-783b6bb12c38.jpg "EmbeddingForth")
+![Project-Forth-Works-7b](https://user-images.githubusercontent.com/11397265/138279169-0532b875-8a37-46fa-9de5-783b6bb12c38.jpg "Project-Forth-Works")
 
 ## What this project is all about ...
 
@@ -8,7 +8,7 @@ This project is an attempt to spread ideas, algorithms, protocols, applications 
 
 It can also be the place to ask for help with a stranded project. To do that, you must upload the project and describe it in the appropriate category.  
 
-Click [here if you want to read more about **EmbeddingForth**](https://embeddingforth.github.io/)
+Click [here if you want to read more about **Project-Forth-Works**](https://Project-Forth-Works.github.io/)
 ```
 ```
 ### We have until now the following categories:

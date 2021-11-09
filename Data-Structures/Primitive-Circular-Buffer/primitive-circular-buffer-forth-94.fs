@@ -1,6 +1,6 @@
 \ primitive circular buffer Forth-94                                            uh 2021-07-26
 
-\ see https://github.com/embeddingforth/data-structures/primitive-circular-buffer for details 
+\ see https://github.com/Project-Forth-Works/data-structures/primitive-circular-buffer for details 
 
 \ uncomment next line if definition for +FIELD is required
 \ : +Field ( offset1 size <name> -- offset2 ) Create over , + Does> @ + ; 

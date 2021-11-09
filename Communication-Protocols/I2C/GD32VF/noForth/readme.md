@@ -3,9 +3,9 @@
  File name | Commands | Purpose  
 ------|:--------:|----------
 README.md      |   | this file
-[GD32VF103 bb-I2C.f](https://github.com/embeddingforth/Communication-protocols/blob/main/I2C/GD32VF/noForth/GD32VF103%20bb-I2C.f) | `A0 I2C?` | Bitbang I2C driver, check if device A0 is present
-[Simple I2C-EE.f](https://github.com/embeddingforth/Communication-protocols/blob/main/I2C/GD32VF/noForth/Simple%20I2C-EE.f) | `SHOW` | Tiny 24C02 EEPROM driver with example  
-[Advanced I2C-EE.f](https://github.com/embeddingforth/Communication-protocols/blob/main/I2C/GD32VF/noForth/Advanced%20I2C-EE.f) | `SHOW` | 24C02 EEPROM driver, memory management & example  
+[GD32VF103 bb-I2C.f](https://github.com/Project-Forth-Works/Communication-protocols/blob/main/I2C/GD32VF/noForth/GD32VF103%20bb-I2C.f) | `A0 I2C?` | Bitbang I2C driver, check if device A0 is present
+[Simple I2C-EE.f](https://github.com/Project-Forth-Works/Communication-protocols/blob/main/I2C/GD32VF/noForth/Simple%20I2C-EE.f) | `SHOW` | Tiny 24C02 EEPROM driver with example  
+[Advanced I2C-EE.f](https://github.com/Project-Forth-Works/Communication-protocols/blob/main/I2C/GD32VF/noForth/Advanced%20I2C-EE.f) | `SHOW` | 24C02 EEPROM driver, memory management & example  
   
  ```
  ``` 

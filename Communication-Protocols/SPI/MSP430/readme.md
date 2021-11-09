@@ -1,4 +1,3 @@
-
 # MSP430 versions of the SPI protocol
 
 ## Bitbang, USCI and eUSCI versions

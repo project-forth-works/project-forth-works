@@ -65,7 +65,7 @@ x 100 dump
 As the original Minimal Forth has no output facility other than `emit` and `.s` (specificly no number formatting and no `.` or `.r´)
 this implementation seems to be over complicated.
 
-We extended Minimal Forth to [**GenericForth**](https://github.com/embeddingforth/embeddingForth.github.io/blob/main/minimalforth.md) to get a
+We extended Minimal Forth to [**GenericForth**](https://github.com/Project-Forth-Works/Project-Forth-Works.github.io/blob/main/minimalforth.md) to get a
 more useful small Forth.
 
 A DUMP utility in *GenericForth* can be found in [hex-dump-MinForth+ext.f](hex-dump-MinForth+ext.f)
@@ -74,10 +74,10 @@ This example is factored using the pseudo code description. The character output
 
 ## Various DUMP Implementations
 
-Other DUMP implementations can be found in the sub directories of [Algorithms/DUMP](https://github.com/embeddingforth/embeddingForth/tree/main/System-Software/dump).
+Other DUMP implementations can be found in the sub directories of [Algorithms/DUMP](https://github.com/Project-Forth-Works/Project-Forth-Works/tree/main/System-Software/dump).
 
 Your system might lack right justified number output or even BASE for printing numbers in other radix systems. The sample implementation in
-[twomoredumps.f](https://github.com/embeddingforth/embeddingForth/tree/main/System-Software/dump/twomoredumps.f) show how to circumvent this.
+[twomoredumps.f](https://github.com/Project-Forth-Works/Project-Forth-Works/tree/main/System-Software/dump/twomoredumps.f) show how to circumvent this.
 
 
 ## Background information

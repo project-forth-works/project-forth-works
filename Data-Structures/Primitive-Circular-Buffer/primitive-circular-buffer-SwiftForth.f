@@ -1,6 +1,6 @@
 \ primitive circular buffer SwiftForth                             uh 2021-08-05
 
-\ see https://github.com/embeddingforth/data-structures/primitive-circular-buffer for details 
+\ see https://github.com/Project-Forth-Works/data-structures/primitive-circular-buffer for details 
 
 \ Internal words
 package primitive-circular-buffer-package
