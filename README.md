@@ -1,4 +1,4 @@
-![Project-Forth-Works-7b](https://user-images.githubusercontent.com/11397265/138279169-0532b875-8a37-46fa-9de5-783b6bb12c38.jpg "Project-Forth-Works")
+![PFW-header](https://user-images.githubusercontent.com/11397265/140953670-5528129a-9498-41b6-ba44-694ef08b69c5.jpg)
 
 ## What this project is all about ...
 
