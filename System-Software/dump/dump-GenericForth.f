@@ -1,4 +1,4 @@
-\ Dump utility in Minimal Forth with use of the extension word set (WO 2021-09-16)
+\ Dump utility in Generic Forth (WO 2021-09-16)
 \ This source code provides a simple HEX dump utility.
 \
 \ Memory is accessed by C@ output is perfomed by EMIT.
