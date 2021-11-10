@@ -57,9 +57,9 @@ Function: XORshift
    store the final result in the variable seed for a next cycle
 ```
 
-### JustForth
+### Generic Forth
 
-```
+```forth
 \ 32bit version with 1 seed in a variable
 
 variable seed
@@ -110,8 +110,8 @@ Function: XORshift
    OR the final result with the value in seed2 for a next cycle
 ```
 
-### JustForth version
-```
+### Generic Forth version
+```forth
 \ 32 bit version with 2 seeds in values:
 
 2345 value SEED0
@@ -131,7 +131,7 @@ Function: XORshift
 The only change to the code are the 3 shift-factors. Here (7, 9, 13) are
 used. You can also use (7, 9, 8).
 
-```
+```forth
 2345 value SEED0
 6789 value SEED1
 
@@ -165,7 +165,7 @@ At least one seed must have one of the bits set for the generator to work.
 
 #### Finally a handy word:
 
-```
+```forth
 \ CHOOSE - limits the output of a random-generator to a range
          between 0 and u1 in a correct way.
 
