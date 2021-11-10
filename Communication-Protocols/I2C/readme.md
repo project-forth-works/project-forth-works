@@ -158,7 +158,7 @@ code mimics open collector ports.
 ```
 **Generic Forth example reading EEPROM**
 
-```
+```forth
 Extra words: ABORT"  TUCK  
 
 Words with hardware dependencies:
@@ -275,7 +275,7 @@ variable DEV
 ### I2C Generic Forth with high level factorisation
 
 This example is for an 8-bit PCF8574 like I/O-expander:
-```
+```forth
 : PCF8574-WRITE ( byte dev-addr -- )
   {i2write  i2stop} ;
 
