@@ -82,7 +82,7 @@ For a machine with byte wide I/O ports.
 -->
 
 **The used addresses are for port-1 of the MSP430G2553:**
-```
+```forth
 Extra words: TUCK  
 
 Words with hardware dependencies:

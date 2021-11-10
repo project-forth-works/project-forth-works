@@ -9,8 +9,7 @@ This project is an attempt to spread ideas, algorithms, protocols, applications 
 It can also be the place to ask for help with a stranded project. To do that, you must upload the project and describe it in the appropriate category.  
 
 Click [here if you want to read more about **Project-Forth-Works**](https://Project-Forth-Works.github.io/)
-```
-```
+  *** 
 ### We have until now the following categories:
 
 - [****Algorithms****](Algorithms) ; Random numbers, etc.
