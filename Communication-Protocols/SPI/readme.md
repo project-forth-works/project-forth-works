@@ -63,7 +63,7 @@ Function: SPI}      ( -- )
 
 ### Generic Forth bitbang example 
 This example has the SPI interface pins connected like this.
-```forth
+```
 MOSI (Data out)               = bit-7 
 MISO (Data in)                = bit-6
 SCK (Clock)                   = bit-5 
@@ -82,7 +82,7 @@ For a machine with byte wide I/O ports.
 -->
 
 **The used addresses are for port-1 of the MSP430G2553:**
-```
+```forth
 Extra words: TUCK  
 
 Words with hardware dependencies:
