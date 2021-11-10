@@ -47,7 +47,7 @@ Function: ZERO   ( addr -- )
 	Clear the bit array starting at address completely
 ```
 ## Generic Forth bit array example:
-```
+```Forth
 Extra words: @+  
 : ?ABORT ( fl -- )          0= 0= throw ;
 
@@ -62,13 +62,13 @@ Words with hardware dependencies:
 : >ADR   ( a1 -- a2 )       cell+ @ ;   \ Start address of bit array a1
 
 : LOC           ( nr a1 -- bit a2 )     \ Bit location in cell address
-  2dup >len < 0= ?abort     \ Valid bit flag check
-    @+ 1- >r  @             \ nr adr 
-    >r  dup #bits 1- and    \ nr bit-nr
-    1 swap lshift           \ nr bit-mask 
-    swap #bits /            \ nr / bits in a cell
-    r> swap  r> and cells + \ Mask excess bits, leave bit-array offset
-  then ;                    \ Leave bit & word-adr
+  2dup >len < 0= ?abort    \ Valid bit flag check
+  @+ 1- >r  @              \ nr adr 
+  >r  dup #bits 1- and     \ nr bit-nr
+  1 swap lshift            \ nr bit-mask 
+  swap #bits /             \ nr / bits in a cell
+  r> swap  r> and cells +  \ Mask excess bits, leave bit-array offset
+  ;                        \ Leave bit & word-adr
 
 : BITARRAY
   create      ( +n "name"-- )  ( exec: -- a )
