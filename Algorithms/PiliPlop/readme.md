@@ -107,7 +107,7 @@ Function: GO ( x0 .. xp -- )
 
 ## Generic Forth
 
-```
+```Forth
 hex
 \ Not is JustForth: ABS  MS  +!
 3 constant #PROCESSES
