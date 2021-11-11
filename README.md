@@ -2,11 +2,10 @@
 
 ## What this project is all about ...
 
-Forth thrives largely on open source but our problem lies in the saying '****When you have seen one Forth, you have seen one Forth****'. Here we like to embrace our differences.  
+Forth would benefit greatly from an active community sharing sources and solutions. But our problem lies in the saying: **When you have seen one Forth, you have seen one Forth**. 
+With this project we would like to embrace our differences. And start sharing, despite having all the different Forths-dialects.   
 
-This project is an attempt to spread ideas, algorithms, protocols, applications and hardware drivers. The idea is to start with describing the idea, then the algorithm in pseudo code and an example in **Generic Forth**. Links to information, a description of pitfalls, etc. We hope that examples in a lot of Forth dialects and CPU variants will be added.  
-
-It can also be the place to ask for help with a stranded project. To do that, you must upload the project and describe it in the appropriate category.  
+The core idea of this project is to use a simple, generic version of Forth to spread ideas, algorithms, protocols, applications and hardware drivers. This generic version of Forth guarantees that it can be understood and used by (almost) everybody in the Forth-community. 
 
 Click [here if you want to read more about **Project-Forth-Works**](https://Project-Forth-Works.github.io/)
   *** 
