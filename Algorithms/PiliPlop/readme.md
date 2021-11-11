@@ -109,7 +109,7 @@ Function: GO ( x0 .. xp -- )
 
 ```Forth
 hex
-\ Not is JustForth: ABS  MS  +!
+\ Not in Generic Forth: ABS  MS  +!
 3 constant #PROCESSES
 : VARIABLES    create here ,  cells allot  does> @ swap cells + ; \ Array of cells
 
