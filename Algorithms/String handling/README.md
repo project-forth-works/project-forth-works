@@ -18,12 +18,6 @@ front of the string. The so called counted strings, as is shown in the picture:
 
 ![string usage example](https://user-images.githubusercontent.com/11397265/142727480-4cb13037-c118-4d05-9eec-529aeaf23cad.jpg)  
 
-
-
-- String word sets
-  - [Primitive string word set](Primitive-string-word-set.f) \(Simple string word set e.g. for file and OS interfacing)
-  - Etc.
-
 ## Pseudo code
 ```
 Function: $@
@@ -55,4 +49,8 @@ s (c-addr) is the string, c (c-addr u) is constant string
 
 ## Implementations
 
-Have a look at the sub directories for implementations for different systems.
+Have a look at the sub directories for implementations for different systems.  
+
+- String word sets
+  - [Primitive string word set](Primitive-string-word-set.f) \(Simple string word set e.g. for file and OS interfacing)
+  - Etc.
