@@ -6,5 +6,5 @@
   - Averaging, Moving average, median
 - Bresenham
   - [PiliPlop](PiliPlop)
-- String handling
+- [String handling](String%20handling)
 - Networking
