@@ -3,6 +3,7 @@
 \ The idea of strings is that a character string (s)
 \ is in fact a counted string (c) that has been stored.
 \ s (c-addr) is the string, c (c-addr u) is constant string
+\ Note: This code assumes that a character is byte wide!
 
 : C+!       ( n a -- )      >r  r@ c@ +  r> c! ;    \ Incr. byte with n at a
 : $@        ( s -- c )      count ;                 \ Fetch string 'c' from 's'  
