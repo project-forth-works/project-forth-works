@@ -48,11 +48,21 @@ create LBLTBL 16 cells allot            \ table for label-addresses
 12 reg r12,  13 reg r13,   13 reg sp,   14 reg r14,   14 reg lr,    15 reg r15,
 15 reg pc,
 
+\ wabiForth specific internal register-names - only for easier exchange of examples
+ 5 reg top,			\ top of stack
+ 6 reg fps,			\ float point stackpointer
+ 7 reg loopi,		\ do...loop index
+ 8 reg looplim,		\ do...loop limit
+ 9 reg dts,			\ datastack pointer
+10 reg uss,			\ user return stack pointer
+11 reg v,			\ scratch reg for primitives
+12 reg w,			\ scratch reg for primitives
+
+
 : COND ( n -- ) create , does> @ to conbits ;
  0 cond eq,  1 cond ne,  2 cond cs,  2 cond hs,  3 cond cc,  3 cond lo,
  4 cond mi,  5 cond pl,  6 cond vs,  7 cond vc,  8 cond hi,  9 cond ls,
 10 cond ge, 11 cond lt, 12 cond gt, 13 cond le, 14 cond al,
-
 
 
 \ -----------------------------------------------\
@@ -134,34 +144,6 @@ hex
 decimal
 
 
-
-\ -- halfword and signed data-transfer -----
-\ offset: (register without shifts for register) or 8b immediate
-\ incl pre en post indexing & writeback
-
-: splitnib ( n - n0000n )
-    dup >r 4 rshift 8 lshift r> 15 and or ;
-: putregshw
-    offbits splitnib or         \ move immediate into hi and lo nibble
-    putimmhw                    \ put immbit on pos 22
-    indbits or                  \ bits for offset mode of the indexing
-    regbit if 0 bitfld then     \ put reg in 3:0 for reg-based offset
-    16 bitfld 12 bitfld ;
-
-: FDDLB25 ( opc -- opc )        \ bit25 must be 0 for halfword and signed byte
-    1 25 lshift invert and ;
-: (LOSTHW ( n -- ) create , does> @ putcond putregshw fddlb25 eofopc ;
-
-hex 001000B0 (losthw ldrh,      000000B0 (losthw strh,
-    001000F0 (losthw ldrsh,     \ strsh, deleted as not available in ARMv8...
-    001000D0 (losthw ldrsb,
-    000000D0 (losthw ldrd,      000000F0 (losthw strd,
-
-    007000B0 (losthw ldrht,     006000B0 (losthw strht,
-    007000F0 (losthw ldrsht,
-    007000D0 (losthw ldrsbt,
-decimal
-
 \ -- 1reg 16b IMM opcodes -----
 hex
 : put1reg16imm ( reg, imm16b, opc -- opc )
@@ -173,8 +155,6 @@ hex
 ;	 decimal
 : (0R16 create , does> @ putcond put1reg16imm eofopc ;
 hex	03400000 (0r16 movt,	03000000 (0r16 movw, decimal
-
-
 
 
 \ -----------------------------------------------\
@@ -312,6 +292,34 @@ hex     00000090 (mult mul,     00100090 (mult muls,    00200090 (mlat mla,
 decimal
 
 
+\ -- halfword and signed data-transfer -----
+\ offset: (register without shifts for register) or 8b immediate
+\ incl pre en post indexing & writeback
+
+: splitnib ( n - n0000n )
+	dup >r 4 rshift 8 lshift r> 15 and or ;
+: putregshw
+	offbits splitnib or			\ move immediate into hi and lo nibble
+	putimmhw					\ put immbit on pos 22
+	indbits or					\ bits for offset mode of the indexing
+	regbit if 0 bitfld then		\ put reg in 3:0 for reg-based offset
+	16 bitfld 12 bitfld ;
+
+: FDDLB25 ( opc -- opc ) 		\ bit25 must be 0 for halfword and signed byte
+	1 25 lshift invert and ;
+: (LOSTHW ( n -- ) create , does> @ putcond putregshw fddlb25 eofopc ;
+
+hex	001000B0 (losthw ldrh, 		000000B0 (losthw strh,
+	001000F0 (losthw ldrsh,		\ strsh, deleted as not available in ARMv8...
+	001000D0 (losthw ldrsb,
+	000000D0 (losthw ldrd,		000000F0 (losthw strd,
+
+	007000B0 (losthw ldrht,		006000B0 (losthw strht,
+	007000F0 (losthw ldrsht,
+	007000D0 (losthw ldrsbt,
+decimal
+
+
 \ -- load exclusive -----
 \ -- load acquire -----
 \ -- load acquire exclusive -----
@@ -335,9 +343,9 @@ decimal
 		bit23 or				\ U must be U if 8b <option> is used
 	then
 	or							\ this either ors the indbits or the <option>
-	16 bitfld ; hidden
+	16 bitfld ;
 
-: (LSXCE create , does> @ putcond put1reg8imm eofopc ; hidden
+: (LSXCE create , does> @ putcond put1reg8imm eofopc ;
 hex	0C105E00 (lsxce ldc,	0C005E00 (lsxce stc,
 decimal
 
@@ -390,10 +398,228 @@ hex
     06700F70 (3rreg uhsub16,    06700F90 (3rreg uhadd8, 06700FF0 (3rreg uhsub8,
 decimal
 
+
+\ -- block transfer -----
+hex 10011001 decimal constant REGMARKER
+: putregsbt
+	indbits or regbits or		\ offset mode & regs to be saved
+	16 bitfld ;				\ base-reg address where regs are saved
+
+: SETBIT ( n -- ) \ sets bit n in value regbit
+	dup 15 > if ." register expected -> " abort then
+	1 swap lshift regbits or to regbits ;
+
+: BLREGS ( reg*x -- ) \ gets reg numbers/sets bits till regmarker is seen
+	16 0 do 					\ 16 regs
+		dup regmarker = if leave then
+		setbit
+	loop drop ;				\ drop regmarker
+
+: r-r, ( reg1 reg2 -- ) \ reads 2 regs and setsbits in range of reg1 to reg2
+	2dup > if swap then			\ wrong order -> correct - could also be abort
+	2dup = if drop setbit		\ 2 equal regs -> set 1 bit only
+	else
+		1+ swap do i setbit loop
+	then ;
+
+: BL} ( n -- ) create , does> @ to indbits blregs ;
+hex	00000000 bl} },  		00200000 bl} }!,
+	00400000 bl} }^,	 	00600000 bl} }!^,
+decimal
+
+: {, regmarker 0 to regbits ; 	\ start of reg list -> marker on stack >> 0x10011001
+
+: BLTR ( n -- ) create 20 lshift , does> @ putcond putregsbt eofopc ;
+hex	99 bltr ldmed,	99 bltr ldmib,	89 bltr ldmfd,	89 bltr ldmia,
+	91 bltr ldmea,	91 bltr ldmdb,	81 bltr ldmfa,	81 bltr ldmda,
+	98 bltr stmfa,	98 bltr stmib,	88 bltr stmea,	88 bltr stmia,
+	90 bltr stmfd,	90 bltr stmdb,	80 bltr stmed,	80 bltr stmda,
+decimal
+
+
+
+\ -- MCR MRC -----
+\ regs defined above - same function as cpu-regs
+: putregsmmcc \ for mcr and mrc
+	 5 bitfld					\ opc2 (NOT optional in wabi) 3bit
+	 0 bitfld					\ CRm 4bit
+	16 bitfld					\ CRn 4bit
+	12 bitfld					\ Rt 4bit
+	21 bitfld					\ opc1 3bit
+	 8 bitfld ;
+: putregsmmccrr \ for mcrr and mrrc
+	 0 bitfld					\ CRm 4bit
+	16 bitfld					\ Rt2 4bit
+	12 bitfld					\ Rt 4bit
+	 4 bitfld					\ opc1 4bit
+	 8 bitfld ;
+
+: MMCC create , does> @ putcond putregsmmcc eofopc ;
+: MMRR create , does> @ putcond putregsmmccrr eofopc ;
+hex	0E000E10 MMCC mcr,	0C400E00 MMRR mcrr,
+	0E100E10 MMCC mrc,	0C500E00 MMRR mrrc, decimal
+
+
+
+\ -- MRS et al
+\ mrs to read all special registers
+\ msr only writes to the banked registers, not to spsr, cpsr & apsr <#TBD?
+
+\ move special register to general register
+hex
+: mrs, 01000000 putcond shftbits or C bitfld eofopc ; \ Rd, banked_reg, mrs,
+decimal
+
+hex
+\ move reg to banked_reg
+: msr, 0120F20 putcond shftbits or 0 bitfld eofopc ; \ banked_reg, Rn, msr,
+
+: (SRB create , does> @ to shftbits ;
+\ special registers
+hex 4F0000 (srb spsr,  		0F0000 (srb cpsr,		0F0000 (srb apsr, \ apsr=cpsr=0x0
+
+\ banked registers
+	000200 (srb r8_usr,		010200 (srb r9_usr,		020200 (srb r10_usr,
+	030200 (srb r11_usr,	040200 (srb r12_usr,	050200 (srb sp_usr,
+	060200 (srb lr_usr,		080200 (srb r8_fiq,		090200 (srb r9_fiq,
+	0A0200 (srb r10_fiq,	0B0200 (srb r11_fiq,	0C0200 (srb r12_fiq,
+	0D0200 (srb sp_fiq,		0E0200 (srb lr_fiq,		000300 (srb lr_irq,
+	010300 (srb sp_irq,		020300 (srb lr_svc,		030300 (srb sp_svc,
+	040300 (srb lr_abt,		050300 (srb sp_abt,		060300 (srb lr_und,
+	070300 (srb sp_und,		0C0300 (srb lr_mon,		0D0300 (srb sp_mon,
+	0E0300 (srb elr_hyp,	0F0300 (srb sp_hyp,		4E0200 (srb spsr_fiq,
+	400300 (srb spsr_irq,	420300 (srb spsr_svc,	440300 (srb spsr_abt,
+	460300 (srb spsr_und,	4C0300 (srb spsr_mon,	4E0300 (srb spsr_hyp,
+decimal
+
+
+
+\ -- Media Instructions -----
+\ belongs to group media extensions -> (MM
+: put3regsmm
+	8 bitfld					\ Rm
+	0 bitfld					\ Rn
+	16 bitfld ; 			\ Rd
+
+: (MM3 create , does> @ putcond put3regsmm eofopc ;
+hex	0710F010 (mm3 sdiv,		0730F010 (mm3 udiv,		0780F010 (mm3 usad8,
+
+\ for the CRC-opcodes condition must be '1110"=E
+	E1400040 (mm3 crc32w,	E1400040 (mm3 crc32,	\ << synonyms
+	E1200040 (mm3 crc32h,	E1000040 (mm3 crc32b,
+	E1400240 (mm3 crc32cw,	E1400240 (mm3 crc32c,	\ << synonyms
+	E1200240 (mm3 crc32ch,	E1000240 (mm3 crc32cb,
+decimal
+
+: bfc, [hex] 07C00010 [decimal] putcond
+	swap 1- over + swap
+	16 bitfld					\ msb
+	7 bitfld					\ lsb
+	15 0 bitfld					\ 15 -> BFC iso BFI << #CHECK
+	12 bitfld eofopc ;			\ Rd
+
+: putregsbf
+\	swap 1- over + swap			\ << #BUG!!
+	swap 1- swap 				\ #BUG corrected
+	16 bitfld					\ width
+	7 bitfld					\ lsb
+	0 bitfld					\ Rn
+	12 bitfld ;				\ Rd
+
+: (BF create , does> @ putcond putregsbf eofopc ;  \ #BUG in UBFX,!!
+hex 07C00010 (bf bfi,	07A00050 (bf sbfx,	07E00050 (bf ubfx, decimal
+
+\ -- extend actions -----
+: put2regsxt					\ add clear of bit<9,8>
+	shftbits or					\ or in the 2 ror# bits to specify which byte
+	0 bitfld					\ Rm
+	12 bitfld					\ Rd
+;
+
+: put3regsxta					\ add clear of bit<9,8>
+	shftbits or					\ or in the 2 ror# bits to specify which byte
+	 0 bitfld					\ Rm
+	16 bitfld					\ Rn
+	12 bitfld					\ Rd
+;
+
+: (XT create , does> @ putcond put2regsxt eofopc ;
+: (XTA create , does> @ putcond put3regsxta eofopc ;
+hex 06AF0070 (xt sxtb, 		068F0070 (xt sxtb16,	06BF0070 (xt sxth,
+	06EF0070 (xt uxtb,		06CF0070 (xt uxtb16,	06FF0070 (xt uxth,
+
+	06A00070 (xta sxtab,	06800070 (xta sxtab16,	06B00070 (xta sxtah,
+	06E00070 (xta uxtab,	06C00070 (xta uxtab16,	06F00070 (xta uxtah,
+	06800FB0 (xta sel,
+
+	06A00F30 (xta ssat16,	06E00F30 (xta usat16,
+
+
+decimal
+\ bits <9,8> must stay 0x0! if a wrong shift is given than they do not
+
+\ -- reverse bits and bytes -----
+: put2regrev
+	0 bitfld					\ Rm
+	12 bitfld ; 			\ Rd
+
+: (RV create , does> @ putcond put2regrev eofopc ;
+hex 06BF0F30 (rv rev,	06BF0FB0 (rv rev16,		06FF0F30 (rv rbit,
+	06FF0FB0 (rv revsh, 016F0F10 (rv clz,
+decimal
+
+\ -- zero reg conditional execution -----
+: (ZRC create , does> @ putcond eofopc ;
+hex 0320F004 (zrc sev,		0320D005 (zrc sevl,
+	0320F002 (zrc wfe,		0320F003 (zrc wfi,
+	0320F001 (zrc yield,	0320F000 (zrc nop,
+	0160006E (zrc eret,
+
+\ -- zero reg opcodes -----
+: (ZR create , does> @ eofopc ;
+hex E320F014 (zr csdb, 		F57FF044 (zr pssbb,		F57FF01F (zr clrex,
+	F1010000 (zr setend.le	F1010200 (zr setend.be
+decimal
+
+\ -- zero reg 1 option opcodes -----
+: putoption						\ puts 4 bits at bit<0> and higher
+	shftbits 0= if				\ no option specified -> option=SY
+		15 to shftbits then		\ misuse of shiftbits
+	shftbits or ;
+
+\ -- bariers -----
+: (ZR1O create , does> @ putoption eofopc ;
+hex F57FF050 (zr1o dmb,		F57FF040 (zr1o dsb,		F57FF060 (zr1o isb,
+decimal
+
+: (OPB create , does> @ to shftbits ;
+hex F (opb sy,		E (opb st, 		D (opb ld,		B (opb ish,		A (opb ishst,
+	9 (opb ishld,	7 (opb nsh,		6 (opb nshst,	5 (opb nshld,	3 (opb osh,
+	2 (opb oshst,	1 (opb oshld,
+decimal
+
+\ -- 1reg Rn -----
+: (1rn create , does> @ 16 bitfld eofopc ;
+hex	F8900A00 (1rn rfe,  	F8B00A00 (1rn rfe!,	  \ rfe & refia are synonyms
+	F8900A00 (1rn rfeia,	F8B00A00 (1rn rfeia!,
+	F8100A00 (1rn rfeda, 	F8300A00 (1rn rfeda!,
+	F9100A00 (1rn rfedb,	F9300A00 (1rn rfedb!,
+	F9900A00 (1rn rfeib,	F9B00A00 (1rn rfeib!,
+decimal
+
+\ -- 1reg 12b IMM opcodes -----
+: setu12imm ( n -- n_ready_for_or ) \ negates n if 'neg' and sets Up-bit if 'pos' for imm12
+	dup 0< if negate else bit23 or then ;
+: put1reg12imm ( reg imm12b opc -- opc )
+	swap setu12imm swap 0 bitfld
+	16 bitfld ;
+: (1r12 create , does> @ put1reg12imm eofopc ;
+hex	F510F000 (1r12 pldw,	F550F000 (1r12 pld, 	F450F000 (1r12 pli,
+
+
 \ --0reg 16b IMM -----
 hex : bkpt, FFFF and splitnib E1200070 or eofopc ; decimal
 hex : hvc,  FFFF and splitnib E1400070 or eofopc ; decimal
-
 
 \ --0reg 4 IMM -----
 hex : smc, 01600070 putcond swap F and or eofopc ; decimal
