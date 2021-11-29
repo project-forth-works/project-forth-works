@@ -6,9 +6,9 @@ create 'LIBRARY  31 allot
 : .LIB      ( -- )          'library $@ $. ;
 
 : LIB-FILE" ( "name" -- )
-    libpath 'library $!         \ Set path to library files
-    ch \ 'library $c+!          \ Add backslash
-    ch " parse 'library $+! ;   \ Add wanted file to path
+    libpath 'library $!           \ Set path to library files
+    [char] \ 'library $c+!        \ Add backslash
+    [char] " parse 'library $+! ; \ Add wanted file to path
     
 lib-file" Circular buffer V0.00.f"   .lib
 lib-file" PiliPlop.f"  .lib
