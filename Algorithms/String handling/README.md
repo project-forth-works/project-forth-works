@@ -53,4 +53,5 @@ Have a look at the sub directories for implementations for different systems.
 
 - String word sets
   - [Primitive string word set](Primitive-string-word-set.f) \(Simple string word set e.g. for file and OS interfacing)
+  - [Safe primitive string word set](Safe-string-word-set.f) \(Version with buffer overflow control!)
   - Etc.
