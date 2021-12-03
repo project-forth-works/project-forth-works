@@ -21,7 +21,7 @@ front of the string. The so called counted strings, as is shown in the picture:
 ## Pseudo code
 ```
 Function: $@
-  Fetch counted string from address
+  Read counted string from address
 Function: $+!
   Extend counted string at address
 Function: $!
@@ -29,7 +29,7 @@ Function: $!
 Function: $.
   Print counted string
 Function: $C+!
-  Add character to counted string at address
+  Add one character to counted string at address
 ```
 
 ## Generic Forth
