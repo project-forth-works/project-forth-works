@@ -1,7 +1,7 @@
 \  A safe minimal string package, original Albert van der Horst, this version W.O. 2021
 \
 \ Note that to keep security working, use the string buffer and operations together!
-\ This code also has a depency it uses S" interactivly!
+\ This code also has a depency, it uses S" interactivly!
 \
 \ The idea of strings is that a character string (s)
 \ is in fact a counted string (c) that has been stored.
