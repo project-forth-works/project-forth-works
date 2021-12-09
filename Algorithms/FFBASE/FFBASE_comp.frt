@@ -1,4 +1,4 @@
-\ FFBASE enables the use of a temporaray number-base for the next word
+\ FFBASE enables the use of a temporary number-base for the next word
 \ it works interactively, for immediates and within definitions
 \ This code is an adapted version of FFBASE written by A. Nijhof
 \ see: https://home.hccnet.nl/anij/c/c211c.html (in Dutch, German version available on same web site)
