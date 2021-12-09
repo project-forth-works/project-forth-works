@@ -6,6 +6,12 @@ Quite often a programmer needs to switch the numerical base for just a word or a
 
 The routine FFBASE enables the creation of precursor words which, just for the next definition or number, temporarily set the base to another.
 
+So,for instance,
+```
+	16 FFBASE HX
+```
+Creates a word, called 'HX'. 'HX' will set the numeric base to 16, but ONLY for the word following it. It deals correctly with definitions being compiled, definitions being executed and values.
+
 ## Pseudo code
 ```
 Function: (BASE) ( XT temporary_base -- )
@@ -39,4 +45,4 @@ See seperate file: FFBASE_comp.frt
 
 ## Implementations
 
-The generic Forth version should run on the majority of Forth implementations. It is sucesfully tested on iForth and wabiForth. However it does not run on MeCrisp in the present form.
+The generic Forth version should run on the majority of Forth implementations. It is sucesfully tested on iForth and wabiForth. However in the present form it does not run on MeCrisp for reasons unknown to me.
