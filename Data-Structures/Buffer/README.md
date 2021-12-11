@@ -76,9 +76,9 @@ Index     0      1             capacity-1
     CREATE buf  capacity entry-size * ALLOT
 
 
-    : store-value ( x i buffer-base-address )   SWAP entry-size * +  ! ;
+    : store-value ( x index buffer-base-address -- )   SWAP entry-size * +  ! ;
  
-    : read-value  ( x i buffer-base-address )   SWAP entry-size * +  @ ;
+    : read-value  ( index buffer-base-address -- x )   SWAP entry-size * +  @ ;
 
 
 ```
