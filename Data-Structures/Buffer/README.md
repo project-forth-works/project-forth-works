@@ -93,7 +93,7 @@ Index     0      1             capacity-1
     «u» Buffer: «name» 
   ```
   where «u» is the size in bytes of the buffer to be allocated and «name» is the name of
-  the new buffer.
+  the new buffer. When «name» is later executed it pushes its buffer-base-address on the stack.
 
   You can define `buffer:` in [Generic Forth] like this:
 
