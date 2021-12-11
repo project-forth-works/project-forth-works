@@ -1,13 +1,15 @@
 # Primitive Circular Buffer                         
 
-uh 2021-07-29
+uh 2021-12-11
 
 ## Idea
 
 In a typical embedded application sensor readouts need to be stored in memory for processing. 
 Because of memory limitations it might be reasonable to just store the latest data and remove old sensor readings. This can be done with a *Circular Buffer*. 
 
-A **primitive circular buffer** is a general data structure that can hold a fixed number of entries. That fixed number is often called the *capacity* of the buffer and named *k*.
+A **primitive circular buffer** is a general data structure that can hold a fixed number of entries. That fixed number is often called the *capacity* of the buffer and named *k*[^1].
+
+[^1]: The use of the letter k is common in mathematics to name an integer parameter of fixed value.
 
 Entries are stored one after the other in a primitive circular buffer typically based on their age: Oldest first, younger entries later. When the capacity k is reached the oldest value is overwritten by the youngest. So in the buffer you have access to the youngest k entries.
 
@@ -38,6 +40,30 @@ Note, that the entries x_i have cell size. They can however be pointers to large
 
 #### Pseudo code of a single primitive circular buffer using global variables
 
+    Create circular buffer:
+      Define a variable idx and initialize it to 0.
+      Allocate a variable circular-buffer with k cells of memory, called x_0 … x_k-1 
+      here. Maybe erase x_0 … x_k-1 to zero if initialization is desired.
+
+    Function: store-new-value ( x -- )
+        Store x in circular buffer at index idx.
+        Increment idx wrapping around at k-1. 
+
+    Function: read-oldest-value ( -- x )
+        Read x from buffer at index idx.
+    
+    Function: read-ith-oldest-value ( i -- x ) \ 0: oldest … k-1: youngest
+        Read x from buffer at index (i+idx) wrapping around at k-1.
+
+---
+<pre>
+
+
+</pre>
+For comparison here is a pseudo code version, that used a more Forth like style:
+
+#### Pseudo code of a single primitive circular buffer using global variables (Forth like)
+
     \ create circular buffer 
     «k» CONSTANT k
     VARIABLE idx  0 idx !
@@ -55,11 +81,16 @@ Note, that the entries x_i have cell size. They can however be pointers to large
     ;
 
     : read-ith-oldest-value ( i -- x ) \ 0: oldest … k-1: youngest
-        read x from buffer at index (i + idx) wrapping around at k-1
+        read x from buffer at index (i+idx) wrapping around at k-1
     ;
 
+<pre>
 
-#### Pseudo code of primitive circular buffer data structure identified by its address
+
+</pre>
+---
+
+#### Pseudo code of primitive circular buffer data structure identified by its address (Forth like)
 
     : create-new-primitive-circular-buffer ( k -- pcb-addr )
         allocate memory for k, idx and k entries x_0 to x_k-1
@@ -84,32 +115,17 @@ Note, that the entries x_i have cell size. They can however be pointers to large
 
 The Fields k and idx as well as the address of x_0 in the above structure can best be defined using the word `+FIELD` ([Forth-2012](https://forth-standard.org/standard/facility/PlusFIELD)).
 
+---
+
+### Forth implementations
 
 The following implementations are provided:
 
-- **[Minimal Forth]** (a minimal Forth-94 and Forth-2012 subset) implementation of a single primitive circular buffer using global variables. This implementation assumes k to be a power of two so that the index wrap-around can be implemented by masking the bits of k-1.
+- **[Generic Forth]** (a minimal Forth-94 and Forth-2012 subset) implementation of a single primitive circular buffer using global variables. This implementation assumes k to be a power of two so that the index wrap-around can be implemented by masking the bits of k-1.
+
 
 ```forth
-    \ primitive circular buffer in Minimal Forth
-
-    \ Some missing words: ALLOT -ROT BOUNDS 2DROP FILL
-
-    \ ALLOT : assume n ALLOT reserves n address units of data space (RAM)
-    \ HERE  : assume HERE returns the next available data space ( RAM ) address
-
-    : -ROT ( x1 x2 x3 -- x3 x1 x2 ) ROT ROT ;
-
-    : BOUNDS ( c-addr1 u -- c-addr2 c-addr1 ) OVER + SWAP ;
-
-    : 2DROP ( x1 x2 -- )  DROP DROP ;
-
-    : FILL  ( c-addr u c -- ) 
-        OVER IF 
-           -ROT BOUNDS DO  DUP I C!  LOOP DROP
-        ELSE
-           DROP 2DROP
-        THEN 
-    ;
+    \ primitive circular buffer in Generic Forth
 
     \ -----------------------------------------------------------------
     \ Primitive Circular Buffer
@@ -166,4 +182,5 @@ More information about circular buffers in general can be found at [Wikipedia's 
 
 Some addtional implementation issues for two-pointer circular buffers are discussed in [Juho Snellman's Weblog](https://www.snellman.net/blog/archive/2016-12-13-ring-buffers/).
 
-[Minimal Forth]: http://www.euroforth.org/ef15/papers/knaggs.pdf
+[Generic Forth]: https://github.com/project-forth-works/project-forth-works.github.io/blob/main/minimalforth.md
+
