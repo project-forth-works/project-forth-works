@@ -56,10 +56,7 @@ Note, that the entries x_i have cell size. They can however be pointers to large
         Read x from buffer at index (i+idx) wrapping around at k-1.
 
 ---
-<pre>
 
-
-</pre>
 For comparison here is a pseudo code version, that used a more Forth like style:
 
 #### Pseudo code of a single primitive circular buffer using global variables (Forth like)
@@ -84,10 +81,6 @@ For comparison here is a pseudo code version, that used a more Forth like style:
         read x from buffer at index (i+idx) wrapping around at k-1
     ;
 
-<pre>
-
-
-</pre>
 ---
 
 #### Pseudo code of primitive circular buffer data structure identified by its address (Forth like)
