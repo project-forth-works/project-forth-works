@@ -4,7 +4,7 @@
 \ see: https://home.hccnet.nl/anij/c/c211c.html (in Dutch, German version available on same web site)
 
 \ definitions assumed to be available in your Forth:
-\   WORD, EVALUATE, COUNT
+\   WORD, FIND, >NUMBER
 
 \ CAVE: this code will NOT run on all Forth-implementations
 
@@ -43,15 +43,18 @@
         drop swap               \ ( ccc_counted tempbase )
         base @ >r               \ save base
         base !                  \ temp base
-        count
-        evaluate
+        0 swap >number 			\ val,0 or val,+u
         r> base !               \ reset base
+        if
+        	." error in conversion " drop abort
+        then
     then
   then
-; \ ==============================
+; \ =============================
 
 
 \ and some numeric systems...
+ 1 ffbase UN \ unary
  2 ffbase BN \ binary
  3 ffbase TE \ ternary
  4 ffbase QA \ quaternary
