@@ -37,11 +37,10 @@ Definitions assumed to be available in your Forth:
 	WORD, EVALUATE, COUNT
 
 
-```generic Forth
+```generic Forth```
 
-See seperate file: [FFBASE_comp.frt](https://github.com/project-forth-works/project-forth-works/blob/main/Algorithms/FFBASE/FFBASE_comp.frt)
+See seperate file: [FFBASE_comp.frt](FFBASE_comp.frt)
 
-```
 
 ## Implementations
 
