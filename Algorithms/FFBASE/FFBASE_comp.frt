@@ -45,9 +45,7 @@
         base !                  \ temp base
         0 swap >number 			\ val,0 or val,+u
         r> base !               \ reset base
-        if
-        	." error in conversion " drop abort
-        then
+        abort" error in conversion "
     then
   then
 ; \ =============================
