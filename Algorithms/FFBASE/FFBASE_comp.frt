@@ -43,16 +43,16 @@
         drop swap               \ ( ccc_counted tempbase )
         base @ >r               \ save base
         base !                  \ temp base
-        0 swap >number 			\ val,0 or val,+u
+        0 swap >number
         r> base !               \ reset base
-        abort" error in conversion "
+        abort" unknown word or number "
     then
   then
 ; \ =============================
 
 
 \ and some numeric systems...
-( 1 ffbase UN \ unary ) \ exists but Forth does not calculate correctly woth this
+( 1 ffbase UN \ unary ) \ exists but Forth does not calculate correctly with UNARY
  2 ffbase BN \ binary
  3 ffbase TE \ ternary
  4 ffbase QA \ quaternary
