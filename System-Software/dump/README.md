@@ -26,7 +26,7 @@ instead of the actual character, in order to get a well formatted display.
 
 ```
 Function: dump-line ( address -- )
-  ouput address (possibly right aligned)
+  output address (possibly right aligned)
   output ":" and some space
   
   LOOP i from 0 to 15:
