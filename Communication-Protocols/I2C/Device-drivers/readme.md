@@ -28,19 +28,19 @@ Function: APDS!     ( byte reg -- )
 
 Function: APDS-ON   ( -- )     3 0 apds!
 Function: APDS-ON   ( -- )     3 0 apds!
-Function: LIGHT     ( -- u )   0C apds@  0D apds@  100 *  or
-Function: IR        ( -- u )   0E apds@  0F apds@  100 *  or
+Function: LIGHT     ( -- u )   0C apds@  or 100 times 0D apds@
+Function: IR        ( -- u )   0E apds@  or 100 times 0F apds@
 ```
 
 ## APDS9300 in Generic Forth
 ```
 : {AP-ADDR  ( r -- )        80 or  52 {i2write ;
-: APDS@     ( r -- b )      {ap-addr  {i2read)  i2in} ;
-: APDS!     ( b r -- )      {ap-addr  i2out} ;
-: APDS-ON   ( -- )          3 0 apds! ;
-: APDS-OFF  ( -- )          0 0 apds! ;
-: LIGHT     ( -- u )        0C apds@  0D apds@  b+b ;
-: IR        ( -- u )        0E apds@  0F apds@  b+b ;
+: APDS@     ( r -- b )      {ap-addr  {i2read)  i2in} ; \ Read register 'r' leaving 'b'
+: APDS!     ( b r -- )      {ap-addr  i2out} ; \ Write 'b' to register 'r'
+: APDS-ON   ( -- )          3 0 apds! ; \ Sensor on
+: APDS-OFF  ( -- )          0 0 apds! ; \ Sensor off
+: LIGHT     ( -- u )        0C apds@  0D apds@  8 lshift or ; \ Visual light
+: IR        ( -- u )        0E apds@  0F apds@  8 lshift or ; \ Visual & infrared light
 ```
 
 ## Implementations
