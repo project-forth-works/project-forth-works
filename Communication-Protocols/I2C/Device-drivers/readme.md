@@ -1,7 +1,7 @@
 # I2C device drivers
 
 ## The idea for I2C device drivers
-There are lots of chips available using the I2C-protocol. All of them need a specific device driver. To name some: sensors, memory, clocks, I/O, etc. Here you can add any driver you like to share preferably written in **Generic Forth**. But as we embrace the differences, you may also ass then in a new folder for your own dialect !
+There are lots of chips available using the I2C-protocol. All of them need a specific device driver. To name some: sensors, memory, clocks, I/O, etc. Here you can add any driver you like to share. Preferably written in **Generic Forth**. But as we embrace the differences, you may also add them in a new folder for your own dialect !
 
 ## I2C drivers
 
@@ -14,7 +14,7 @@ There are lots of chips available using the I2C-protocol. All of them need a spe
 
 ## APDS9300 driver in pseudo code
 
-Using the I2C driver as presented here.
+Using the I2C driver as presented [here](https://github.com/project-forth-works/project-forth-works/tree/main/Communication-Protocols/I2C).
 
 ``` 
 Function: {AP-ADDR  ( reg -- )
