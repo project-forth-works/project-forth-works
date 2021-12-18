@@ -5,12 +5,12 @@ There are lots of chips available using the I2C-protocol. All of them need a spe
 
 ## I2C drivers
 
-- 24CL64, EEPROM memory, this driver works for EEPROM & FRAM chips from 32 kBit to 512 kBit
-- APDS9300, Light sensor
-- PCA9632, 4-bit LED driver
-- DS1307, Low power Real-Time Clock
-- PCF8574, 8-bit I/O extender
-- PCF8591, 8-bit ADC/DAC (four inputs, one output) 
+- [24CL64](24CL64.f), EEPROM memory, this driver works for EEPROM & FRAM chips from 32 kBit to 512 kBit [datasheet](http://ww1.microchip.com/downloads/en/devicedoc/Atmel-3350-SEEPROM-AT24C64B-Datasheet.pdf)
+- [APDS9300](APDS9300.f), Light sensor [datasheet](https://docs.broadcom.com/docs/AV02-1077EN)
+- [PCA9632](PCA9632.f), 4-bit LED driver [datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9632.pdf)
+- [DS1307](DS1307.f), Low power Real-Time Clock [datasheet](https://datasheets.maximintegrated.com/en/ds/DS1307.pdf)
+- [PCF8574](PCF8574.f), 8-bit I/O extender [datasheet](https://www.nxp.com/docs/en/data-sheet/PCF8574_PCF8574A.pdf)
+- [PCF8591](PCF8591.f), 8-bit ADC/DAC (four inputs, one output) [datasheet](https://www.nxp.com/docs/en/data-sheet/PCF8591.pdf) 
 
 ## APDS9300 driver in pseudo code
 
