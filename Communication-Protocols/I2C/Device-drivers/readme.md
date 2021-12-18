@@ -14,7 +14,7 @@ There are lots of chips available using the I2C-protocol. All of them need a spe
 
 ## APDS9300 driver in pseudo code
 
-Using the I2C driver as presented [here](../readme.md)
+Using the I2C driver as presented [here](../)
 
 ``` 
 Function: {AP-ADDR  ( reg -- )
