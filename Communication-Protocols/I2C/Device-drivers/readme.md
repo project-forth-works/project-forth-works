@@ -14,7 +14,7 @@ There are lots of chips available using the I2C-protocol. All of them need a spe
 
 ## APDS9300 driver in pseudo code
 
-Using the I2C driver as presented [here](https://github.com/project-forth-works/project-forth-works/tree/main/Communication-Protocols/I2C).
+Using the I2C driver as presented [here](../readme.md)
 
 ``` 
 Function: {AP-ADDR  ( reg -- )
