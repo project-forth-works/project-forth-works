@@ -16,14 +16,14 @@ hex
 : BLINK     ( -- )      0 output 100 ms  -1 output 100 ms ;
 
 : RUNNER1   ( -- )              \ Show a running light on the leds
-    setup-i2c  blink
+    i2c-setup  blink
     begin
         8 0 do  1 i lshift output  50 ms  loop  
     key? until 
     0 output ;
 
 : RUNNER2   ( -- )              \ Show a running light on leds
-    setup-i2c  blink
+    i2c-setup  blink
     begin
         8 0 do
             1 i lshift output  input 0A * ms
@@ -31,6 +31,6 @@ hex
     key? until  0 output ;
 
 : SHOW      ( -- )              \ Show keypresses on leds
-    setup-i2c  blink  begin  input output  key? until  0 output ;
+    i2c-setup  blink  begin  input output  key? until  0 output ;
 
 \ End ;;;
