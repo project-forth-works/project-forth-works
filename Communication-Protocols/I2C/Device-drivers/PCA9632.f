@@ -34,6 +34,7 @@ hex
 
 
 \ Examples
+  i2c-setup     \ Initalise I2C interface
   pca-on        \ Allow changing of outputs
   1 >on         \ Activate output 0
   0 >on         \ Deactivate all outputs
