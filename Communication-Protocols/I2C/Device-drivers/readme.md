@@ -34,6 +34,7 @@ Function: IR        ( -- u )   0E apds@  or 100 times 0F apds@
 
 ## APDS9300 in Generic Forth
 ```
+hex
 : {AP-ADDR  ( r -- )        80 or  52 {i2write ;
 : APDS@     ( r -- b )      {ap-addr  {i2read)  i2in} ; \ Read register 'r' leaving 'b'
 : APDS!     ( b r -- )      {ap-addr  i2out} ; \ Write 'b' to register 'r'
