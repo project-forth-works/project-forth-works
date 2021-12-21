@@ -1,4 +1,6 @@
-(* PCA9632 I2C power switch
+(* PCA9632 I2C (LED) power switch
+
+This chip allows switching of outputs, dimmimg of outputs and blinking of outputs!
 
 00 Mode register 1              01 Mode register 2
 02 Brightness control led 0     03 Brightness control led 1
@@ -14,13 +16,14 @@
 About >ON  each output is contolled by two bits:
 00 = All outputs off
 01 = Output 0 on
-04 = output 1 on
+04 = Output 1 on
 02 = Output 0 PWM controlled, etc.
 55 = All outputs on
 AA = All outputs PWM controlled
 
 *)
 
+hex
 : {PCADDR   ( r -- )    C4 {i2write ;
 : >PCA      ( b r -- )  {pcaddr  i2out  i2stop} ;
 : PCA>      ( r -- b )  {pcaddr  {i2read)  i2in} ;
@@ -28,5 +31,14 @@ AA = All outputs PWM controlled
 : >ON       ( b -- )    8 >pca ;    \ b = 1, 4, 10 or 40
 : PCA-ON    ( -- )      01 0 >pca ;
 : PCA-OFF   ( -- )      11 0 >pca ;
+
+
+\ Examples
+  pca-on        \ Allow changing of outputs
+  1 >on         \ Activate output 0
+  0 >on         \ Deactivate all outputs
+  4 >on         \ Activate output 1
+  44 >on        \ Activate output 1 & 3
+  pca-off       \ Disable changing of outputs
 
 \ End ;;;
