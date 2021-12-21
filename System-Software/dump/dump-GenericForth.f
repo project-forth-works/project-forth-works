@@ -3,6 +3,7 @@
 \
 \ Memory is accessed by C@ output is perfomed by EMIT.
 \ So this dump utility can be used also on quite limited systems.
+\ For a definition of BOUNDS see the list with well known words.
 \
 \ Usage:
 \   <addr> <len> DUMP
@@ -13,7 +14,7 @@
 \ 4420: 06 34 06 11 24 83 84 47 00 00 07 46 00 4F 36 80 | 4  $  G   F O6 |
 \ 4430: 01 78 05 56 00 4F 00 00 83 84 4E 4F 4F 50 00 44 | x V O    NOOP D|
 
-: BOUNDS    ( a u -- ae ab )  over + swap ;
+hex
 : .BYTE     ( c -- )          0 <# # # #> type space ;        \ Print hex byte
 : .ADDR     ( x -- )          0 <# # # # # #> type ;          \ Print 16-bit hex address
 \ : .ADDR     ( x -- )          0 <# # # # # # # #> type ;    \ Print 24-bit hex address
@@ -27,9 +28,9 @@
     [char] | emit  ptype ." | " ;    \ Print 16 bytes in visible ASCII
 
 : DUMP  ( a u -- )
-    hex  0 do
+    hex  10 / 0 do
         cr  dup 10 dump-line
-        10 +  key? if leave then     \ Adjust address & test for any key to stop
-    10 +loop  drop ;                 \ Next 16 bytes
+        10 +  key? if leave then     \ Adjust address, test any key to stop
+    loop  drop ;                     \ Next line
 
 \ End ;;;
