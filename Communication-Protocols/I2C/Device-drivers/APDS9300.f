@@ -14,7 +14,7 @@ hex
 : IR        ( -- u )        0E apds@  0F apds@  b+b ;
 
 : APDS      ( -- )
-    setup-i2c  apds-on  200 ms
+    i2c-setup  apds-on  200 ms
     begin
         cr light u.  ir u.
     key? until  apds-off ;
