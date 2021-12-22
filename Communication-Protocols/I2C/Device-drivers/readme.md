@@ -44,6 +44,10 @@ There are lots of chips available using the I2C-protocol. These examples use the
       SETUP-DISPLAY ( -- ) - Initialise OLED display
       THINDEMO      ( -- ) - Show some text and a part of the character set
 ```
+<p align="center">
+<img src="https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/p60%20-%20thin%207x16%20characters.jpg" width="300" height="300" />
+      <b>7x16 character set</b>
+</p>
 
 ## APDS9300 driver in pseudo code
 
