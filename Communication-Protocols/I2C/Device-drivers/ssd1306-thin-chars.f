@@ -773,7 +773,7 @@ create BIG1    \ Big characters 7 x 16 pixels
 || XXXXXXXXXXXXXXXX
 || XXXXXXXXXXXXXXXX
 
-|| .......X..X.....    \ €
+|| .......X..X.....    \ â‚¬
 || ....XXXXXXXXXX..
 || ...X...X......X.
 || ..X....X..X....X
