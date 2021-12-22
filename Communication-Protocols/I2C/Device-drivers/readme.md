@@ -5,34 +5,44 @@ There are lots of chips available using the I2C-protocol. All of them need a spe
 
 ## I2C drivers
 
-- [24CL64](24CL64.f), EEPROM memory, this driver works for EEPROM & FRAM chips from 32 kBit to 512 kBit [datasheet](http://ww1.microchip.com/downloads/en/devicedoc/Atmel-3350-SEEPROM-AT24C64B-Datasheet.pdf) en voorbeelden:
+- [24CL64](24CL64.f), EEPROM memory, this driver works for EEPROM & FRAM chips from 32 kBit to 512 kBit [datasheet](http://ww1.microchip.com/downloads/en/devicedoc/Atmel-3350-SEEPROM-AT24C64B-Datasheet.pdf) & examples:
 ```
       EDMP ( ea -- )       - Dump EEPROM memory from address ea
 ```
-- [APDS9300](APDS9300.f), Light sensor [datasheet](https://docs.broadcom.com/docs/AV02-1077EN) en voorbeelden:
+- [APDS9300](APDS9300.f), Light sensor [datasheet](https://docs.broadcom.com/docs/AV02-1077EN) & examples:
 ```
       APDS ( -- )          - Show light and infrared light data 
 ```
-- [PCA9632](PCA9632.f), 4-bit LED driver [datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9632.pdf) en voorbeelden:
+- [PCA9632](PCA9632.f), 4-bit LED driver [datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9632.pdf) & examples:
 ```
       PCA-ON ( -- )        - Activate PCA9632 LED power switch 
       >ON    ( b -- )      - (De)activate LED power output modes
 ```
-- [DS1307](DS1307.f), Low power Real-Time Clock [datasheet](https://datasheets.maximintegrated.com/en/ds/DS1307.pdf) en voorbeelden:
+- [DS1307](DS1307.f), Low power Real-Time Clock [datasheet](https://datasheets.maximintegrated.com/en/ds/DS1307.pdf) & examples:
 ```
       ALARM  ( -- )        - Give every 10 seconds text string alarm signal
       TIMER  ( s m -- )    - Give every s seconds and m minutes a text string
       CLOCK  ( -- )        - Show an RTC each second on a new line, first set the RTC!
 ```
-- [PCF8574](PCF8574.f), 8-bit I/O extender [datasheet](https://www.nxp.com/docs/en/data-sheet/PCF8574_PCF8574A.pdf) en voorbeelden:
+- [PCF8574](PCF8574.f), 8-bit I/O extender [datasheet](https://www.nxp.com/docs/en/data-sheet/PCF8574_PCF8574A.pdf) & examples:
 ```
       RUNNER1 ( -- )       - Running light on the output chip 
       RUNNER2 ( -- )       - Same running light with delay timing using the input chip
       SHOW    ( -- )       - Copy input chip data to output chip 
 ```
-- [PCF8591](PCF8591.f), 8-bit ADC/DAC (four inputs, one output) [datasheet](https://www.nxp.com/docs/en/data-sheet/PCF8591.pdf) en voorbeelden: 
+- [PCF8591](PCF8591.f), 8-bit ADC/DAC (four inputs, one output) [datasheet](https://www.nxp.com/docs/en/data-sheet/PCF8591.pdf) & examples:
 ```
       ANALOG  ( +n -- )    - Convert ADC input +n, output ta DAC and type on screen 
+```
+- [TMP75](TMP75.f), Temperature sensor with 12-bit resolution and max. 1% accuracy [datasheet](https://www.ti.com/lit/gpn/tmp75) & examples:
+```
+      TMP75-DEMO ( -- )    - Read & show temperature continuously
+```
+- [OLED](ssd1306-setup-(128x64)-a.f ), 128x64 I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
+- [Character set](ssd1306-thin-chars.f), 7x16 bits thin characterset & example:
+```
+      SETUP-DISPLAY ( -- ) - Initialise OLED display
+      THINDEMO      ( -- ) - Show some text and a part of the character set
 ```
 
 ## APDS9300 driver in pseudo code
