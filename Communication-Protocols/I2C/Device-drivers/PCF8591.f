@@ -29,7 +29,7 @@ hex
 
 \ Example program
 : ANALOG    ( +n -- )       \ Show the use off ADC/DAC
-    setup-i2c  >r           \ Initialise I2C
+    i2c-setup  >r           \ Initialise I2C
     true to dac?            \ DAC is used
     begin
         r@ adc  dup .       \ Read ADC input +n, show result

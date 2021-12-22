@@ -40,7 +40,7 @@ hex
 
 \ Three RTC example programs
 : ALARM     ( -- )              \ Perform 10 sec. alarm cycle
-    setup-i2c  cr ." Start " 
+    i2c-setup  cr ." Start " 
     begin
         next-alarm
         begin  tick  alarm? until \ Wait for alarm. show seconds
@@ -49,7 +49,7 @@ hex
 
 
 : TIMER     ( sec min -- )      \ Show timer
-    setup-i2c 
+    i2c-setup 
     set-alarm   0 0 0 set-clock \ Next alarm time
     begin  tick  alarm? until   \ wait for alarm, show seconds pulse
     begin  cr ." Ready "  key? until ;
@@ -61,7 +61,7 @@ hex
 \ Every second the time is displayed
 \ First set the time using SET-CLOCK  ( s m h -- )
 : CLOCK     ( -- )
-     setup-i2c  base @ >r  decimal
+     i2c-setup  base @ >r  decimal
      begin
          get-sec  tik clock@  <> if
             get-sec  tik !clock

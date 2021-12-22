@@ -32,7 +32,7 @@ hex
 
 
 \ Example: A forth style memory interface with tools
-setup-i2c
+i2c-setup
 
   1FFF constant EESIZE  \ 8 kByte   24CL64
 \ 7FFF constant EESIZE  \ 32 kByte  24CL256
@@ -51,7 +51,7 @@ setup-i2c
 : EFILL         ( ea u b -- )   rot rot  bounds do  dup i ec!  loop drop ;
 
 : EDMP      ( ea -- )
-    hex  begin
+    hex  i2c-setup  begin
         cr  dup 4 u.r ." : "
         10 0 do  dup i + ec@ 2 .r space  loop  ch | emit \ Show hex
         10 0 do  dup i + ec@ pchar emit  loop  10 +      \ Show Ascii
