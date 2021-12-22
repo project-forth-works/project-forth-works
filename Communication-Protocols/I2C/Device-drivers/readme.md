@@ -1,7 +1,7 @@
 # I2C device drivers
 
 ## The idea for I2C device drivers
-There are lots of chips available using the I2C-protocol. All of them need a specific device driver. To name some: sensors, memory, clocks, I/O, etc. Here you can add any driver you like to share. Preferably written in **Generic Forth**. But as we embrace the differences, you may also add them in a new folder for your own dialect !
+There are lots of chips available using the I2C-protocol. These examples use the I2C implementation as [described here](../). All of them need a specific device driver. To name some: sensors, memory, clocks, I/O, etc. Here you can add any driver you like to share. Preferably written in **Generic Forth**. But as we embrace the differences, you may also add them in a new folder for your own dialect !
 
 ## I2C drivers
 
@@ -39,7 +39,7 @@ There are lots of chips available using the I2C-protocol. All of them need a spe
       TMP75-DEMO ( -- )    - Read & show temperature continuously
 ```
 - [OLED](ssd1306-setup-(128x64)-a.f ), 128x64 I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
-- [Character set](ssd1306-thin-chars.f), 7x16 bits thin characterset & example:
+- [Character set](ssd1306-thin-chars.f), 7x16 bits thin characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060), examples:
 ```
       SETUP-DISPLAY ( -- ) - Initialise OLED display
       THINDEMO      ( -- ) - Show some text and a part of the character set
