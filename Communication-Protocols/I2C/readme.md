@@ -150,7 +150,7 @@ SCL (Serial CLock line)         = bit-6
 **The used addresses are for port-1 of the MSP430G2553:**
 
 Note that the MSP430 controller series does not have the easiest I/O structure to implement a bitbang version of I2C! 
-This is because it only has push/pull outputs and I2C needs an open colector (or open drain) output. So this example
+This is because it only has push/pull outputs and I2C needs an open collector (or open drain) output. So this example
 code mimics open collector ports.
 
 ![Minimal forth example reading EEPROM](https://user-images.githubusercontent.com/11397265/123260134-83e79380-d4f5-11eb-86e8-8f3c6d46b4ba.jpg)  
