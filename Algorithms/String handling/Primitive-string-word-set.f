@@ -3,10 +3,10 @@
 \ The idea of strings is that a character string (s)
 \ is in fact a counted string (c) that has been stored.
 \ s (c-addr) is the string, c (c-addr u) is constant string
-\ Note: This code assumes that a character is byte wide!
+\ Note: This code assumes that a character is byte wide and there is no overflow protection!
 
-: $BUFFER       \ Reserve space for a string buffer
-    here  swap 1+ allot     \ Reserve RAM buffer
+: $BUFFER       \ Reserve space for a string buffer of max. +n characters
+    here  swap 1+ allot  align \ Reserve RAM buffer
     create  ( here) ,       ( +n "name" -- )
     does>  @ ;              ( -- s )
 
