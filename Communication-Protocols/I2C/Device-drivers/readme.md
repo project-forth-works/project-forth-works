@@ -34,7 +34,7 @@ There are lots of chips available using the I2C-protocol. These examples use the
 ```
       ANALOG  ( +n -- )    - Convert ADC input +n, output ta DAC and type on screen 
 ```
-- [TMP75](TMP75.f), Temperature sensor with 12-bit resolution and max. 1% accuracy [datasheet](https://www.ti.com/lit/gpn/tmp75) & examples:
+- [TMP75](TMP75.f), Temperature sensor with 12-bit resolution and max. +-1 degree celcius accuracy [datasheet](https://www.ti.com/lit/gpn/tmp75) & examples:
 ```
       TMP75-DEMO ( -- )    - Read & show temperature continuously
 ```
@@ -65,8 +65,8 @@ Function: APDS!     ( byte reg -- )
 
 Function: APDS-ON   ( -- )     3 0 apds!
 Function: APDS-ON   ( -- )     3 0 apds!
-Function: LIGHT     ( -- u )   0C apds@  or 100 times 0D apds@
-Function: IR        ( -- u )   0E apds@  or 100 times 0F apds@
+Function: LIGHT     ( -- u )   0C apds@  100 times  0D apds@  or
+Function: IR        ( -- u )   0E apds@  100 times  0F apds@  or
 ```
 
 ## APDS9300 in Generic Forth
