@@ -65,7 +65,7 @@ hex
 : &HOME         ( -- )          0 0 xy ;            \ To upper left corner
 : &PAGE         ( -- )          &erase  &home ;
 : &CR           ( -- )          0 y 2 + xy ;
-value O-EMIT    \ OLED emit vector
+0 value O-EMIT  \ OLED emit vector
 : &EMIT         ( c -- )        o-emit execute ;
 : &SPACE        ( -- )          bl &emit ;
 : &SPACES       ( u -- )        0 do  &space  loop ;
