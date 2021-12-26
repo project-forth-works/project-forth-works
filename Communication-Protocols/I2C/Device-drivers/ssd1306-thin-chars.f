@@ -1,6 +1,6 @@
-\ Thin big characters 7 x 16 by Albert Nijhof (code space: 1580 bytes)
+\ Thin big characters 7 x 16 by Albert Nijhof (code space: ~1600 bytes)
 
-: ||    ( bitrow -- )
+: ||    ( bitrow -- ) \ Note that only one space behin || is allowed!
    0  0D parse  10 min bounds
    do  2*  i c@ [char] X =  -  loop  , ;
 
