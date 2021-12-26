@@ -6,7 +6,7 @@
 
 hex
 \ Output routine for PCF8574(a) chips
-\ 42 Is address 1 of output chip, 40 is address 0 of input chip
+\ 42 Is address 1 of the output chip, 40 is address 0 of the input chip
 \ When using the PCF8574A these are, output: 072 and input: 070
 : OUTPUT    ( b -- )    42 {i2write  i2stop} ;
 : INPUT     ( -- +n )   40 {i2read i2in} ;
