@@ -1,4 +1,4 @@
-\ RTC with an DS1307 using external pull-ups
+\ RTC, timer & alarm clock with a DS1307
 \ Words from the well-known-words list: <>
 
 hex
