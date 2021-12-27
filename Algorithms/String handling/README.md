@@ -67,5 +67,5 @@ Have a look at the sub directories for implementations for different systems.
   - [Primitive string word set](Primitive-string-word-set.f) \(Simple string word set e.g. for file and OS interfacing)
   - [Safe primitive string word set](Safe-string-word-set.f) \(Version with string overflow messaging!)
   - [Safe string word set v1](Safe-string-word-set-pr.f) \(Version with string limiting)
-  - [Building strings](building-strings-an.f) \(Building strings, author Albert Nijhof)
+  - [Building strings](building-strings-an.f) \(A different approach, author Albert Nijhof)
   - Etc.
