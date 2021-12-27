@@ -20,15 +20,22 @@ front of the string. The so called counted strings, as is shown in the picture:
 
 ## Pseudo code
 ```
-Function: $@
+Function: $VARIABLE 
+    reserve a buffer for the count-byte + 'maxlen' characters
+    Define: ( maxlen "name" -- )
+          Save maxlen & buffer-address
+    Action: ( -- s )
+          Leave address of string variable
+
+Function: $@   ( s -- c )
   Read counted string from address
-Function: $+!
+Function: $+!  ( c s -- )
   Extend counted string at address
-Function: $!
+Function: $!   ( c s -- )
   Store counted string at address
-Function: $.
+Function: $.   ( c -- )
   Print counted string
-Function: $C+!
+Function: $C+! ( char s -- )
   Add one character to counted string at address
 ```
 
@@ -39,6 +46,11 @@ is in fact a counted string (c) that has been stored.
 s (c-addr) is the string, c (c-addr u) is constant string
 
 ```Forth
+: $VARIABLE     \ Reserve space for a string buffer
+    here  swap 1+ allot  align  \ Reserve RAM buffer
+    create  ( here) ,       ( +n "name" -- )
+    does>  @ ;              ( -- s )
+
 : C+!   ( n a -- )      >r  r@ c@ +  r> c! ;    \ Incr. byte with n at a
 : $@    ( s -- c )      count ;                 \ Fetch string
 : $+!   ( c s -- )      >r  tuck  r@ $@ +  swap cmove  r> c+! ; \ Extend string 
@@ -53,5 +65,7 @@ Have a look at the sub directories for implementations for different systems.
 
 - String word sets
   - [Primitive string word set](Primitive-string-word-set.f) \(Simple string word set e.g. for file and OS interfacing)
-  - [Safe primitive string word set](Safe-string-word-set.f) \(Version with buffer overflow control!)
+  - [Safe primitive string word set](Safe-string-word-set.f) \(Version with string overflow messaging!)
+  - [Safe string word set v1](Safe-string-word-set-pr.f) \(Version with string limiting)
+  - [Building strings](building-strings-an.f) \(Building strings, author Albert Nijhof)
   - Etc.
