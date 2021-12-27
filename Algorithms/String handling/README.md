@@ -38,6 +38,11 @@ Function: $.   ( c -- )
 Function: $C+! ( char s -- )
   Add one character to counted string at address
 ```
+Two tools, idea Albert Nijhof:
+```
+Function: -HEAD ( adr len i -- adr' len' ) cut first 'i' characters from string ;
+Function: -TAIL ( adr len i -- adr len' )  cut last  'i' characters from string ;
+```
 
 ## Generic Forth
 
@@ -69,3 +74,16 @@ Have a look at the sub directories for implementations for different systems.
   - [Safe string word set v1](Safe-string-word-set-pr.f) \(Version with string limiting)
   - [Building strings](building-strings-an.f) \(A different approach, author Albert Nijhof)
   - Etc.
+
+## String tools
+
+Two string tools as implemented by Albert Nijhof.  
+- `-HEAD` cuts the first 'i' characters from the given string.  
+- `-TAIL` cuts the last 'i' characters from the given string.  
+
+```
+\ Extra: cut i characters from a string, with underflow protection
+: -TAIL ( adr len i -- adr len' )   0 max  over min - ;
+: -HEAD ( adr len i -- adr' len' )  0 max  over min  tuck - >r + r> ;
+\ -HEAD and -TAIL do not store anything.
+```
