@@ -75,6 +75,18 @@ Have a look at the sub directories for implementations for different systems.
   - [Building strings](building-strings-an.f) \(A different approach, author Albert Nijhof)
   - Etc.
 
+Note that! Albert Nijhof's string version puts the address of the structure of the `$VARIABLE` on the stack. 
+The original example puts the address of the string on the stack.  Functionally there are equivalent.  
+
+Name  | Alt-name  | Function    
+:-------: | :-------: | -------------------   
+`S@`      | `GET$`    | Read string variable   
+`$+!`     | `ADD$`    | Add string to string variable  
+`$!`      | `SET$`    | Store string in string variable   
+`$.`      | `TYPE`    | Type string   
+`@C+!`    | `INC$`    | Add char to string variable   
+
+
 ## String tools
 
 Two string tools as implemented by Albert Nijhof.  
