@@ -1,14 +1,15 @@
 \  A safe minimal string package, original Albert van der Horst, this version W.O. 2021
 \
 \ Note that to keep security working, use the string buffer and operations together!
-\ This code also has a depency, it uses S" interactivly!
+\ This code also has a depency, it uses S" interactively! this version gives an
+\ error message when the string does not fit anymore.
 \
 \ The idea of strings is that a character string (s)
 \ is in fact a counted string (c) that has been stored.
 \ s (c-addr) is the string, c (c-addr u) is constant string
 
 variable LIM
-: $BUFFER       \ Reserve space for a protected string buffer
+: $VARIABLE     \ Reserve space for a protected string variable
     here  over 1+ allot                 \ Reserve RAM buffer
     create  ( length) swap , ( here) ,  ( +n "name" -- )
     does>  @+ lim !  @ ;                ( -- s )
@@ -26,7 +27,7 @@ variable LIM
 
 \ Check safe string word set
 
-10 $buffer DEMO$
+10 $variable DEMO$
 
 s" One" demo$ $!
 demo$ $@ .s $.
