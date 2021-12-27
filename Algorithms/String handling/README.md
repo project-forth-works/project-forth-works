@@ -40,8 +40,8 @@ Function: $C+! ( char s -- )
 ```
 Two tools, idea Albert Nijhof:
 ```
-Function: -HEAD ( adr len i -- adr' len' ) cut first 'i' characters from string ;
-Function: -TAIL ( adr len i -- adr len' )  cut last  'i' characters from string ;
+Function: -HEAD ( adr len i -- adr' len' ) cut first 'i' characters from string
+Function: -TAIL ( adr len i -- adr len' )  cut last  'i' characters from string
 ```
 
 ## Generic Forth
