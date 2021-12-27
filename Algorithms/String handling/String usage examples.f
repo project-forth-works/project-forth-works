@@ -1,6 +1,6 @@
 \ Usage examples for 'Primitive-string-word-set.f'
 
-20 $buffer LIBRARY$  21 allot
+20 $variable LIBRARY$  21 allot
 
 : LIBPATH   ( -- a u )      s" c:\GenericForth\Lib" ;
 : .LIB      ( -- )          library$ $@ $. ;
