@@ -5,7 +5,7 @@
 \ s (c-addr) is the string, c (c-addr u) is constant string
 \ Note: This code assumes that a character is byte wide and there is no overflow protection!
 
-: $BUFFER       \ Reserve space for a string buffer of max. +n characters
+: $VARIABLE     \ Reserve space for a string variable of max. +n characters
     here  swap 1+ allot  align \ Reserve RAM buffer
     create  ( here) ,       ( +n "name" -- )
     does>  @ ;              ( -- s )
