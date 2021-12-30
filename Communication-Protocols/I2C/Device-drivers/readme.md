@@ -5,9 +5,11 @@ There are lots of chips available using the I2C-protocol. These examples use the
 
 ## I2C drivers
 
-- [24CL64](24CL64.f), EEPROM memory, this driver works for EEPROM & FRAM chips from 32 kBit to 512 kBit [datasheet](http://ww1.microchip.com/downloads/en/devicedoc/Atmel-3350-SEEPROM-AT24C64B-Datasheet.pdf) & examples:
+- [24C02](24C02.f), EEPROM memory, this driver works for EEPROM & FRAM chips from 1 kBit to 2 kBit [datasheet](http://ww1.microchip.com/downloads/en/devicedoc/Atmel-3350-SEEPROM-AT24C64B-Datasheet.pdf) & examples:
+- [24CL64](24CL64.f), EEPROM memory, this driver works for EEPROM & FRAM chips from 32 kBit to 512 kBit [datasheet](https://4donline.ihs.com/images/VipMasterIC/IC/MCHP/MCHPS02656/MCHPS02656-1.pdf) & examples:
 ```
       EDMP ( ea -- )       - Dump EEPROM memory from address ea
+      SHOW ( -- )          - Show string stored in EEPROM
 ```
 - [APDS9300](APDS9300.f), Light sensor [datasheet](https://docs.broadcom.com/docs/AV02-1077EN) & examples:
 ```
