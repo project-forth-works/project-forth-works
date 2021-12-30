@@ -1,4 +1,4 @@
-\ I2C driver for SSD1306, a 0.96 inch 128x64 pixels OLED screen.
+\ I2C driver for SSD1306, a 128x64 pixels OLED screen.
 \ Add separate files with a small, big, bold & graphic character set.
 
 hex
