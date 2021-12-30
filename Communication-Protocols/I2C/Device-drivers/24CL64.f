@@ -1,18 +1,20 @@
-\ First working version for large I2C EEPROM's and FRAM chips
+\ Driver for large I2C EEPROM's and FRAM chips, the device address is set to AE
+\ The device may be addressed from A0, A2 to AE in steps of 2
 \
 \ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
 \ : I2C?          ( a -- )    setup-i2c  >dev {i2ack?} . ;
 \
-\ Words from the well-known-words list: <> 1+
+\ Words from the well-known-words list: <>  1+  BOUNDS  MS
 
 hex
 : B-B       ( x - lx hx )       >r r@ FF and  r> 8 rshift ;
 : B+B       ( lx hx -- x )      8 lshift or ;
+: PCHAR     ( ch1 -- ch2 )      dup 7F < and  bl max ;
 
 \ Reading and writing to EEPROM type 24CL64 with acknowledge polling
-\ A4 = EEPROM I2C bus address
+\ AE = EEPROM I2C bus address
 \ Address EE-device and sent 16-bit EE-address
-: {EEADDR   ( eaddr -- )    b-b A0 {i2write  i2out ;
+: {EEADDR   ( eaddr -- )    b-b AE {i2write  i2out ;
 
 \ Read next byte from 24C512 EEPROM like COUNT but without address
 : NEC@      ( -- b )        {i2read)  i2in} ;
@@ -34,8 +36,8 @@ hex
 \ Example: A forth style memory interface with tools
 i2c-setup
 
-  1FFF constant EESIZE  \ 8 kByte   24CL64
-\ 7FFF constant EESIZE  \ 32 kByte  24CL256
+  1FFF constant EESIZE  \ 8 kByte   24CL64, etc.
+\ 7FFF constant EESIZE  \ 32 kByte  24CL256, etc.
 
 \ First cell in EEPROM is used as EHERE, this way it is always up to date
 \ We have to take care manually of the forget action on this address pointer
@@ -56,5 +58,24 @@ i2c-setup
         10 0 do  dup i + ec@ 2 .r space  loop  ch | emit \ Show hex
         10 0 do  dup i + ec@ pchar emit  loop  10 +      \ Show Ascii
     key bl <> until  drop ;
+
+
+
+\ An example
+
+: EM,           ( a u -- )  0 ?do  count ec,  loop  drop ; \ EE compile the string a,n
+: ETYPE         ( ea u -- ) bounds ?do  i ec@ emit  loop ; \ EE type string
+
+ecreate STRING  ( -- ea )       \ Store named string in EEPROM
+s" Forth"  dup ec, em,
+
+\ Show stored string from EEPROM
+: SHOW      ( -- )
+    i2c-setup
+    begin
+        cr ." Project "
+        string ec@+ etype
+        ."  Works"  100 ms
+    key? until ;     
 
 \ End ;;;
