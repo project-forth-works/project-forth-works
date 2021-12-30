@@ -38,7 +38,8 @@ There are lots of chips available using the I2C-protocol. These examples use the
 ```
       TMP75-DEMO ( -- )    - Read & show temperature continuously
 ```
-- [OLED](ssd1306-setup-(128x64)-a.f ), 128x64 I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
+- [OLED, 128x32](ssd1306-setup-(128x32)-a.f ) I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
+- [OLED, 128x64](ssd1306-setup-(128x64)-a.f ) I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
 - [Character set](ssd1306-thin-chars.f), 7x16 bits thin characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060), examples:
 ```
       SETUP-DISPLAY ( -- ) - Initialise OLED display
