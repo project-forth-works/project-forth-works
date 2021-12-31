@@ -42,10 +42,12 @@ There are lots of chips available using the I2C-protocol. These examples use the
 ```
 - [OLED, 128x32](ssd1306-setup-(128x32)-a.f ) I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
 - [OLED, 128x64](ssd1306-setup-(128x64)-a.f ) I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
-- [Character set](ssd1306-thin-chars.f), 7x16 bits thin characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060), examples:
+- [Character set 5x8 bits](ssd1306-small-chars.f), small characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060), examples:
+- [Character set 7x16 bits](ssd1306-thin-chars.f), thin characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060), examples:
 ```
       SETUP-DISPLAY ( -- ) - Initialise OLED display
-      THINDEMO      ( -- ) - Show some text and a part of the character set
+      SMALLDEMO     ( -- ) - Demonstrate the 5x8 character set
+      THINDEMO      ( -- ) - Demonstrate the 7x16 character set
 ```
 <p align="center">
 <img src="https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/p60%20-%20thin%207x16%20characters.jpg" width="300" height="300" />
