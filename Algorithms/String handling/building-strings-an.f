@@ -84,10 +84,10 @@ decimal
 : .TXT txt get$ type ;
 
 s" Hallo" txt set$
-txt @ .    ( buffer-address )
-txt cell+ @ .      ( maxlen )
+txt @ .       ( buffer-address )
+txt cell+ @ .         ( maxlen )
 txt @ count .s ( string in txt )
-type        ( string in txt )
+type           ( string in txt )
 
 s" mad"   txt set$  .txt
 s" rid"   txt add$  .txt
@@ -104,10 +104,10 @@ char n    txt inc$  .txt
 
 ----- Test results in noForth msp430 -----
 s" Hallo" txt set$
-txt @ .    ( buffer-address ) 8272
-txt cell+ @ .      ( maxlen ) 12
-txt @ @+ .s ( string in txt ) ( 8274 5 )
-type        ( string in txt ) Hallo
+txt @ .       ( buffer-address ) 8272
+txt cell+ @ .         ( maxlen ) 12
+txt @ count .s ( string in txt ) ( 8274 5 )
+type           ( string in txt ) Hallo
 
 s" mad"   txt set$  .txt mad
 s" rid"   txt add$  .txt madrid
@@ -124,10 +124,10 @@ char n    txt inc$  .txt in Spain
 
 ----- Test results in noForth RISC-V -----
 s" Hallo" txt set$
-txt @ .    ( buffer-address ) 536874308
-txt cell+ @ .      ( maxlen ) 12
-txt @ @+ .s ( string in txt ) ( 536874312 5 )
-type        ( string in txt ) Hallo
+txt @ .       ( buffer-address ) 536874308
+txt cell+ @ .         ( maxlen ) 12
+txt @ count .s ( string in txt ) ( 536874312 5 )
+type           ( string in txt ) Hallo
 
 s" mad"   txt set$  .txt mad
 s" rid"   txt add$  .txt madrid
