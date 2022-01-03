@@ -27,7 +27,7 @@ variable LIM
 
 \ Check safe string word set
 
-10 $buffer DEMO$
+10 $variable DEMO$
 
 s" One" demo$ $!
 demo$ $@ .s $.
