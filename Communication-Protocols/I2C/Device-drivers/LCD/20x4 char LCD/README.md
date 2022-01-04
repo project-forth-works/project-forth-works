@@ -10,14 +10,14 @@ There are a couple of things you need to be aware of:
 5. there usually are 64 bytes of RAM available and these are mostly used for 8 configurable characters. Defining a character is done with word LCDdefCHAR
 6. The Raspberry has 3.3v on its GPIOs. If your LCD display needs 5v, than a level converter is needed.
 
-			Do not put 5v on the GPIOs of the Raspberry!!
+	**`Do not put 5v on the GPIOs of the Raspberry!!`**
 			
 In the example a few wabiForth specific words are used for CPUtemp etc. Please use your own data or words when copying the example.
 
 
-The non-standard word CLIP is used a lot. This is the definition:
-
+The non-standard word `CLIP` is used a lot. This is the definition:
+```
 : CLIP ( n l u ) rot min max ; \ limits n to within l and u, both inclusive
-
+```
 
 
