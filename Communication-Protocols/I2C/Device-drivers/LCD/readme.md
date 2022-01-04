@@ -1,1 +1,3 @@
-"# This folder describes the LCD protocol" 
+# LCD display driver
+
+## Drive LCDs by an I2C interface
