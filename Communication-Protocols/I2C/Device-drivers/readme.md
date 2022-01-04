@@ -34,25 +34,20 @@ There are lots of chips available using the I2C-protocol. These examples use the
 ```
 - [PCF8591](PCF8591.f), 8-bit ADC/DAC (four inputs, one output) [datasheet](https://www.nxp.com/docs/en/data-sheet/PCF8591.pdf) & examples:
 ```
-      ANALOG  ( +n -- )    - Convert ADC input +n, output ta DAC and type on screen 
+      ANALOG  ( +n -- )    - Convert ADC input +n, output to a DAC and type on screen 
 ```
+
+<p align="center">
+<img src="https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/p33%20-%20pcf8591%20adc%20&%20dac.jpg" width="320" height="240" />
+      <b>8-Bit ADC/DAC</b>
+</p>
+
 - [TMP75](TMP75.f), Temperature sensor with 12-bit resolution and max. +-1 degree celcius accuracy [datasheet](https://www.ti.com/lit/gpn/tmp75) & examples:
 ```
       TMP75-DEMO ( -- )    - Read & show temperature continuously
 ```
-- [OLED, 128x32](ssd1306-setup-(128x32)-a.f ) I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
-- [OLED, 128x64](ssd1306-setup-(128x64)-a.f ) I2C OLED driver & controller [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf)
-- [Character set 5x8 bits](ssd1306-small-chars.f), small characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060), examples:
-- [Character set 7x16 bits](ssd1306-thin-chars.f), thin characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060), examples:
-```
-      SETUP-DISPLAY ( -- ) - Initialise OLED display
-      SMALLDEMO     ( -- ) - Demonstrate the 5x8 character set
-      THINDEMO      ( -- ) - Demonstrate the 7x16 character set
-```
-<p align="center">
-<img src="https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/p60%20-%20thin%207x16%20characters.jpg" width="300" height="300" />
-      <b>7x16 character set</b>
-</p>
+- [More on OLEDs](OLED) ; OLED drivers, character sets, etc.
+- [More on LCD's](LCD) ; LCD drivers, character sets, etc.
 
 ## APDS9300 driver in pseudo code
 
@@ -73,11 +68,15 @@ Function: APDS-ON   ( -- )     3 0 apds!
 Function: LIGHT     ( -- u )   0C apds@  100 times  0D apds@  or
 Function: IR        ( -- u )   0E apds@  100 times  0F apds@  or
 ```
+<p align="center">
+<img src="https://project-forth-works.github.io/APDS9300.jpg" width="224" height="200" />
+      <b>The tiny APDS9300</b>
+</p>
 
 ## APDS9300 in Generic Forth
 ```
 hex
-: {AP-ADDR  ( r -- )        80 or  52 {i2write ;
+: {AP-ADDR  ( r -- )        80 or  52 {i2write ; \ APDS register access
 : APDS@     ( r -- b )      {ap-addr  {i2read)  i2in} ; \ Read register 'r' leaving 'b'
 : APDS!     ( b r -- )      {ap-addr  i2out} ; \ Write 'b' to register 'r'
 : APDS-ON   ( -- )          3 0 apds! ; \ Sensor on

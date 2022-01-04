@@ -245,7 +245,7 @@ create 'THIN    \ Start of a character type, original version Albert Nijhof
     begin
         &page  FF ms            \ Wipe screen
         2 0 do                  \ Print text demo
-            i 8 *  i 4 * xy &" EMBEDDING"  80 ms
+            i 8 *  i 4 * xy &" PROJECT"  80 ms
             i 8 * 10 +  i 4 * 2 + xy &" FORTH"  FF ms
         loop  400 ms
     key? until  &page ;         \ Until a key was pressed
