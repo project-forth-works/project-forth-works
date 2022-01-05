@@ -2,6 +2,11 @@
 
 20x4 character LCDs are often sold with a piggy-backed I2C interface. In practise most of these LCD are the same: based on a cheap clone of a Hitachi-chip and almost all have the same features. Even when the spec-sheet says that there are no configurable characters, they usually are available anyhow.
 
+<p align="center">
+<img src="https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/p35%20-%20i2c%20lcd%20driver.jpg" width="280" height="200" />
+      <b>4-Bit LCD device driver</b>
+</p>
+
 There are a couple of things you need to be aware of:
 1. characters, data and commands are send in two 4bit blocks. (see LCDemit as example)
 2. The screen addresses are a bit unlogical (see LCDxy as example). Line 0 starts at 0, line 1 starts at 64, line 2 at 20 and line 3 at 84.
