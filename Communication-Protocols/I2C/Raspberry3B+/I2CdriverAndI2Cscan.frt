@@ -76,6 +76,28 @@ decimal
 : i2c_startwrite
     bit15 bit7 or bsc1_c ! ;
 
+: wbyte ( byte -- )
+	i2c_clear_all
+	1 i2c_setdlen
+	i2c_fifowrite
+	i2c_startwrite i2c_waitdone
+	bit1 bsc1_s ! ( reset done bit ) ;
+: w2byte ( byte1 byte2 -- )
+	i2c_clear_all
+	2 i2c_setdlen swap
+	i2c_fifowrite i2c_fifowrite
+	i2c_startwrite i2c_waitdone
+	bit1 bsc1_s ! ;
+
+: readbyte ( -- byte )
+	i2c_clear_all 1 i2c_setdlen i2c_startread
+	i2c_waitdone i2c_fiforead
+	bit1 bsc1_s ! ( reset done bit ) ;
+: read16bit ( -- 16b ) i2c_clear_all 2 i2c_setdlen
+	i2c_startread i2c_waitdone i2c_fiforead
+	256 * i2c_fiforead +
+	bit1 bsc1_s ! ;
+
 \ implementation of I2C-scan
 
 : i2c_exist? ( address -- flag )
@@ -109,27 +131,6 @@ decimal
     loop
     lstline ;
 
-: wbyte ( byte -- )
-	i2c_clear_all
-	1 i2c_setdlen
-	i2c_fifowrite
-	i2c_startwrite i2c_waitdone
-	bit1 bsc1_s ! ( reset done bit ) ;
-: w2byte ( byte1 byte2 -- )
-	i2c_clear_all
-	2 i2c_setdlen swap
-	i2c_fifowrite i2c_fifowrite
-	i2c_startwrite i2c_waitdone
-	bit1 bsc1_s ! ;
-
-: readbyte ( -- byte )
-	i2c_clear_all 1 i2c_setdlen i2c_startread
-	i2c_waitdone i2c_fiforead
-	bit1 bsc1_s ! ( reset done bit ) ;
-: read16bit ( -- 16b ) i2c_clear_all 2 i2c_setdlen
-	i2c_startread i2c_waitdone i2c_fiforead
-	256 * i2c_fiforead +
-	bit1 bsc1_s ! ;
 
 \ call i2cscan to print this on screen:
 \
