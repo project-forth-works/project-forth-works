@@ -287,3 +287,9 @@ This example is for an 8-bit PCF8574 like I/O-expander:
 
 Have a look at the sub directories for implementations for different systems. 
 
+- [MSP430](MSP430), bitbang & hardware specific I2C implementations
+- [GD32VF103](GD32VF), bitbang I2C implementations for the Risc-V
+- [Raspberry3B+](Raspberry3B+), harware specific I2C implementation for broadcom 
+- [Generic device drivers](Device-drivers), EEPROM, OLED, LCD, Clocks, etc.
+
+

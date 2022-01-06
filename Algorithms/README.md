@@ -7,4 +7,5 @@
 - Bresenham
   - [PiliPlop](PiliPlop)
 - [String handling](String%20handling)
+- [Changing the number base](FFBASE)
 - Networking

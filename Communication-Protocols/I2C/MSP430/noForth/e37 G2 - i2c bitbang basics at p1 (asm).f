@@ -6,7 +6,7 @@
   P1.6 to SCL, note that two 10k pullup resistors has te be mounted, that's it.
   User words:  >DEV  {I2WRITE)  {I2WRITE  {I2READ)  {I2READ
                I2STOP}  I2IN  I2IN}  I2OUT  I2OUT}  I2C?
-               SETUP-I2C  {I2ACK?}  {POLL}
+               I2C-SETUP  {I2ACK?}  {POLL}
 
   10 20 - P1IN   Input bits
   10 21 - P1OUT  Output bits
@@ -21,7 +21,7 @@
 
 hex  v: inside also definitions
 value DEV
-: SETUP-I2C     ( -- )
+: I2C-SETUP     ( -- )
     C0 27 *bic  C0 22 *bis  C0 21 *bis  \ P1REN, P1DIR, P1OUT
     C0 26 *bic  C0 42 *bic ;            \ P1SEL, P1SEL2
 
@@ -152,7 +152,7 @@ end-code
 
 \ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
 : I2C?          ( a -- )
-    setup-i2c >dev {i2ack?} . ;
+    i2c-setup >dev {i2ack?} . ;
 
 v: fresh definitions
 shield BB-I2C\  freeze

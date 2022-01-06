@@ -28,7 +28,7 @@ hex
 
 \ Show stored string from EEPROM
 : SHOW      ( -- )
-    setup-i2c
+    i2c-setup
     begin
         cr ." Embedding"
         0 ec@ 0 ?do

@@ -6,7 +6,7 @@
   P1.7 to SCL, note that two 10k pullup resistors has te be mounted, that's it.
   User words:  >DEV  {I2WRITE)  {I2WRITE  {I2READ)  {I2READ
                I2STOP}  I2IN  I2IN}  I2OUT  I2OUT}  I2C?
-               SETUP-I2C  {I2ACK?}  {POLL}
+               I2C-SETUP  {I2ACK?}  {POLL}
 
   10 200 - P1IN   Input bits
   10 202 - P1OUT  Output bits
@@ -22,7 +22,7 @@
 
 hex  v: inside also definitions
 value DEV
-: SETUP-I2C     ( -- )
+: I2C-SETUP     ( -- )
     C0 206 *bic  C0 204 *bis  C0 202 *bis  C0 20C *bic ; \ P1REN, P1DIR, P1OUT, P1SEL1
 
 \ Minimal period is 5 us, is about 100 kHz clock
