@@ -24,9 +24,9 @@
 
   User words: >DEV  {I2WRITE)  {I2WRITE  {I2READ)  {I2READ
               I2STOP}  I2IN  I2IN}  I2OUT  I2OUT}  I2C?
-              SETUP-I2C  {I2ACK?}  {POLL}
+              I2C-SETUP  {I2ACK?}  {POLL}
 
-  An example, first execute SETUP-I2C  After that the I2C is setup as a
+  An example, first execute I2C-SETUP  After that the I2C is setup as a
   master. Sent byte 'b' to an I2C device with address 'a'.
     : >SLAVE    ( b a -- )  {i2write  i2out} ;
     : >PCF8574  ( b -- )    40 >slave ;
@@ -72,7 +72,7 @@ FR5994  - UCB0 P1.6 = SDA, P1.7 = SCL, UCB1 P5.0 = SDA, P5.1 = SCL
 hex  v: inside also  definitions
 code INT-OFF  C232 ,  4F00 ,  end-code
 
-: SETUP-I2C ( -- )
+: I2C-SETUP ( -- )
     int-off
     C0 20A *bic     \ P1SEL0     I2C to pins
     C0 20C *bis     \ P1SEL1
@@ -151,7 +151,7 @@ v: extra definitions
 
 \ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
 : I2C?      ( a -- )            \ Result is true when device 'a' is on I2C bus
-    setup-i2c >dev {i2ack?} . ; \ Address device, present?
+    i2c-setup >dev {i2ack?} . ; \ Address device, present?
 
 v: fresh definitions
 shield USCI-I2C\  freeze
