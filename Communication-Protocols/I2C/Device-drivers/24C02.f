@@ -2,7 +2,7 @@
 \ The device may be addressed from A0, A2 to AE in steps of 2
 \
 \ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
-\ : I2C?          ( a -- )    setup-i2c  >dev {i2ack?} . ;
+\ : I2C?          ( a -- )    i2c-setup  >dev {i2ack?} . ;
 \
 \ Words from the well-known-words list: <>  1+  BOUNDS  MS
 
