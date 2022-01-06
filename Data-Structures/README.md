@@ -7,6 +7,6 @@
 - [Primitive Circular Buffer](Primitive-Circular-Buffer)  
    a buffer with a single read/write pointer 
 - [Bit array](Bit-Array)  
-   an array with adressing of individual bits
+   an array with addressing of individual bits
 - ...
 
