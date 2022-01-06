@@ -882,7 +882,7 @@ create BIGBOLD      \ Big characters 8 x 14 pixels
 || XXXXXXXXXXXXXXXX
 || XXXXXXXXXXXXXXXX
 
-|| .......X..X.....    \ € = 0x81
+|| .......X..X.....    \ â‚¬ = 0x81
 || .....XXXXXXXX...
 || ...XXXXXXXXXXXX.
 || ..XX...X..X...XX
@@ -891,7 +891,7 @@ create BIGBOLD      \ Big characters 8 x 14 pixels
 || ...XX.....X..XX.
 || ....XX.......X..
 
-|| ................    \ y = 0x82
+|| ................    \ IJ = 0x82
 || .XX..XXXXXXXX.XX
 || XX...XXXXXXXX.XX
 || XX..............
