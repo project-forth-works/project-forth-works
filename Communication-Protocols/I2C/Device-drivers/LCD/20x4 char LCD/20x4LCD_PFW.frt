@@ -97,15 +97,14 @@ variable backlite  bckltpin backlite !
 : .LcdWords ( word# -- ) n>string .lcdr 32 lcdemit 32 lcdemit 32 lcdemit ;
 
 
-
 \ ************  EXAMPLE  ****************
 \ *********  very wabiForth  ************
 \ ************  specific  ***************
 
-s" pi3b+ wabiForth3.2.6" sliteral r1
-s" cpu:      Mhz      C" sliteral r2
-s" def:                " sliteral r3
-s" ram:           free " sliteral r4
+  s" Project Forth Works " sliteral r1
+  s" cpu:      Mhz      C" sliteral r2
+  s" def:                " sliteral r3
+  s" ram:           free " sliteral r4
 
 : LcdScreen
 	lcdclear
