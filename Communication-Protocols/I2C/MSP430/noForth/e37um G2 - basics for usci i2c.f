@@ -23,7 +23,7 @@
 
   User words: >DEV  {I2WRITE)  {I2WRITE  {I2READ)  {I2READ
               I2STOP}  I2IN  I2IN}  I2OUT  I2OUT}  I2C?
-              SETUP-I2C  {I2ACK?}  {POLL}
+              I2C-SETUP  {I2ACK?}  {POLL}
 
   An example, first execute SETUP-I2C  After that the I2C is setup as a
   master. Sent byte 'b' to an I2C device with address 'a'.
@@ -51,7 +51,7 @@
 hex
 code INT-OFF  C232 ,  4F00 ,  end-code
 
-: SETUP-I2C ( -- )
+: I2C-SETUP ( -- )
     int-off
     C0 26 *bis   \ P1SEL     I2C to pins
     C0 41 *bis   \ P1SEL2
@@ -129,7 +129,7 @@ end-code
 
 \ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
 : I2C?      ( a -- )        \ Result is true when device 'a' is on I2C bus
-    setup-i2c >dev {i2ack?} . ; \ Address device, present?
+    i2c-setup >dev {i2ack?} . ; \ Address device, present?
 
 shield USCI-I2C\  freeze
 
