@@ -82,6 +82,7 @@ decimal
 	i2c_fifowrite
 	i2c_startwrite i2c_waitdone
 	bit1 bsc1_s ! ( reset done bit ) ;
+
 : w2byte ( byte1 byte2 -- )
 	i2c_clear_all
 	2 i2c_setdlen swap
@@ -93,6 +94,7 @@ decimal
 	i2c_clear_all 1 i2c_setdlen i2c_startread
 	i2c_waitdone i2c_fiforead
 	bit1 bsc1_s ! ( reset done bit ) ;
+
 : read16bit ( -- 16b ) i2c_clear_all 2 i2c_setdlen
 	i2c_startread i2c_waitdone i2c_fiforead
 	256 * i2c_fiforead +
@@ -101,7 +103,7 @@ decimal
 \ implementation of I2C-scan
 
 : i2c_exist? ( address -- flag )
-    i2c_init
+    i2c_init i2c_clear_all
     bsc1_a !
     0 i2c_setdlen
     i2c_startwrite
@@ -110,27 +112,29 @@ decimal
     bit1 bsc1_s ! ( reset 'done' bit ) ;
 
 : i2cheader
-    cr 10 tab 16 0 do i ." 0x" .hex loop ;
+    cr 10 spaces 16 0 do i ." 0x" .hex loop ;
 : kl2 ( i -- )
-    cr 6 tab ." 0x" .hex ;
-: docheck
-    i2c_exist? if j 16 * i + ." x" .hex else ." --- " then ;
+    cr 6 spaces ." 0x" .hex ;
 : 1stline
     0 kl2 ." g/s cba res res hsm hsm hsm hsm "
     16 8 do i docheck loop ;
 : lstline
     7 kl2 8 0 do i docheck loop
-    .\" 10b 10b 10b 10b fut fut fut fut\" ;
+    ." 10b 10b 10b 10b fut fut fut fut" ;
 : i2cscan
     i2cheader
     1stline
     7 1 do i kl2
         16 0 do
-            j 16 * i + docheck
+            j 16 * i + i2c_exist?
+            if
+            	j 16 * i + ." x" .hex
+            else
+            	." --- "
+            then
         loop
     loop
     lstline ;
-
 
 \ call i2cscan to print this on screen:
 \
