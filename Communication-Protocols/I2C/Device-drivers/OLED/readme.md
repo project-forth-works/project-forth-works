@@ -15,6 +15,7 @@ Barebone driver that uses almost no RAM, that means no screen buffer is used! Mo
 - [Character set 8x16 bits](ssd1306-bigbold-chars.f), big bold characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060)
 - [Graphic character set 4x8 bits](ssd1306-graphic-chars.f), graphic characterset & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060)
 - [Hedgehog animated demo](ssd1306-hedgehog.f), of graphic character set & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060)
+- [Dice](Dice.f), simulated rolling dice  
 
 Examples:
 ```
@@ -24,6 +25,7 @@ Examples:
       BOLDDEMO      ( -- ) - Demonstrate the 8x16 character set
       GRAPHICDEMO   ( -- ) - Demonstrate the 4x8 graphic character set
       SHOW          ( -- ) - Animated demo with the graphic character set
+      DICE          ( -- ) - Start rolling dice simulation
 ```
 <p align="center">
 <img src="https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/p60%20-%20thin%207x16%20characters.jpg" width="300" height="300" />
