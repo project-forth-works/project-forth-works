@@ -23,5 +23,7 @@ Trying to use these two will result in a failure without any error-messages or w
 
 Words assumed to be available: SETFUNCGPIO ( an internal word which sets the ALT function of a GPIO )
 
+Please note that this implementation uses I and J outside of the DO...LOOP. Most Forth-implementations do not support this.
+
 
 
