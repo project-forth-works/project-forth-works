@@ -48,6 +48,7 @@ There are lots of chips available using the I2C-protocol. These examples use the
 ```
 - [More on OLEDs](OLED) ; OLED drivers, character sets, etc.
 - [More on LCD's](LCD) ; LCD drivers, character sets, etc.
+- [Scanner](I2C-scanner.f) ; Scan your I2C network for connected devices
 
 ## APDS9300 driver in pseudo code
 
