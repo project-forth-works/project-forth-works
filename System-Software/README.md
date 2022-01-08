@@ -1,9 +1,9 @@
 ## System Applications
 
 - [Assemblers](Assemblers)  
-  - ARM, MSP430, etc.
+  - [ARM](Assemblers/ARMv8%20assembler), [MSP430](Assemblers/MSP430-assembler), etc.
 - [Disassemblers](disassemblers)
-  - MSP430, etc. 
+  - [MSP430](disassemblers/MSP430-disassemblers), etc. 
 - File Systems
   - FAT16
   - FAT32
