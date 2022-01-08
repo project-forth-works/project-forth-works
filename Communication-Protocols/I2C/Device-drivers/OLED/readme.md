@@ -9,6 +9,8 @@ There are slight differences between these driver chips. Here are some implement
       <b>7x16 character set</b>
 </p>
 
+*******
+
 ## Direct drive an OLED
 Barebone driver that uses almost no RAM, that means no screen buffer is used! More files can be found on the Egel project pages.
 
@@ -22,6 +24,7 @@ Barebone driver that uses almost no RAM, that means no screen buffer is used! Mo
 - [Hedgehog animated demo](ssd1306-hedgehog.f), of graphic character set & [more on OLEDs](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e060)
 - [Dice](Dice.f), simulated rolling dice  
 
+******
 Examples:
 ```
       SETUP-DISPLAY ( -- ) - Initialise OLED display
@@ -35,4 +38,18 @@ Examples:
 
 
 https://user-images.githubusercontent.com/11397265/148655032-c9bcb05e-8d3c-4ebb-a25c-f9efd9007f43.mp4
+
+******
+One dot programmed for the dice program, using the graphic character set that is shown on the picture below.  
+```
+hex
+: DOT       ( y x -- )      \ Eight character dot
+    6 umin >r  70 umin
+        dup  r@    xy" Q11P"
+             r> 1+ xy" O11N" ;
+```
+<p align="center">
+<img src="https://project-forth-works.github.io/Graphic-character-set-a.jpg" width="300" height="200" />
+      <b>The graphic character set</b>
+</p>
 
