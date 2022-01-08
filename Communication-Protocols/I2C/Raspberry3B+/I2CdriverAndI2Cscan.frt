@@ -16,6 +16,7 @@ hex
 3F80401C constant bsc1_clkt             \ clock-stretch timeout - 0 disables timeout -> hang when no ACK!
 decimal
 
+: .hex base @ >r hex . r> base ! ;
 : formalflags if true else false then ;
 
 : i2c_clear_all
