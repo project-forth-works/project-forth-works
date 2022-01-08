@@ -137,7 +137,7 @@ Function: PCF8574-WRITE ( byte dev-addr -- )
   {i2c-write  i2c-stop}
 
 Function: PCF8574-READ  ( dev-addr -- byte )
-  {i2c-read  i2c-in i2c-stop}
+  {i2c-read  i2c-in}
 ```
 ### Generic Forth low level part of bitbang example
 
@@ -280,7 +280,7 @@ This example is for an 8-bit PCF8574 like I/O-expander:
   {i2write  i2stop} ;
 
 : PCF8574-READ  ( dev-addr -- byte )
-  {i2read  i2in  i2stop} ;
+  {i2read  i2in} ;
 ```
 
 ### Implementations
