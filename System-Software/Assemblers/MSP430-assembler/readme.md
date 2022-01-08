@@ -8,7 +8,7 @@ The example asumes a 16-bit machine and compile actions.
 Also a Flash environment is assumed, for RAM only systems `ROM!` can be replaced by `!` and `CHERE` by `HERE`.
 Examples of macros are in the source file. An implementation example for `CODE` and `END-CODE` is showed too.
 Missing words in Generic Forth are:  
-```
+```forth
 CHERE ROM! ?ABORT
 
 : CHERE  ( -- a )    Leave flash or FRAM address on the stack ; 
@@ -37,7 +37,7 @@ CHERE ROM! ?ABORT
 ```
 
 Example of it's use:
-```
+```forth
 code LSHIFT ( x1 n -- x2 )
   tos w mov
   sp )+ tos mov
