@@ -93,7 +93,7 @@ Two string tools as implemented by Albert Nijhof.
 - `-HEAD` cuts the first 'i' characters from the given string.  
 - `-TAIL` cuts the last 'i' characters from the given string.  
 
-```
+```forth
 \ Extra: cut i characters from a string, with underflow protection
 : -TAIL ( adr len i -- adr len' )   0 max  over min - ;
 : -HEAD ( adr len i -- adr' len' )  0 max  over min  tuck - >r + r> ;
