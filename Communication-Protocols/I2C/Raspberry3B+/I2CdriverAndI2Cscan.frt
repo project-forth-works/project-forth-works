@@ -112,16 +112,16 @@ decimal
     bit1 bsc1_s ! ( reset 'done' bit ) ;
 
 : i2cheader
-    cr 10 tab 16 0 do i ." 0x" .hex loop ;
+    cr 10 spaces 16 0 do i ." 0x" .hex loop ;
 : kl2 ( i -- )
-    cr 6 tab ." 0x" .hex ;
-: docheck
-    i2c_exist? if j 16 * i + ." x" .hex else ." --- " then ;
+    cr 6 spaces ." 0x" .hex ;
+: docheck ( addr -- )
+    dup i2c_exist? if ." x" .hex else drop ." --- " then ;
 : 1stline
     0 kl2 ." g/s cba res res hsm hsm hsm hsm "
     16 8 do i docheck loop ;
 : lstline
-    7 kl2 8 0 do i docheck loop
+    7 kl2 8 0 do i 128 + docheck loop
     ." 10b 10b 10b 10b fut fut fut fut" ;
 : i2cscan
     i2cheader
@@ -135,7 +135,7 @@ decimal
 
 \ call i2cscan to print this on screen:
 \
-\         0x0 0x1 0x2 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xA 0xB 0xC 0xD 0xE 0xF
+\          0x0 0x1 0x2 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xA 0xB 0xC 0xD 0xE 0xF
 \      0x0 g/s cba res res hsm hsm hsm hsm --- --- --- --- --- --- --- ---
 \      0x1 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 \      0x2 --- --- --- --- --- --- --- x27 --- --- --- --- --- --- --- ---
