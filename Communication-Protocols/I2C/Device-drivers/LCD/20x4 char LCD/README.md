@@ -21,7 +21,7 @@ In the example a few wabiForth specific words are used for CPUtemp etc. Please u
 
 
 The non-standard word `CLIP` is used a lot. This is the definition:
-```
+```forth
 : CLIP ( n l u ) rot min max ; \ limits n to within l and u, both inclusive
 ```
 
