@@ -17,13 +17,12 @@ The second part is an implementation of an I2C-scan. It scans the I2C bus and gi
       
 In this example you can see 6 Eeproms ( 0x50-0x55 ), a LCD, a RTC and a compass-module. Please note that there is no more specific way of further identification in the I2C system.    
       
-It is also good to note that on the Raspberry 3B+ only BSC1 (Bascom Serial Controller 1) is available to the user. Both BSC0 and BSC2 are used by the Raspberry for internal purposes. To be more specific: for the communication with the camera controller and to identify eventual boards plugged in into the Raspberry.
-Trying to use these two will result in a failure without any error-messages or warnings.
+It is also good to note that on the Raspberry 3B+ only BSC1 (Bascom Serial Controller 1) is available to the user. Both BSC0 and BSC2 are used by the Raspberry for internal purposes. To be more specific: for the communication with HDMI and the camera controller and to identify eventual boards plugged in into the Raspberry.
+Trying to use these two controllers will result in a failure without any error-messages or warnings.
 
 
 Words assumed to be available: SETFUNCGPIO ( an internal word which sets the ALT function of a GPIO )
 
-Please note that this implementation uses I and J outside of the DO...LOOP. Most Forth-implementations do not support this.
 
 
 
