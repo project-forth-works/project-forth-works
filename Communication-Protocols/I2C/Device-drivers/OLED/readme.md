@@ -41,7 +41,7 @@ https://user-images.githubusercontent.com/11397265/148655032-c9bcb05e-8d3c-4ebb-
 
 ******
 One dot programmed for the dice program, using the graphic character set that is shown on the picture below.  
-```
+```forth
 hex
 : DOT       ( y x -- )      \ Eight character dot
     6 umin >r  70 umin
