@@ -104,6 +104,7 @@ Function: GO ( x0 .. xp -- )
    LOOP: STEPS times
       Perform ONE-STEP
 ```
+For an explanation of `VARIABLES` see [Array](../../Data-Structures/Array).
 
 ## Generic Forth
 
