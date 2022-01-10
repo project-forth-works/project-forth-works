@@ -50,12 +50,12 @@ Let's assume without loss of generality that we want to store entries of cell si
         Read memory at «i» A 
 
     write value x to i-th entry of array A:
-        wrtie memors at «i» A 
+        write memory at «i» A 
     
 Please note that no range checking of the index i takes place so the application program has to assure that the index 
 is within the limit of 0 to capacity-1.
 
-ARRAY is sometime also called VARIABLES (e.g. see [PiliPlop])(../Algorthms/PiliPlop))
+ARRAY is sometime also called VARIABLES (e.g. see [PiliPlop](../../Algorithms/PiliPlop))
 
 
 ---
@@ -96,7 +96,7 @@ RAM in ROM:
      DOES> @ SWAP CELLS + ;
 ```
 
-Array a can be used as before.
+Array A can be used as before.
 
 [Generic Forth]: https://github.com/project-forth-works/project-forth-works.github.io/blob/main/minimalforth.md
 
