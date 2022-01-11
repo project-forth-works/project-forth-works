@@ -8,6 +8,9 @@
  SDA | Serial Data Line  
  SCL | Serial Clock Line  
 
+Note that the I2C-protocol uses 7-bits addresses and a read/write bit. 
+In some cases an 8-bit address is used. The original designer of the protocol Phillips sometimes also falls into this trap.
+
 
 ### The low level I2C states for a single master are in short:
 
