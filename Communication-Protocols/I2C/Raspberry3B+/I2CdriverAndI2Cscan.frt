@@ -107,7 +107,8 @@ decimal
 \ implementation of I2C-scan
 
 : i2c_exist? ( address -- flag )
-    i2c_init i2c_clear_all
+    i2c_init
+    i2c_clear_all
     bsc1_a !
     0 i2c_setdlen
     i2c_startwrite
