@@ -69,7 +69,7 @@ decimal
     bsc1_s @ 1023 and ;
 
 : i2c_waitdone ( -- )                   \ no time_out!
-    begin i2c_done until ;
+    begin i2c_done until bit1 bsc1_s ! ;
 
 : i2c_startread
     bit15 bit7 or bit0 or bsc1_c ! ;
@@ -82,24 +82,27 @@ decimal
 	1 i2c_setdlen
 	i2c_fifowrite
 	i2c_startwrite i2c_waitdone
-	bit1 bsc1_s ! ( reset done bit ) ;
+	( bit1 bsc1_s ! ) ( reset done bit ) ;
 
 : w2byte ( byte1 byte2 -- )
 	i2c_clear_all
 	2 i2c_setdlen swap
 	i2c_fifowrite i2c_fifowrite
 	i2c_startwrite i2c_waitdone
-	bit1 bsc1_s ! ;
+	( bit1 bsc1_s ! ) ;
 
 : readbyte ( -- byte )
-	i2c_clear_all 1 i2c_setdlen i2c_startread
-	i2c_waitdone i2c_fiforead
-	bit1 bsc1_s ! ( reset done bit ) ;
+	i2c_clear_all
+	1 i2c_setdlen
+	i2c_startread
+	i2c_waitdone
+	i2c_fiforead
+	( bit1 bsc1_s ! ) ( reset done bit ) ;
 
 : read16bit ( -- 16b ) i2c_clear_all 2 i2c_setdlen
 	i2c_startread i2c_waitdone i2c_fiforead
 	256 * i2c_fiforead +
-	bit1 bsc1_s ! ;
+	( bit1 bsc1_s ! ) ;
 
 \ implementation of I2C-scan
 
