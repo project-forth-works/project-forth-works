@@ -1,7 +1,7 @@
 \ Generic implementation of an I2C bus scanner, original J. J. Hoekstra
 
 : .BYTE         ( byte -- )         0 <# # # #> type space ;
-: I2C-ACK?      ( addr -- f )       >dev  {i2ack?} ;
+: I2C-TARGET?   ( addr -- f )       >dev  {i2ack?} ;
 
 : .I2C-HEADER   ( -- )
     cr  9 spaces  8 0 do  i 2* ."  0x"  1 .r  loop ;
@@ -10,7 +10,7 @@
     cr  6 spaces  ." 0x"  1 .r space ;
 
 : .I2C          ( addr -- )
-    dup i2c-ack? if  ." x" .byte  else  drop ." --- "  then ;
+    dup i2c-target? if  ." x" .byte  else  drop ." --- "  then ;
 
 : FIRST-LINE    ( -- )
     0 .i2c-column ." gcl stb cbs res res hsm "
