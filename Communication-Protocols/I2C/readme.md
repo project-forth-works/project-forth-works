@@ -160,7 +160,7 @@ code mimics open collector ports.
 ![Minimal forth example reading EEPROM](https://user-images.githubusercontent.com/11397265/123260134-83e79380-d4f5-11eb-86e8-8f3c6d46b4ba.jpg)  
 ```
 ```
-**Generic Forth example reading EEPROM**
+**Generic Forth example**
 
 ```forth
 Extra words: ABORT"  TUCK  
