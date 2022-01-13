@@ -1,34 +1,36 @@
 \ Generic implementation of an I2C bus scanner, original J. J. Hoekstra
 
+hex
 : .BYTE         ( byte -- )         0 <# # # #> type space ;
 : I2C-TARGET?   ( addr -- f )       >dev  {i2ack?} ;
 
 : .I2C-HEADER   ( -- )
-    cr  9 spaces  8 0 do  i 2* ."  0x"  1 .r  loop ;
+    cr  8 spaces  10 0 do  i 2* ."  0x"  1 .r  loop ;
 
 : .I2C-COLUMN   ( +n -- )
-    cr  6 spaces  ." 0x"  1 .r space ;
+    cr  4 spaces  ." 0x"  1 .r  ." 0 " ;
 
-: .I2C          ( addr -- )
+: .I2C-TARGET   ( addr -- )
     dup i2c-target? if  ." x" .byte  else  drop ." --- "  then ;
 
 : FIRST-LINE    ( -- )
     0 .i2c-column ." gcl stb cbs res res hsm "
-    8 6 do  i 2* .i2c  loop ;
+    10 6 do  i .i2c-target  loop ;
 
 : LAST-LINE     ( -- )
-    0F .i2c-column  ." sgn sgn sgn sgn 0/1 fut fut fut" ;
+    7 .i2c-column  8 0 do  i .i2c-target  loop
+    ." sgn sgn sgn sgn 0/1 fut fut fut" ;
 
 : I2C-SCAN      ( -- )      \ Scan all valid I2C bus addresses
     i2c-setup  base @ >r  hex
     .i2c-header  first-line
-    0F 1 do
+    7 1 do
         i .i2c-column
-        i  8 0 do
-            dup 10 * i 2* + .i2c
+        i  10 0 do
+            dup 10 * i + .i2c-target
         loop  drop
     loop
-    last-line  r> base ! cr ;
+    last-line  r> base !  cr ;
 
 \ Willems I2C address map
 \
