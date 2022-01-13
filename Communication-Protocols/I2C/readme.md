@@ -8,6 +8,10 @@
  SDA | Serial Data Line  
  SCL | Serial Clock Line  
 
+**Note that the I2C-protocol uses 7-bits addresses and a read/write bit. 
+In some cases an 8-bit address is mentioned, the original designer of the protocol Phillips sometimes also falls into this trap.**  
+
+  ***
 
 ### The low level I2C states for a single master are in short:
 
@@ -20,8 +24,9 @@
 - Stop condition
 
 ![t30i - i2c read and write with pcf8574](https://user-images.githubusercontent.com/11397265/120920036-121de600-c6bd-11eb-9e0c-0ab8664f9c47.jpg "I2C logic analyzer tracks")
+**A read and a write to a PCF8574**
 
-
+  ***
 ### Pseudo code for low level bitbang I2C ###
 
 This pseudo code is without the use of clock streching. This is only necessary when you use a multi master system or I2C slaves implemented on slow microcontrollers.
@@ -106,7 +111,7 @@ Function: I2C?          ( a -- )
   i2c-setup, >dev, {i2ack?} print presence flag
 
 ```
-
+  ***
 ### When looked to I2C from a higher level it's access is:
 
 1) Simple write action
@@ -139,6 +144,7 @@ Function: PCF8574-WRITE ( byte dev-addr -- )
 Function: PCF8574-READ  ( dev-addr -- byte )
   {i2c-read  i2c-in}
 ```
+  ***
 ### Generic Forth low level part of bitbang example
 
 This example has the I2C interface pins connected like this.
@@ -154,9 +160,10 @@ This is because it only has push/pull outputs and I2C needs an open collector (o
 code mimics open collector ports.
 
 ![Minimal forth example reading EEPROM](https://user-images.githubusercontent.com/11397265/123260134-83e79380-d4f5-11eb-86e8-8f3c6d46b4ba.jpg)  
-```
-```
-**Generic Forth example reading EEPROM**
+**Read byte from I2C EEPROM**
+  ***
+  
+## Generic Forth example
 
 ```forth
 Extra words: ABORT"  TUCK  
