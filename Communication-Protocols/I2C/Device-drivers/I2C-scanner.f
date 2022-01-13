@@ -5,7 +5,7 @@ hex
 : I2C-TARGET?   ( addr -- f )       >dev  {i2ack?} ;
 
 : .I2C-HEADER   ( -- )
-    cr  8 spaces  10 0 do  i 2* ."  0x"  1 .r  loop ;
+    cr  8 spaces  10 0 do  i ."  0x"  1 .r  loop ;
 
 : .I2C-COLUMN   ( +n -- )
     cr  4 spaces  ." 0x"  1 .r  ." 0 " ;
