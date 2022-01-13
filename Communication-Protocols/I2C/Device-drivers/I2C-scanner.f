@@ -2,7 +2,7 @@
 
 hex
 : .BYTE         ( byte -- )         0 <# # # #> type space ;
-: I2C-TARGET?   ( addr -- f )       >dev  {i2ack?} ;
+: I2C-TARGET?   ( addr -- f )       2* >dev  {i2ack?} ;
 
 : .I2C-HEADER   ( -- )
     cr  8 spaces  10 0 do  i ."  0x"  1 .r  loop ;
