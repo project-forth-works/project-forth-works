@@ -77,7 +77,7 @@ The definition of `.DAY` in line 17 to 23 shows how to encode the length of the 
 and traverse the sequence.  
 The range check in line 18 is as described above.  
 The represented sequence (line 19) now has a length byte in front of each element string. Charater '1' represents
-the length 1, '2' the length 2 and so on. Lenghts greater 9 would be represented by characters ':', ';', '<'
+the length 1, '2' the length 2 and so on. Lengths greater 9 would be represented by characters ':', ';', '<'
 according to the ASCII character encoding but that is not necessary in this example.
 
 Line 21 iterates over the sequence to the nth element string. It assumes that not only is their individual length
