@@ -18,3 +18,4 @@ Click [here if you want to read more about **Project Forth Works**](https://Proj
 - [****System-Software****](System-Software) ; Assembler, Disassembler, etc.
 - [****User-Applications****](User-Applications) ; Games, Robotics, etc. 
 
+- [****Programming Pearls****](Programming-Pearls) ; Examples of idomatic (Forth) programming style 
