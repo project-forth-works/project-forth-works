@@ -41,10 +41,10 @@ Function: WAIT ( -- )
   Delay for about 5 µsec.
 
 Function: I2START ( -- )
-  Clock line high, wait, data line low flank, wait
+  Clock line high, wait, generate low flank on data line, wait
 
 Function: I2STOP} ( -- )
-  Clock line high, wait, data line high flank, wait
+  Clock line high, wait, generate high flank on data line, wait
 
 Function: I2ACK  ( -- )
   Clock line low, data line low, wait, 
@@ -184,11 +184,14 @@ Words with hardware dependencies:
 80 constant SDA         \ I2C data line
 SCL SDA or constant IO  \ I2C bus lines
 
+\ Note that this setup is valid for an MSP430 with external pull-up resistors attached!
+\ On hardware which is able to use an open collector (or open source) with pull-up resistor
+\ resistor, you should initialise this mode!
 : I2C-SETUP ( -- )
-  io p1ren *bic         \ Activate resistors
-  io p1dir *bis         \ SDA & ACL are inputs
-  io p1out *bis         \ With pullup
-  io p1sel *bic         \ Guarantee normal i/o
+  io p1ren *bic         \ Deactivate pull-up/pull-down resistors
+  io p1dir *bis         \ SDA & SCL are outputs
+  io p1out *bis         \ Which start high
+  io p1sel *bic         \ Guarantee normal i/o on MSP430
   io p1sel2 *bic ;
 
 : WAIT      ( -- )      \ Delay of 5 µsec. must be trimmed!
