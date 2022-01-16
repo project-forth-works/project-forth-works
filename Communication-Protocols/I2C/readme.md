@@ -4,7 +4,7 @@
 
 |  |  |
  ------ | --------------------------------------------------------------- 
- ![i2c-logo](https://user-images.githubusercontent.com/11397265/120920357-a63c7d00-c6be-11eb-8f43-5287f7f82a9c.jpg) | I2C is a synchronous serial protocol with two lines (SDA & SCL). It is used for clocks, memory, I/O-expanders, sensors, etc. A in depth protocol description of the I2C signals can be found on the [I2C website](https://www.i2c-bus.org/) or [on wikipedia](https://en.wikipedia.org/wiki/I%C2%B2C).  
+ ![i2c-logo](https://user-images.githubusercontent.com/11397265/120920357-a63c7d00-c6be-11eb-8f43-5287f7f82a9c.jpg) | [I2C](https://www.nxp.com/docs/en/user-guide/UM10204.pdf) is a synchronous serial protocol with two lines (SDA & SCL). It is used for clocks, memory, I/O-expanders, sensors, etc. A in depth protocol description of the I2C signals can be found on the [I2C website](https://www.i2c-bus.org/) or [on wikipedia](https://en.wikipedia.org/wiki/I%C2%B2C).  
  SDA | Serial Data Line  
  SCL | Serial Clock Line  
 
