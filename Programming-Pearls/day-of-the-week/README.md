@@ -5,50 +5,49 @@ extract strings form a sequence of strings.
 
 The idea here is to represent the sequence of strings as a single string.
 
-```forth {.line-numbers}
-\ Day of the week -- an-10jan2022
-\ From number to name, not using the case statement
-
-\   0   1   2   3   4   5   6
-\   sun mon tue wed thu fri sat
-
-\ For constant string length
-: .DAY ( n -- )    \ n in [0,6]
-    7 umin
-    s" SunMonTueWedThuFriSat???" drop
-    swap 3 * + 3 type space ;
-
-\ 3 .day  -> wed
-\ 8 .day  -> ???
-
-\ For irregular string length
-: .DAY ( n -- )    \ n in [0,6]
-    7 umin
-    s" 3Sun 3Mon 4Tues 6Wednes 5Thurs 3Fri 5Satur 1?" drop
-    swap 0
-    ?do begin count bl = until
-    loop count [char] 0 - type
-    ." day " ;
-
-\ 3 .day  -> Wednesday
-\ 9 .day  -> ???day
-
-\ Try this for months. ( :septiembre )
-\ : M, ( adr len -- ) 0 ?do count c, loop drop ;
-decimal create (MESES)
-ch " parse 5enero 7febrero 5marzo 5abril 4mayo 5junio 5julio "    m,
-ch " parse 6agosto :septiembre 7octubre 9noviembre 9diciembre 1?" m,
-    align
-: .MES ( n -- )   \ n in [1,12]
-    1- 12 umin (meses) swap 0
-    ?do begin count bl = until
-    loop count [char] 0 - type space ;
-
-\ 9 .mes  -> septiembre
-\ 0 .mes  -> ?
-
-\ <><>
-
+```forth
+     1  \ Day of the week -- an-10jan2022
+     2  \ From number to name, not using the case statement
+     3  
+     4  \   0   1   2   3   4   5   6
+     5  \   sun mon tue wed thu fri sat
+     6  
+     7  \ For constant string length
+     8  : .DAY ( n -- )    \ n in [0,6]
+     9      7 umin
+    10      s" SunMonTueWedThuFriSat???" drop
+    11      swap 3 * + 3 type space ;
+    12  
+    13  \ 3 .day  -> wed
+    14  \ 8 .day  -> ???
+    15  
+    16  \ For irregular string length
+    17  : .DAY ( n -- )    \ n in [0,6]
+    18      7 umin
+    19      s" 3Sun 3Mon 4Tues 6Wednes 5Thurs 3Fri 5Satur 1?" drop
+    20      swap 0
+    21      ?do begin count bl = until
+    22      loop count [char] 0 - type
+    23      ." day " ;
+    24  
+    25  \ 3 .day  -> Wednesday
+    26  \ 9 .day  -> ???day
+    27  
+    28  \ Try this for months. ( :septiembre )
+    29  \ : M, ( adr len -- ) 0 ?do count c, loop drop ;
+    30  decimal create (MESES)
+    31  ch " parse 5enero 7febrero 5marzo 5abril 4mayo 5junio 5julio "    m,
+    32  ch " parse 6agosto :septiembre 7octubre 9noviembre 9diciembre 1?" m,
+    33      align
+    34  : .MES ( n -- )   \ n in [1,12]
+    35      1- 12 umin (meses) swap 0
+    36      ?do begin count bl = until
+    37      loop count [char] 0 - type space ;
+    38  
+    39  \ 9 .mes  -> septiembre
+    40  \ 0 .mes  -> ?
+    41  
+    42  \ <><>
 ```
 
 ## Extract constant-length strings
