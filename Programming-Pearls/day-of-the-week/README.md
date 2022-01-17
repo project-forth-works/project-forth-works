@@ -109,7 +109,7 @@ Line 30-33 show how to do it. They assume that a word `M, ( adr len --)` (see co
 available that lays down a string character by character at `HERE` in the dictionary. It moves `HERE` forward so that it continues to point to available dictionary space.
 
 Line 30 gives the name `(MESES)` to the sequence (start address of the string representing the sequence).   
-Line 31 and 32 use `M,` to store two parts of the string. `CH` is a synonym of `CHAR`. Both lines parse a quote (")
+Line 31 and 32 use `M,` to store two parts of the string. Both lines parse a quote (")
 terminated string and then lay it down in the dictionary. For systems that require aligned disctionary addresses
 the `ALIGN` in line 33 pads the dictionary so `HERE` will be a cell aligned address.
 
