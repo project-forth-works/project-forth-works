@@ -34,10 +34,10 @@ The idea here is to represent the sequence of strings as a single string.
     26  \ 9 .day  -> ???day
     27  
     28  \ Try this for months. ( :septiembre )
-    29  \ : M, ( adr len -- ) 0 ?do count c, loop drop ;
+    29  : M, ( adr len -- ) 0 ?do count c, loop drop  align ;
     30  decimal create (MESES)
-    31  ch " parse 5enero 7febrero 5marzo 5abril 4mayo 5junio 5julio "    m,
-    32  ch " parse 6agosto :septiembre 7octubre 9noviembre 9diciembre 1?" m,
+    31  char " parse 5enero 7febrero 5marzo 5abril 4mayo 5junio 5julio "    m,
+    32  char " parse 6agosto :septiembre 7octubre 9noviembre 9diciembre 1?" m,
     33      align
     34  : .MES ( n -- )   \ n in [1,12]
     35      1- 12 umin (meses) swap 0
