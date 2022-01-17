@@ -31,7 +31,7 @@ The idea here is to represent the sequence of strings as a single string.
     23      ." day " ;
     24  
     25  \ 3 .day  -> Wednesday
-    26  \ 9 .day  -> ???day
+    26  \ 9 .day  -> ?day
     27  
     28  \ Try this for months. ( :septiembre )
     29  : M, ( adr len -- ) 0 ?do count c, loop drop  align ;
