@@ -46,23 +46,23 @@ done by storing the digits either on the data stack or on the return stack and m
 first out property.
 
 
-Display a single digit: `.HX1`
+Display a single digit: `.1HX`
 ------------------------------
 
-The word `.HX1` (*print hex 1 nibble*, line 5-8) displays a single digit, 
+The word `.1HX` (*print 1 digit in hex*, line 5-8) displays a single digit, 
 the last digit of the unsigned number `x`. 
 
 Line 6 extracts the least significant nibble of `x` and ignores its more significant part.
 
 To display that nibble as a character the word uses arithmetic with comparison results:
 
-The phrase `9 over <` in line 7 compares the nibble with `9`. If it is not less (i.e. greater or equal) `9`
+The phrase `9 over <` in line 7 compares the nibble with `9`. If it is greater than `9`
 then the phrase results in -1 (all bits set).  
-If the nibble is less than `9` the phrase results in 0 (all bits 0).  
+If the nibble is not greater than `9` (i.e. 0 to 9) the phrase results in 0 (all bits 0).  
 
 `7 and` extracts the least 3 bits. Now we have either `7` or `0`, that we add to the nibble itself.
-This leads to the nibble+7, if nibble is greater or equal `9` or 
-to the original nibble value, if it is less than `9`. This is to bridge the gap in the ASCII character sequence
+This leads to the nibble+7, if nibble is greater `9` or 
+to the original nibble value, if it is not greater that `9`. This is to bridge the gap in the ASCII character sequence
 between '9' and 'A' as we see now.
 
 If we look at the ASCII character
@@ -77,7 +77,7 @@ Line 8 adds the character value of `'0'` to the intermediate value.
 Nibbles 0 to 9 will be mapped to character '0' to '9'. 
 Nibbles 10 to 15 will be mapped (bridging the gap) to character 'A' to 'F' as is required for hexadecimal display.
 
-This character is eventually displayed by the `emit` at the end of `.HX1` (line 8).
+This character is eventually displayed by the `emit` at the end of `.1HX` (line 8).
 
 
 Display `n` digits: `.NHX`
@@ -95,7 +95,7 @@ The number with the least significant nibble of `x` first, the number with the m
 of `x` on top of stack.
 
 After that the nibbles on the stack are processed in reversed order. 
-They are displayed via `.HX1` (`DO LOOP`, line 13) that runs `n` times.  
+They are displayed via `.1HX` (`DO LOOP`, line 13) that runs `n` times.  
 `.NHX` ends by printing a space so that consecutive calls to `.NHX` will print number space separated.
 
 
@@ -110,7 +110,7 @@ Line 26 does parameter clipping of `n` as before.
 To avoid stack juggling the first loop (line 28) collects nibbles on the return stack. (That wouldn't have been
 possible with `DO LOOP` above as the loop parameters block the return stack.)
 
-The second loop (line 29) retrieves the nibbles from the return stack and prints them with `.HX1` as above. 
+The second loop (line 29) retrieves the nibbles from the return stack and prints them with `.1HX` as above. 
 When finished it drops the loop parameter.
 The obligatory space ends the number output (line 29).
 
