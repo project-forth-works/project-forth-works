@@ -114,6 +114,14 @@ The second loop (line 29) retrieves the nibbles from the return stack and prints
 When finished it drops the loop parameter.
 The obligatory space ends the number output (line 29).
 
+
+Example output
+--------------
+
+Lines 18-22 show hot to use `.NHX` and what output you can expect. If the number of digits given is less then
+the actual numbers of digits to completely display `.NHX` truncates the mumber. If `n` is larger then `.NHX`
+adds leading '0's.
+
 ----
 
 uho 2022-01-20
