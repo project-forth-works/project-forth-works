@@ -97,7 +97,7 @@ A version that allows for nesting comments:
        UNTIL ; immediate                               \ end of source code
 ```
 
-Both implementations will extract tokens from the input stream. Thus both `(*` and `*)` must be separacted
+Both implementations will extract tokens from the input stream. Thus both `(*` and `*)` must be separated
 by whitespace and must not be attached to printable characters for them to be considered start or end 
 of comment. Thus:
 
@@ -121,7 +121,7 @@ After loading this program, a Standard System still exists.
 
 ## Test
 
-The test for handlking nested comments:
+The test for handling nested comments:
 
 ```forth
 (* .( Start of outer comment )
