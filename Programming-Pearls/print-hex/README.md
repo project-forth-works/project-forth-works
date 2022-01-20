@@ -120,7 +120,7 @@ Example output
 
 Lines 18-22 show hot to use `.NHX` and what output you can expect. If the number of digits `n` given is less then
 the actual numbers of digits to completely display `x` then `.NHX` truncates the display showing only the least signiicant digits.
-If `n` is larger then `.NHX` adds leading '0's.
+If `n` is larger, then `.NHX` adds leading '0's.
 
 ----
 
