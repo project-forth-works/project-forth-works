@@ -136,3 +136,58 @@ The test for handling nested comments:
 ```
 
 should not print anything.
+
+# Alternative Implementations
+
+If you face a ressource constraint system you might want to further simplify the definition of `(*` in order
+to impose fewer requirements on the supporting system. In the above definition there are two required words that
+might not be supported in a ressource constraint system: `REFILL` and `COMPARE`. 
+
+`REFILL` (or its terminal/command line counterparts `EXPECT`, `QUERY` or `ACCEPT`) is propably always necessary 
+to keep reading input lines in case `*)` has not yet been found. 
+
+The use of `COMPARE` on the other hand can be eliminated as we only want to test for `*)` (and for `(*` in the nesting case). 
+
+Here is Albert Nijhof's approach:
+
+```
+\ -----
+\ Tool - Multi-line comment - an 17jan2022
+
+\ (* starts a multi-line comment. Not nestable.
+\ The delimiter *) must be the first word on a line.
+
+: (*    ( -- )
+   0   \ dummy
+   begin begin begin   drop
+       refill 0= if exit then
+       bl word
+       count        2 = until
+       count [char] * = until
+       count [char] ) = until
+   drop ; immediate
+\ -----
+```
+
+`(*`  
+a) This simple code was intended for small systems.
+That's why I avoided the word `COMPARE`. Unfortunately,
+"REFILL" was unavoidable.
+
+
+b) The delimiter `*)` must be the first word on a line.
+This is not to keep the code simple or make it
+faster. I purposely chose this because it is better,
+it provides a clearly readable layout.  
+`*)`
+
+Compare this with:
+
+`(*`  
+a) This simple code was intended for small systems.
+That's why I avoided the word `COMPARE`. Unfortunately,
+"REFILL" was unavoidable.
+
+b) This is not to keep the code simple or make it
+faster. I purposely chose this because it is better,
+it provides a clearly readable layout. `*)`
