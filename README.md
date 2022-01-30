@@ -16,6 +16,7 @@ Click [here if you want to read more about **Project Forth Works**](https://Proj
 - [****Communication-Protocols****](Communication-Protocols) ; SPI, etc.
 - [****Data-Structures****](Data-Structures) ; Primitive circular buffer, etc. 
 - [****System-Software****](System-Software) ; Assembler, Disassembler, etc.
+- [****Programming-Tools****](Programming-Tools) ; Development support, helpers
+- [****Programming Pearls****](Programming-Pearls) ; Examples of idomatic (Forth) programming style 
 - [****User-Applications****](User-Applications) ; Games, Robotics, etc. 
 
-- [****Programming Pearls****](Programming-Pearls) ; Examples of idomatic (Forth) programming style 
