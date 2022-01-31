@@ -52,7 +52,7 @@
 
 
 \ and some numeric systems...
-( 1 ffbase UN \ unary ) \ exists but Forth does not calculate correctly with UNARY
+( 1 ffbase UN \ unary ) \ does exist but Forth does not calculate correctly with UNARY
  2 ffbase BN \ binary
  3 ffbase TE \ ternary
  4 ffbase QA \ quaternary
