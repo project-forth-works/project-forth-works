@@ -10,7 +10,3 @@
   - Blocks
   - Custom (like NOF)
 - Device Drivers (Displays, Sensors, Motors, ...)
-- Tools (like [DUMP](dump), ...)
-
-
-
