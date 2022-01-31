@@ -1,0 +1,34 @@
+--- Alternative code for DO-LOOP
+
+All examples start with ( limit index ) on stack.
+'I' becomes R@ .
+
+1) --- DO <code> LOOP becomes
+BEGIN 2>R <code> 2R>
+      1+ 2DUP =
+UNTIL 2DROP
+
+
+2a) --- ?DO <code> LOOP (Using DO-LOOP) becomes
+2DUP <>
+IF   DO <code> LOOP
+ELSE 2DROP
+THEN
+
+2b) --- ?DO <code> LOOP (Using BEGIN-UNTIL) becomes
+2DUP <>
+IF  BEGIN 2>R <code> 2R>
+          1+ 2DUP =
+    UNTIL
+THEN 2DROP
+
+N.B.
+If <code> does not address stack elements below ( limit index ),
+2>R and 2R> around <code> are superfluous and 'I' becomes DUP .
+
+Wenn <code> keine Stackelemente unterhalb ( limit index )
+adressiert sind 2>R und 2R> um <code> überflüssig und
+wird I zu DUP .
+
+hgr, a
+\ <><>
