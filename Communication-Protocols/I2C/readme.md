@@ -33,83 +33,79 @@ This pseudo code is without the use of clock streching. This is only necessary w
 Note that the used example works on on a chip with a push/pull output ports
 
 ```
-Function: I2C-SETUP  ( -- )
-  Setup I/O-bits for two bidirectional 
-  open collector lines with pull-up
-
-Function: WAIT ( -- )
+Reserve RAM memory cells named: DEV  SUM  NACK?
+Function: WAIT         ( -- )
   Delay for about 5 µsec.
 
-Function: I2START ( -- )
+Function: I2START      ( -- )
   Clock line high, wait, generate low flank on data line, wait
 
-Function: I2STOP} ( -- )
-  Clock line high, wait, generate high flank on data line, wait
-
-Function: I2ACK  ( -- )
+Function: I2ACK        ( -- )
   Clock line low, data line low, wait, 
-  clock line high, wait, clock line low
+  clock line high, wait
 
-Function: I2NACK ( -- )
+Function: I2NACK       ( -- )
   Clock line low, data line high, wait, 
-  clock line high, wait, clock line low
+  clock line high, wait
 
-Function: I2ACK? ( -- flag )
+Function: I2ACK@       ( -- )
   Clock line low, data line high, wait, clock line high, wait
-  Read status of data line, leave true if it is an ack,
-  otherwise false, wait, clock line low
+  Read status of data line, store true in NACK? if it is a nack, otherwise false
 
-Function: (I2OUT ( x -- )
+Function: BUS!         ( x -- )
   8 loop
     clock line low
     write bit-7 level of x to data line, wait
     clock line high, wait
     shift x left
-  Discard byte
+  Discard byte, perform i2ack@
 
-Function: (I2IN ( -- y )
+Function: {I2C-ADDR    ( +n -- )
+    store +n + 1 in SUM,  perform i2start
+    read dev, perform bus!
+
+
+Higher level I2C access, hides internal details!
+
+Function: I2C-ON       ( -- )
+  Setup I/O-bits for two bidirectional 
+  open collector lines with pull-up
+
+Function: I2C}         ( -- )
+  Clock line high, wait, generate high flank on data line, wait
+
+Function: BUS@         ( -- y )
+  Initialise y at zero
   8 loop
     shift y left
     Clock line low, data line high, wait, clock line high, wait
-    read data line to bit-0 position of x
-    
-Function: I2OUT     ( b -- )    (i2out, i2ack?, discard flag
-Function: I2IN      ( -- b )    (i2in, i2ack
-Function: I2OUT}    ( b -- )    i2out, i2stop}
-Function: I2IN}     ( -- b )    (i2in, i2nack, i2stop}
+    read data line to bit-0 position of y
+  Decrease SUM
+  Sum not zero IF  perform i2ack  ELSE  perform i2nack  THEN
 
-Higher level I2C access, hides internal details!
-RAM memory cell named: DEV
+Function:  DEVICE!     ( dev -- )
+  Multiply dev by 2,  AND result with 0xFE and store in DEV
 
-Function: >DEV      ( a -- )
-  AND device-addres with 0xFE and store in DEV
+Function: {I2C-WRITE   ( +n -- )
+  Discard +n, perform i2start, read DEV, (bus!
+  Read nack? issue error message when true
 
-Function: {I2WRITE) ( -- )
-  i2start, read DEV, (i2out
+Function: {I2C-READ    ( +n -- )  
+  Store +n in SUM, perform i2start, read DEV and set lowest bit, 
+  Perform bus!, read nack? issue error message when true
 
-Function: {I2READ) ( -- )  
-  i2start, read DEV and set lowest bit, 
-  (i2out, i2ack? issue error message when false
+Function: {DEVICE-OK?} ( -- fl ) \ Flag 'fl' is true when an ACK is received
+  Perform {i2c-addr, perform i2c} 
+  Read nack?, leave true when result is zero
 
-Function: {I2WRITE ( byte device-address -- )
-  >dev, {i2write), i2ack? issue error message when false
-  (i2out, i2ack? issue error message when false
 
-Function: {I2READ ( device-address -- )
-  >dev, {i2cread)
-
-Function: {I2ACK?}  ( -- fl )           \ Flag 'fl' is true when an ACK is received
-  {i2write), i2ack?, i2stop}
-
-( This routine may be used when writing to EEPROM memory devices )
-(The waiting for the write to succeed is named acknowledge polling )
-Function: {POLL}    ( -- )
-  Start loop {i2ack?} leave when ACK received
-    
-( Prints -1 if device with address 'a' is present on I2C-bus otherwise 0 )
-Function: I2C?          ( a -- )
-  i2c-setup, >dev, {i2ack?} print presence flag
-
+\ Waiting for an EEPROM write to succeed is named acknowledge polling.
+Function: {POLL}      ( -- )          Start loop {i2ack?} leave when ACK received
+Function: {I2C-OUT    ( dev +n -- )   Store dev in DEV  perform {i2c-write
+Function: {I2C-IN     ( dev +n -- )   Store dev in DEV  perform {i2c-read
+Function: BUS!}       ( b -- )        Perform bus!, perform i2c}
+Function: BUS@}       ( -- b )        Perform bus@, perform i2c}
+Function: BUS-MOVE    ( a u -- )      Sent string of 'u' bytes from 'a' over the I2C-bus
 ```
   ***
 ### When looked to I2C from a higher level it's access is:
@@ -139,10 +135,10 @@ Function: I2C?          ( a -- )
 
 ```
 Function: PCF8574-WRITE ( byte dev-addr -- )
-  {i2c-write  i2c-stop}
+  1  perform {i2c-write  perform bus!  perform i2c}
 
 Function: PCF8574-READ  ( dev-addr -- byte )
-  {i2c-read  i2c-in}
+  1  perform {i2c-read  perform bus@  perform i2c}
 ```
   ***
 ### Generic Forth low level part of bitbang example
@@ -184,49 +180,30 @@ Words with hardware dependencies:
 80 constant SDA         \ I2C data line
 SCL SDA or constant IO  \ I2C bus lines
 
-\ Note that this setup is valid for an MSP430 with external pull-up resistors attached!
-\ On hardware which is able to use an open collector (or open source) with pull-up resistor
-\ resistor, you should initialise this mode!
-: I2C-SETUP ( -- )
-  io p1ren *bic         \ Deactivate pull-up/pull-down resistors
-  io p1dir *bis         \ SDA & SCL are outputs
-  io p1out *bis         \ Which start high
-  io p1sel *bic         \ Guarantee normal i/o on MSP430
-  io p1sel2 *bic ;
-
-: WAIT      ( -- )      \ Delay of 5 µsec. must be trimmed!
+: WAIT          ( -- )  \ Delay of 5 µsec. must be trimmed!
     ( true  drop ) ;
 
-: I2START ( -- )
+: I2START       ( -- )
   scl p1out *bis  scl p1dir *bic  wait
   sda p1dir *bis  sda p1out *bic  wait ;
 
-: I2STOP} ( -- )
+: I2ACK         ( -- )
   scl p1out *bic  scl p1dir *bis
   sda p1out *bic  sda p1dir *bis  wait
-  scl p1out *bis  scl p1dir *bic  wait
-  sda p1out *bis  sda p1dir *bic ;
+  scl p1out *bis  scl p1dir *bic  wait ;
 
-: I2ACK   ( -- )
+: I2NACK        ( -- )
   scl p1out *bic  scl p1dir *bis
-  sda p1out *bic  sda p1dir *bis  wait
-  scl p1out *bis  scl p1dir *bic  wait
-  scl p1out *bic  scl p1dir *bis ;
+  sda p1out *bis  sda p1dir *bic  wait
+  scl p1out *bis  scl p1dir *bic  wait ;
 
-: I2NACK  ( -- )
+: I2ACK@        ( -- flag )
   scl p1out *bic  scl p1dir *bis
   sda p1out *bis  sda p1dir *bic  wait
   scl p1out *bis  scl p1dir *bic  wait
-  scl p1out *bic  scl p1dir *bis ;
+  sda p1in bit* nack? ! ;
 
-: I2ACK?  ( -- flag )
-  scl p1out *bic  scl p1dir *bis
-  sda p1out *bis  sda p1dir *bic  wait
-  scl p1out *bis  scl p1dir *bic  wait
-  sda p1in bit* 0=
-  scl p1out *bic  scl p1dir *bis ;
-
-: (I2OUT  ( byte -- )
+: BUS!          ( byte -- )
   8 0 do
     scl p1out *bic  scl p1dir *bis
     dup 80 and if
@@ -236,50 +213,56 @@ SCL SDA or constant IO  \ I2C bus lines
     then
     wait  2*
     scl p1out *bis  scl p1dir *bic  wait
-  loop  drop ;
+  loop  drop  i2ack@ ;
 
-: (I2IN   ( -- byte )
+: {I2C-ADDR     ( +n -- )
+  drop  i2start  dev @ bus! ; \ Start I2C write with address in DEV
+
+
+\ Higher level I2C access, hides internal details!
+
+\ Note that this setup is valid for an MSP430 with external pull-up resistors attached!
+\ On hardware which is able to use an open collector (or open source) with pull-up
+\ resistor, you should initialise this mode!
+: I2C-ON        ( -- )
+  io p1ren *bic         \ Deactivate pull-up/pull-down resistors
+  io p1dir *bic         \ SDA & SCL are inputs
+  io p1out *bis         \ Which start high
+  io p1sel *bic         \ Guarantee normal i/o on MSP430
+  io p1sel2 *bic ;
+
+: BUS@          ( -- byte )
   0  8 0 do
     2*
     scl p1out *bic  scl p1dir *bis
     sda p1out *bis  sda p1dir *bic  wait
     sda p1in bit*  0= 0= 1 and  or
     scl p1out *bis  scl p1dir *bic  wait
-  loop ;
+  loop  -1 sum +!
+  sum @ if  i2ack  else  i2nack  then ;
 
-: I2OUT     ( b -- )    (i2out i2ack? drop ;
-: I2IN      ( -- b )    (i2in  i2ack ;
-: I2OUT}    ( b -- )    i2out  i2stop} ;
-: I2IN}     ( -- b )    (i2in  i2nack  i2stop} ;
+: I2C}          ( -- )
+  scl p1out *bic  scl p1dir *bis
+  sda p1out *bic  sda p1dir *bis  wait
+  scl p1out *bis  scl p1dir *bic  wait
+  sda p1out *bis  sda p1dir *bic ;
 
-\ Higher level I2C access, hides internal details!
-variable DEV
-: >DEV      ( a -- )    FE and dev ! ;
-
-: {I2WRITE)     ( -- )      \ Start I2C write with device in DEV
-  i2start  dev @ (i2out ;   \ Used for repeated start
+: DEVICE!       ( dev -- )  2* FE and dev ! ;
+: {DEVICE-OK?}  ( -- f )    0 {i2c-addr  i2c}  nack? @ 0= ; \ 'f' is true when an ACK was received
+: {I2C-WRITE    ( +n -- )   {i2c-addr  nack? @ abort" Ack error" ; \ Start I2C write with device in DEV
   
-: {I2READ)      ( -- )      \ Start read to device in DEV
-  i2start  dev @ 1+ (i2out  \ Used for repeated start
-  i2ack? 0= abort" Ack error " ; 
+: {I2C-READ     ( +n -- )     \ Start read to device in DEV
+    sum !  i2start  dev @ 1+ bus!   \ Used for repeated start
+    nack? @ abort" Ack error" ; 
 
-: {I2WRITE  ( byte dev-addr -- )
-  >dev  {i2write)  i2ack? 0= abort" Ack error "
-  (i2out i2ack? 0= abort" Ack error " ;
 
-: {I2READ   ( dev-addr -- )
-  >dev  {i2read) ;
-
-: {I2ACK?}  ( -- fl )           \ Flag 'fl' is true when an ACK is received
-    {i2write)  i2ack?  i2stop} ;
-
-\ This routine may be used when writing to EEPROM memory devices.
-\ The waiting for the write to succeed is named acknowledge polling.
-: {POLL}    ( -- )      begin  {i2ack?} until ; \ Wait until ACK received
-
-\ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
-: I2C?          ( a -- )
-    i2c-setup  >dev  {i2ack?} . ;
+\ Waiting for an EEPROM write to succeed is named acknowledge polling.
+: {POLL}    ( -- )          begin  {device-ok?} until ; \ Wait until ACK received
+: {I2C-OUT  ( dev +n -- )   swap  device!  {i2c-write ;
+: {I2C-IN   ( dev +n -- )   swap  device!  {i2c-read ;
+: BUS!}     ( b -- )        bus!  i2c} ;
+: BUS@}     ( -- b )        bus@  i2c} ;
+: BUS-MOVE  ( a u -- )      bounds ?do i c@ bus! loop ; \ Send string of bytes from 'a' with length 'u
 ```
 
 ### I2C Generic Forth with high level factorisation
@@ -287,10 +270,10 @@ variable DEV
 This example is for an 8-bit PCF8574 like I/O-expander:
 ```forth
 : PCF8574-WRITE ( byte dev-addr -- )
-  {i2write  i2stop} ;
+  device!  1 {i2c-write  bus!  i2c} ;
 
 : PCF8574-READ  ( dev-addr -- byte )
-  {i2read  i2in} ;
+  device!  1 {i2c-read  bus@  i2c} ;
 ```
 
 ### Implementations
