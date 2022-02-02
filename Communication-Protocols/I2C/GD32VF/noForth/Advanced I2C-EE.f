@@ -10,15 +10,15 @@ PB7 = SDA
 *)
 
 hex
-i2c-setup
-: {EEADDR   ( ea -- )           \ Address EEprom
-    A0 {i2write ;               \ 24C02 EE-addr.
+i2c-on
+: {EEADDR   ( ea +n -- )    \ Address EEPROM
+    50 device!  {i2c-write  bus! ;                      \ 24C02 EE-addr.
 
 \ Byte wide fetch and store in EEPROM
-: NEC@      ( -- b )        {i2read) i2in} ;        \ EE Read next byte
-: EC@       ( ea -- b )     {eeaddr  nec@ ;         \ EE Read byte from address
-: EC!       ( b ea -- )     {eeaddr  i2out}  {poll} ; \ EE Store byte at address
-: EC@+      ( ea -- ea+ x ) dup 1+  swap ec@ ;      \ EE version of COUNT
+: NEC@      ( -- b )        1 {i2c-read  bus@ i2c} ;    \ EE Read next byte
+: EC@       ( ea -- b )     1 {eeaddr i2c}  nec@ ;      \ EE Read byte from address
+: EC!       ( b ea -- )     2 {eeaddr  bus! i2c} {poll} ; \ EE Store byte at address
+: EC@+      ( ea -- ea+ x ) dup 1+  swap ec@ ;          \ EE version of COUNT
 
 \ Cell wide read and store operators for 24Cxxx EEPROM
 : E@        ( ea -- x )      ec@  nec@  b+b ;       \ EE Read word from address
@@ -26,6 +26,7 @@ i2c-setup
 : E!        ( x ea -- )      >r  b-b r@ 1+ ec!  r> ec! ; \ EE Store word at address
 : E+!       ( n ea -- )      >r  r@ e@ +  r> e! ;   \ EE Increase contents of address with n
 
+  FF constant EESIZE  \ 8 kByte   24CL64, etc.
 
 \ First cell in EEPROM is used as EHERE, this way it is always up to date
 \ We have to take care manually of the forget action on this address pointer
@@ -34,7 +35,7 @@ i2c-setup
 0 constant EDP  \ Define and initialise EHERE
 : EHERE         ( -- ea )   edp e@ ;                \ EE dictionary pointer
 : EMPTY         ( -- )      2 edp e! ;              \ EE (re) initialise
-: EUNUSED       ( -- u )    eemax ehere - ;         \ EE unused space 
+: EUNUSED       ( -- u )    eesize ehere - ;         \ EE unused space 
 : .EFREE        ( -- )      eunused u. ;            \ EE show free memory space
 : EALLOT        ( +n -- )   eunused  over u< ?abort  edp e+! ; \ EE reserve memory
 : EC,           ( b -- )    ehere  1 eallot  ec! ;  \ EE compile byte
@@ -45,7 +46,7 @@ i2c-setup
 
 inside
 : EDUMP         ( ea u -- )                         \ EE dump u bytes
-    i2c-setup  base @ >r  hex   \ base is HEX
+    i2c-on  base @ >r  hex      \ base is HEX
     bounds ?do
         cr i 4 u.r ." : "       \ print EE address
         i 10 bounds do          \ dump 10 EE bytes in HEX
@@ -66,10 +67,11 @@ ecreate STRING  ( -- ea )       \ Store named string in EEPROM
 
 \ Show stored string from EEPROM
 : SHOW      ( -- )
-    i2c-setup
+    i2c-on
     begin
-        cr ." Embedding"
-        string ec@+ etype  100 ms
+        cr ." Project-"
+        string ec@+ etype
+        ." -Works"  100 ms
     key? until ;     
 
 ' show  to app  

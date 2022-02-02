@@ -6,14 +6,14 @@ All driver files are from the [Egel Project, from chapter 30ff](https://home.hcc
 This code example works with all added driver versions of the noForth I2C implementation:
 ```
 \ Example with clock & 24C32 EEPROM
-: {EEADDR   ( a -- )            \ Address EEprom
-    b-b  A0 {i2write i2out ;    \ High EE-addr. & low EE-addr.
+: {EEADDR   ( a +n -- )                     \ Address EEprom
+    50 device!  {i2c-write  b-b bus! bus! ;
 
 \ Read data b from 24C32 EEPROM byte-address addr. 
 : EC@       ( addr -- b )
-    {eeaddr  {i2read)  i2in} ;  \ Address EE & rep. start & read data
+    2 {eeaddr i2c}  1 {i2c-read bus@ i2c} ;
 
 \ Write data b to 24C32 EEPROM byte-address addr.
 : EC!       ( b addr -- )
-    {eeaddr  i2out}  {poll} ;   \ Address EE & write data
+    3 {eeaddr  bus! i2c}  {poll} ;
 ```

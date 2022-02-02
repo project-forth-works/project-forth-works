@@ -21,12 +21,19 @@ Values for CRL/CRH-Registers:
 PB6 = SCL
 PB7 = SDA
 
+  User words:  I2C-ON  {I2C-WRITE  {I2C-READ   I2C}
+               BUS@  BUS!  DEVICE!  {DEVICE-OK?}
+  Additional:  {I2C-OUT  {I2C-IN  {POLL}  BUS!}  BUS@}  BUS-MOVE
+ 
+  An example, first execute I2C-ON  After that the I2C is setup as
+  a master. Sent byte 'b' to an I2C device with address 'a'.
+    : >SLAVE    ( b a -- )  {i2c-write  bus!  i2c} ;
+    : >PCF8574  ( b -- )    40 >slave ;
+
 *)
 
-hex
-: ABORT" ( flag ccc -- )         
-    postpone if  postpone ."  postpone abort  postpone then ; immediate
-
+hex  
+v: inside also definitions
 40010C00 constant PB-CRL    \ Port-B control Register for pins 0 to 7
 40010C08 constant PB-IDR    \ Port-B Input Data Register
 40010C0C constant PB-ODR    \ Port-B Output Data Register
@@ -35,85 +42,80 @@ hex
 80 constant SDA             \ I2C data line
 SCL SDA or constant BUS     \ I2C bus lines
 
-: I2C-SETUP     ( -- )
-    6644,4444 pb-crl !  \ Set PB5 & PB6 as I2C output (Reset $44444444)
-    bus pb-odr *bis ;   \ I2C floating at startup
-
-: WAIT          ( -- )      12 for next ; ( About 100 KHz with 104 MHz clock )
+value DEV  value SUM  value NACK?
+\ : WAIT          ( -- )      10 for next ;         \ About 100 KHz with 104 MHz clock
+  : WAIT          ( -- )      02 for next ;         \ About 200 KHz with 104 MHz clock
+\ : WAIT          ( -- )      ;                     \ About 300 KHz with 104 MHz clock
+\ : WAIT          ( -- )      ; immediate           \ About 380 KHz with 104 MHz clock
 
 : I2START       ( -- )
     scl pb-odr *bis  wait
     sda pb-odr *bic  wait ;
-
-: I2STOP}       ( -- )
-    scl pb-odr *bic  sda pb-odr *bic  wait
-    scl pb-odr *bis  wait
-    sda pb-odr *bis ;
  
 : I2ACK         ( -- )
     scl pb-odr *bic  sda pb-odr *bic  wait
-    scl pb-odr *bis  wait
-    scl pb-odr *bic ;
+    scl pb-odr *bis  wait ;
 
 : I2NACK        ( -- )
     scl pb-odr *bic  sda pb-odr *bis  wait
-    scl pb-odr *bis  wait
-    scl pb-odr *bic ;
+    scl pb-odr *bis  wait ;
 
-: I2ACK?        ( -- f )
+: I2ACK@        ( -- )
     scl pb-odr *bic  sda pb-odr *bis  wait
     scl pb-odr *bis  wait
-    sda pb-idr bit* 0=
-    scl pb-odr *bic ;
+    sda pb-idr bit* to nack? ;
 
-: (I2OUT        ( b -- )
+v: extra definitions
+: BUS!          ( b -- )
     8 for
         scl pb-odr *bic 
         dup 80 and if   sda pb-odr *bis
         else            sda pb-odr *bic
         then            wait  2*
         scl pb-odr *bis  wait
-    next  drop ;
+    next  drop  i2ack@ ;
 
-: (I2IN         ( -- b )
+v: inside definitions
+: {I2C-ADDR     ( +n -- )       drop  i2start  dev bus! ; \ Start I2C write with address from DEV
+
+
+\ Higher level I2C access, hides internal details!
+v: extra definitions
+: I2C-ON        ( -- )
+    6644,4444 pb-crl !  \ Set PB5 & PB6 as I2C output (Reset $44444444)
+    bus pb-odr *bis ;   \ I2C floating at startup
+
+: BUS@          ( -- b )
     0  8 for
         2*  scl pb-odr *bic  sda pb-odr *bis  wait
         sda pb-idr bit*  0<> 1 and  or
         scl pb-odr *bis wait
-    next ;
+    next 
+    -1 +to sum
+    sum if  i2ack  else  i2nack  then ;
 
-: I2OUT         ( b -- )        (i2out i2ack? drop ;
-: I2IN          ( -- b )        (i2in  i2ack ;
-: I2OUT}        ( b -- )        i2out  i2stop} ;
-: I2IN}         ( -- b )        (i2in  i2nack  i2stop} ;
+: I2C}          ( -- )
+    scl pb-odr *bic  sda pb-odr *bic  wait
+    scl pb-odr *bis  wait
+    sda pb-odr *bis ;
 
-variable DEV
-: >DEV          ( ia -- )       FE and  dev ! ;
+: DEVICE!       ( ia -- )   2* FE and  to dev ;
+: {DEVICE-OK?}  ( -- f )    0 {i2c-addr  i2c}  nack? 0= ; \ 'f' is true when an ACK was received 
+: {I2C-WRITE    ( +n -- )   {i2c-addr  nack? ?abort ; \ Start I2C write to device in DEV
 
-: {I2WRITE)     ( -- )      \ Start I2C write with device in DEV
-    i2start  dev @ (i2out ; \ Used for repeated start
-  
-: {I2READ)      ( -- )      \ Start read to device in DEV
-    i2start  dev @ 1+ (i2out \ Used for repeated start
-    i2ack? 0= abort" Ack error " ; 
+: {I2C-READ     ( +n -- )     \ Start read from device in DEV
+    to sum  i2start  dev 1+ bus!  nack? ?abort ; 
 
-: {I2WRITE      ( b ia -- )
-    >dev  {i2write)  i2ack? 0= abort" Ack error "
-    (i2out i2ack? 0= abort" Ack error " ;
 
-: {I2READ       ( ia -- )       >dev  {i2read) ;
+\ Waiting for an EEPROM write to succeed is named acknowledge polling.
+: {POLL}    ( -- )          begin  {device-ok?} until ; \ Wait until ACK received
+: {I2C-OUT  ( dev +n -- )   swap  device!  {i2c-write ;
+: {I2C-IN   ( dev +n -- )   swap  device!  {i2c-read ;
+: BUS!}     ( b -- )        bus!  i2c} ;
+: BUS@}     ( -- b )        bus@  i2c} ;
+: BUS-MOVE  ( a u -- )      bounds ?do i c@ bus! loop ; \ Send string of bytes from 'a' with length 'u
 
-: {I2ACK?}      ( -- f )           \ Flag 'fl' is true when an ACK is received
-    {i2write)  i2ack?  i2stop} ;
-
-\ This routine may be used when writing to EEPROM memory devices.
-\ The waiting for the write to succeed is named acknowledge polling.
-: {POLL}        ( -- )          begin  {i2ack?} until ; \ Wait until ACK received
-
-\ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
-: I2C?          ( ia -- )
-    i2c-setup  >dev  {i2ack?} . ;
- 
+v: fresh
 shield BB-I2C\  freeze
 
 \ End ;;;

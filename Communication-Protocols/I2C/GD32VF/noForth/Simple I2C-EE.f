@@ -12,23 +12,25 @@ PB7 = SDA
 hex
 \ Read data 'x' from EEPROM address 'a'.
 : EC@       ( ia -- x )
-    A0 {i2write {i2read) i2in} ; \ Address EE & rep. start & read data
+    50 device!  1 {i2c-write  bus! i2c} 
+    1 {i2c-read  bus@ i2c} ;
 
 \ Write 'x' to EEPROM address 'a'
 : EC!       ( x ia -- )
-    A0 {i2write  i2out} ;       \ Address EE & write data
+    50 device!  2 {i2c-write  bus! bus! i2c} ;
 
 \ Show stored string from EEPROM
 : SHOW      ( -- )
-    i2c-setup
+    i2c-on
     begin
-        cr ." Embedding"
+        cr ." Project-"
         0 ec@ 0 ?do
             i 1+ ec@ emit
-        loop  100 ms
+        loop
+        ." -Works"  100 ms
     key? until ;     
 
-i2c-setup  0        \ Store string to start of EEPROM
+i2c-on  0        \ Store string to start of EEPROM
 5       over ec!  1+  
 ch F    over ec!  1+  
 ch o    over ec!  1+  
