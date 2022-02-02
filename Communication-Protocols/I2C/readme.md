@@ -135,10 +135,10 @@ Function: BUS-MOVE    ( a u -- )      Sent string of 'u' bytes from 'a' over the
 
 ```
 Function: PCF8574-WRITE ( byte dev-addr -- )
-  1  perform {i2c-write  perform bus!  perform i2c}
+  perform device!  1  perform {i2c-write  perform bus!  perform i2c}
 
 Function: PCF8574-READ  ( dev-addr -- byte )
-  1  perform {i2c-read  perform bus@  perform i2c}
+  perform device!  1  perform {i2c-read  perform bus@  perform i2c}
 ```
   ***
 ### Generic Forth low level part of bitbang example
