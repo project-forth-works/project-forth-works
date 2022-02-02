@@ -54,7 +54,7 @@ hex
 
 \ An example
 
-: EM,           ( a u -- )  0 ?do  count ec,  loop  drop ; \ EE compile the string a,n
+: EM,           ( a u -- )  bounds ?do  i c@ ec,  loop ; \ EE compile the string a,n
 : ETYPE         ( ea u -- ) bounds ?do  i ec@ emit  loop ; \ EE type string
 
 ecreate STRING  ( -- ea )       \ Store named string in EEPROM
