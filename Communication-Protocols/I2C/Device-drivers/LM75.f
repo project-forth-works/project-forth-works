@@ -2,12 +2,14 @@
 \ AUTHOR      : Willem Ouwerkerk, November 25, 1999
 \ LAST CHANGE : Willem Ouwerkerk, Februari 1, 2022
 \ Added compensation value for the LM75 named #COMP
+\ Used special character B0 that displays the degrees sign
 
-hex
-dm -50 constant #COMP            \ Correction value in half degrees please adjust!
+decimal
+ -50 constant #COMP              \ Correction value in half degrees please adjust!
 : {REGISTER     ( reg +n -- )   {i2c-write  bus! ;   \ Select any LM75 register
 : TEMP-REGISTER ( -- )          0 1 {register i2c} ; \ Select temp. register
 
+hex
 : @REG8         ( reg -- b )    \ Read 8-bit register
     1 {register i2c}  1 {i2c-read  bus@ i2c} ;
 
@@ -22,7 +24,7 @@ dm -50 constant #COMP            \ Correction value in half degrees please adjus
 : TEMPERATURE   ( -- n )            \ Read corrected temperature
     temperature)  dup 0F rshift     \ Shift 15 bits to right
     if  -1  FFFF xor  or  then      \ Convert sign to systems word width
-    7 for  2/  next  #comp + ;      \ Divide by 128, keep sign & compensation value
+    2/ 2/ 2/ 2/ 2/ 2/ 2/  #comp + ; \ Divide by 128, keep sign & compensation value
 
 : CONFIGURATION ( b  -- )           \ Set LM75 configuration
     1 1 {register  i2c}             \ Select config. reg.
