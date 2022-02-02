@@ -14,8 +14,8 @@ UCA1 = OLED
 : >BRIGHT   ( b -- )        81 {cmd ol} ;           \ b = 0 to 255 (max. brightness)
 : ON/OFF    ( flag -- )     1 and AE or {cmd spi} ; \ Display on/off
 : INVERSE   ( flag -- )     1 and A6 or {cmd spi} ; \ Display black or white
-: >PIX      ( b -- )        {data  spi} ;           \ Output one pixel row
-: &FILL     ( +n -- )       for  0 >pix  next ;     \ Fill +n rows with zero
+: >DATA     ( b -- )        {data  spi} ;           \ Output one pixel row
+: &FILL     ( +n -- )       for  0 >data next ;     \ Fill +n rows with zero
 
 value X  value Y
 : XY        ( x y -- )
@@ -50,10 +50,10 @@ value X  value Y
    0 0 xy   9 0 do  0 i xy  80 &fill  loop ;
 
 : .BITROW   ( a +n -- )     \ Output half of +Nx14 (big) character
-    0 >pix  for
-        count >pix  1+      \ Output every second bit row
+    0 >data for
+        count >data 1+      \ Output every second bit row
     next
-    drop  0 >pix ;
+    drop  0 >data ;
 
 value O-EMIT                \ OLED emit vector
 : &PAGE         ( -- )          &erase 0 0 xy ; \ To upper left corner
@@ -64,8 +64,9 @@ value O-EMIT                \ OLED emit vector
 
 \ Partial character set
 : ||    ( bitrow -- )       \ Read & compile character row
-   0  0D parse  10 min bounds
-   ?do  2*  i c@ ch X =  -  loop  , ;
+    0  0D parse  10 min bounds
+    ?do  2*  i c@ ch X =  -  loop
+    b-b  swap c,  c, ;
 
 create 'THIN    \ Start of a character type, original version Albert Nijhof
 || ..XXXXXXXXX.....
@@ -227,6 +228,7 @@ create 'THIN    \ Start of a character type, original version Albert Nijhof
 || ...............X
 || ...............X
 || ...............X
+align
 
 : THIN-EMIT ( c -- )            \ Only valid for uppercase characters!
     ch A -  80 x -  dup 9 < if  \ Character does not fit?
