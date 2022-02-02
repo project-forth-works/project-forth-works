@@ -11,5 +11,6 @@ README.md      |   | this file
   
  ```
  ``` 
-![I2C example running](https://user-images.githubusercontent.com/11397265/123396805-09c11880-d5a2-11eb-8bf9-da43656ac0e6.jpg)  
-**A bitbang I2C example running on noForth RCV**
+![PFW - EEPROM demo on screen](https://user-images.githubusercontent.com/11397265/152155072-f541177c-e9f9-4c90-930e-37f9fbb89b03.jpg)
+
+**An I2C example running on noForth RCV**
