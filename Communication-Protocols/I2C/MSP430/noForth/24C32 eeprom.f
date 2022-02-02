@@ -15,28 +15,31 @@ This code implements data storage with an 24C32 EEPROM
 
 hex
 \ Example with clock & 24C32 EEPROM
-: {EEADDR   ( a -- )            \ Address EEprom
-    b-b  A0 {i2write i2out ;    \ High EE-addr. & low EE-addr.
 
-\ Read data b from 24C32 EEPROM byte-address addr. 
-: EC@       ( addr -- b )
-    {eeaddr  {i2read)  i2in} ;  \ Address EE & rep. start & read data
+\ Address EE-device and sent 16-bit EE-address
+: {EEADDR   ( eaddr +n -- )    50 device!  {i2c-write  b-b bus! bus! ;
 
-\ Write data b to 24C32 EEPROM byte-address addr.
-: EC!       ( b addr -- )
-    {eeaddr  i2out}  {poll} ;   \ Address EE & write data
+\ Read next byte from 24C32 EEPROM like COUNT but without address
+: NEC@      ( -- b )        1 {i2c-read  bus@  i2c} ;
+
+\ Read data 'x' from EEPROM address 'addr'.
+: EC@       ( eaddr -- b )  2 {eeaddr i2c}  nec@ ;
+
+\ Write 'x' to EEPROM address addr
+: EC!       ( b eaddr -- )  3 {eeaddr  bus! i2c}  {poll} ;
 
 \ Show stored string from EEPROM
 : SHOW      ( -- )
-    i2c-setup
+    i2c-on
     begin
-        cr ." Embedding"
+        cr ." Project-"
         0 ec@ 0 ?do
             i 1+ ec@ emit
-        loop  100 ms
+        loop  
+        ." -Works"  100 ms
     key? until ;     
 
-setup-i2c  0        \ Save string at the beginning of the EEPROM
+i2c-on  0       \ Save string at the beginning of the EEPROM
 5       over ec!  1+  
 ch F    over ec!  1+  
 ch o    over ec!  1+  
