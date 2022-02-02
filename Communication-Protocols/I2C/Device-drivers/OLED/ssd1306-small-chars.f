@@ -588,7 +588,7 @@ align
     c>n  80 x - dup 6 < if      \ Line full?
         dup &eol  0 y 1+ xy     \ Yes, fill & to next line
     then  drop
-    5 * tiny +  {data           \ Go to wanted char
+    5 * tiny +  6 {data         \ Go to wanted char
     0  begin
         2dup + c@ >data  1+     \ Display bit row
     dup 5 = until  2drop

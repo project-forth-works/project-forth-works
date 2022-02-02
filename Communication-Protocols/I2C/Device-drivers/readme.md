@@ -55,19 +55,20 @@ There are lots of chips available using the I2C-protocol. These examples use the
 Using the I2C driver as presented [here](../)
 
 ``` 
-Function: {AP-ADDR  ( reg -- )
-  or reg with 80  52 {i2write
+Function: {AP-ADDR  ( reg +n -- )
+  29  perform device! perform {i2c-write  or reg with 80 bus!
 
 Function: APDS@     ( reg -- byte )
-  {ap-addr  {i2read)  i2in}
+  1  perform {ap-addr perform i2c}
+  perform {i2c-read  perform bus@  perform i2c}
 
 Function: APDS!     ( byte reg -- )
-  {ap-addr  i2out}
+  2  perform {ap-addr  perform bus!  perform i2c}
 
-Function: APDS-ON   ( -- )     3 0 apds!
-Function: APDS-ON   ( -- )     3 0 apds!
-Function: LIGHT     ( -- u )   0C apds@  100 times  0D apds@  or
-Function: IR        ( -- u )   0E apds@  100 times  0F apds@  or
+Function: APDS-ON   ( -- )     3 0   perform apds!
+Function: APDS-ON   ( -- )     3 0   perform apds!
+Function: LIGHT     ( -- u )   0C  do apds@  100 times  0D  do apds@  or
+Function: IR        ( -- u )   0E  do apds@  100 times  0F  do apds@  or
 ```
 <p align="center">
 <img src="https://project-forth-works.github.io/APDS9300.jpg" width="224" height="200" />
@@ -77,13 +78,13 @@ Function: IR        ( -- u )   0E apds@  100 times  0F apds@  or
 ## APDS9300 in Generic Forth
 ```forth
 hex
-: {AP-ADDR  ( r -- )        80 or  52 {i2write ; \ APDS register access
-: APDS@     ( r -- b )      {ap-addr  {i2read)  i2in} ; \ Read register 'r' leaving 'b'
-: APDS!     ( b r -- )      {ap-addr  i2out} ; \ Write 'b' to register 'r'
-: APDS-ON   ( -- )          3 0 apds! ; \ Sensor on
-: APDS-OFF  ( -- )          0 0 apds! ; \ Sensor off
-: LIGHT     ( -- u )        0C apds@  0D apds@  8 lshift or ; \ Visual light
-: IR        ( -- u )        0E apds@  0F apds@  8 lshift or ; \ Visual & infrared light
+: {AP-ADDR  ( reg +n -- )   29 device!  {i2c-write  80 or bus! ;
+: APDS@     ( reg -- b )    1 {ap-addr i2c}  1 {i2c-read  bus@ i2c} ;
+: APDS!     ( b reg -- )    2 {ap-addr  bus! i2c} ;
+: APDS-ON   ( -- )          3 0 apds! ;
+: APDS-OFF  ( -- )          0 0 apds! ;
+: LIGHT     ( -- u )        0C apds@  0D apds@  b+b ;
+: IR        ( -- u )        0E apds@  0F apds@  b+b ;
 ```
 
 ## Implementations

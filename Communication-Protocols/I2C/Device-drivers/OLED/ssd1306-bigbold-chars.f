@@ -5,7 +5,8 @@
 hex
 : ||    ( bitrow -- )
     0  0D parse  10 min bounds
-    do  2*  i c@ ch X =  -  loop  , ;
+    do  2*  i c@ ch X =  -  loop
+    b-b  swap c,  c, ;
 
 create BIGBOLD      \ Big characters 8 x 14 pixels
 || ................    \ BL

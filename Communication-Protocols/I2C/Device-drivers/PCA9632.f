@@ -24,17 +24,17 @@ AA = All outputs PWM controlled
 *)
 
 hex
-: {PCADDR   ( r -- )    C4 {i2write ;
-: >PCA      ( b r -- )  {pcaddr  i2out  i2stop} ;
-: PCA>      ( r -- b )  {pcaddr  {i2read)  i2in} ;
-: RST       ( -- )      A5 6 {i2write  5A i2out  i2stop} ;
+: {PCADDR   ( r +n -- ) 62 device!  {i2c-write  bus! ;
+: >PCA      ( b r -- )  2 {pcaddr  bus! i2c} ;
+: PCA>      ( r -- b )  1 {pcaddr  1 {i2c-read  bus@ i2c} ;
+: RST       ( -- )      62 device!  6 2 {pcaddr  5A bus! i2c} ;
 : >ON       ( b -- )    8 >pca ;    \ b = 1, 4, 10 or 40
 : PCA-ON    ( -- )      01 0 >pca ;
 : PCA-OFF   ( -- )      11 0 >pca ;
 
 
 \ Examples
-  i2c-setup     \ Initalise I2C interface
+  i2c-on        \ Initalise I2C interface
   pca-on        \ Allow changing of outputs
   1 >on         \ Activate output 0
   0 >on         \ Deactivate all outputs

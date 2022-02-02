@@ -14,16 +14,16 @@ hex
 \ Reading and writing to EEPROM type 24CL64 with acknowledge polling
 \ AE = EEPROM I2C bus address
 \ Address EE-device and sent 16-bit EE-address
-: {EEADDR   ( eaddr -- )    b-b AE {i2write  i2out ;
+: {EEADDR   ( eaddr +n -- )    57 device!  {i2c-write  b-b bus! bus! ;
 
 \ Read next byte from 24C512 EEPROM like COUNT but without address
-: NEC@      ( -- b )        {i2read)  i2in} ;
+: NEC@      ( -- b )        1 {i2c-read  bus@  i2c} ;
 
 \ Read data 'x' from EEPROM address 'addr'.
-: EC@       ( eaddr -- b )  {eeaddr nec@ ;
+: EC@       ( eaddr -- b )  2 {eeaddr i2c}  nec@ ;
 
 \ Write 'x' to EEPROM address addr
-: EC!       ( b eaddr -- )  {eeaddr  i2out}  {poll} ;
+: EC!       ( b eaddr -- )  3 {eeaddr  bus! i2c}  {poll} ;
 
 
 \ Cell wide read and store operators for EEPROM
@@ -34,7 +34,7 @@ hex
 
 
 \ Example: A forth style memory interface with tools
-i2c-setup
+i2c-on
 
   1FFF constant EESIZE  \ 8 kByte   24CL64, etc.
 \ 7FFF constant EESIZE  \ 32 kByte  24CL256, etc.
@@ -53,7 +53,7 @@ i2c-setup
 : EFILL         ( ea u b -- )   rot rot  bounds do  dup i ec!  loop drop ;
 
 : EDMP      ( ea -- )
-    hex  i2c-setup  begin
+    hex  i2c-on  begin
         cr  dup 4 u.r ." : "
         10 0 do  dup i + ec@ 2 .r space  loop  ch | emit \ Show hex
         10 0 do  dup i + ec@ pchar emit  loop  10 +      \ Show Ascii
@@ -69,9 +69,10 @@ i2c-setup
 ecreate STRING  ( -- ea )       \ Store named string in EEPROM
 s" Forth"  dup ec, em,
 
+
 \ Show stored string from EEPROM
 : SHOW      ( -- )
-    i2c-setup
+    i2c-on
     begin
         cr ." Project "
         string ec@+ etype

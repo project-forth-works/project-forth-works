@@ -1,6 +1,6 @@
 \ I2C analog input & output using a PCF8591
 \
-\ Note that; 090 = PCF8591 I2C-bus identification address 0
+\ Note that: 48 = PCF8591 I2C-bus device address 0
 \
 \ Connections on module YL-40 e.g. at AliExpress:
 \  0 ADC - AIN0 = LDR
@@ -16,20 +16,22 @@ hex
 
 \ Read ADC input '+n', 'u' is the result of the conversion.
 : ADC       ( +n -- u )
+    4A device!              \ Select ADC
     3 and                   \ Select 1 of four inputs  
     dac? 40 and  or         \ (De)activate DAC & add input
-    90 {i2write             \ Send address & control byte
-    {i2read)  i2in drop  i2in} ; \ Repeated start, get fresh ADC reading 
+    1 {i2c-write  bus! i2c} \ Send address & control byte
+    2 {i2c-read  bus@ drop  bus@ i2c} ; \ Get fresh ADC reading 
 
 \ Set DAC-output the a value that matches 'u'.
 : DAC       ( u -- )
+    4A device!              \ Select ADC
     true to dac?            \ DAC active
-    40 90 {i2write i2out} ; \ Send address & control byte
+    1 {i2c-write  bus! i2c} ; \ Send address & control byte
 
 
 \ Example program
 : ANALOG    ( +n -- )       \ Show the use off ADC/DAC
-    i2c-setup  >r           \ Initialise I2C
+    i2c-on  >r              \ Initialise I2C
     true to dac?            \ DAC is used
     begin
         r@ adc  dup .       \ Read ADC input +n, show result

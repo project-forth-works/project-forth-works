@@ -347,10 +347,10 @@ create CUSTOM  10 allot  \ Building place for custom graphics chars (p q r s)
     r> base ! ;
 
 : .G-ROW    ( a -- )            \ Output 4x8 (graphic) character
-    {data  4 0 do
+    4 {data  4 0 do
         count >data  incr x     \ Output bit row
     loop  drop
-    i2stop} ;
+    i2c} ;
 
 : GEMIT    ( c -- )
     80 x -  4 < if  drop exit  then  \ Line full? Yes stop!

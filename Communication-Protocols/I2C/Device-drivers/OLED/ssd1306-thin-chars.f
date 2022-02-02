@@ -1,8 +1,9 @@
 \ Thin big characters 7 x 16 by Albert Nijhof (code space: ~1600 bytes)
 
 : ||    ( bitrow -- ) \ Note that only one space behin || is allowed!
-   0  0D parse  10 min bounds
-   do  2*  i c@ [char] X =  -  loop  , ;
+    0  0D parse  10 min bounds
+    do  2*  i c@ [char] X =  -  loop
+    b-b  swap c,  c, ;
 
 create BIG1    \ Big characters 7 x 16 pixels
 
@@ -780,7 +781,7 @@ create BIG1    \ Big characters 7 x 16 pixels
 || ..X....X..X....X
 || ..X.......X....X
 || ...XX.........X.
-
+align
 
 : T&EMIT    ( c -- )
     c>n  0E * big1 +  dup 7 .bitrow \ First half of big char
