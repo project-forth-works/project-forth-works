@@ -42,9 +42,11 @@ There are lots of chips available using the I2C-protocol. These examples use the
       <b>8-Bit ADC/DAC</b>
 </p>
 
-- [TMP75](TMP75.f), Temperature sensor with 12-bit resolution and max. +-1 degree celcius accuracy [datasheet](https://datasheets.maximintegrated.com/en/ds/LM75.pdf) & examples:
+- [LM75](LMP5.f), Temperature sensor with 9-bit resolution and max. +-2 degree celcius accuracy [datasheet](https://datasheets.maximintegrated.com/en/ds/LM75.pdf)
+- [TMP75](TMP75.f), Temperature sensor with 12-bit resolution and max. +-1 degree celcius accuracy [datasheet](https://www.ti.com/lit/gpn/tmp75) & examples:
 ```
-      TMP75-DEMO ( -- )    - Read & show temperature continuously
+      TEMPERATURE2 ( -- )  - Read & show 9-bit temperature continuously
+      TMP75-DEMO   ( -- )  - Read & show temperature continuously
 ```
 - [More on OLEDs](OLED) ; OLED drivers, character sets, etc.
 - [More on LCD's](LCD) ; LCD drivers, character sets, etc.
