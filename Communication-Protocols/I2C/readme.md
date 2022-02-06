@@ -265,7 +265,7 @@ SCL SDA or constant IO  \ I2C bus lines
 : BUS-MOVE  ( a u -- )      bounds ?do i c@ bus! loop ; \ Send string of bytes from 'a' with length 'u
 ```
 
-### I2C Generic Forth with high level factorisation
+### I2C implementation examples
 
 This example is for an 8-bit PCF8574 like I/O-expander:
 ```forth
@@ -294,7 +294,7 @@ See the list of example words below.
 
    ***
 
-### Implementations
+### Dedicated implementations
 
 Have a look at the sub directories for implementations for different systems. 
 
