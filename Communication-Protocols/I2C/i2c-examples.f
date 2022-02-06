@@ -44,13 +44,14 @@ hex
 
 
 \ Example-3  A basic 24C32 to 24C512 EEPROM driver
+50 constant #EEPROM
 : NEC@          ( -- b )        1 {i2c-read  bus@  i2c} ;
 
 : EC@           ( addr -- b )   
-    50 device!  2 {i2c-write  b-b bus!  bus!  i2c}  nec@ ;
+    #eeprom device!  2 {i2c-write  b-b bus!  bus!  i2c}  nec@ ;
 
 : EC!           ( b addr -- )
-    50 device!  3 {i2c-write  b-b bus! bus!  bus!  i2c} 
+    #eeprom device!  3 {i2c-write  b-b bus! bus!  bus!  i2c} 
     begin  {device-ok?} until ;
 
 : PEMIT     ( ch1 -- )      dup 7F < and  bl max  emit ;
@@ -89,12 +90,13 @@ hex
     begin
     ?dup while                  \ Bytes left to write?              \ sa ta u
         >r r@ #page umin        \ Determine #PAGE or less bytes     \ sa ta #p    u
-        50 swap write-page      \ Write #PAGE or less bytes         \ sa ta       u
+        #eeprom swap write-page \ Write #PAGE or less bytes         \ sa ta       u
         r> #page -  0 max       \ Correct length minimum is zero!   \ sa ta u
     repeat  2drop ;             \ Remove address, write is ready?   \ -                      
 
 
-: EEFILL        ( a u ch -- )   \ Fill 'u' bytes of EEPROM device 'dev' with 'ch' from addr 'a'
+\ Fill 'u' bytes of the activated EEPROM device 'dev' with 'ch' from addr 'a'
+: EEFILL        ( a u ch -- )
     rot rot  bounds do  dup i ec!  loop  drop ;
 
 \ End ;;;
