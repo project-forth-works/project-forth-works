@@ -275,6 +275,8 @@ This example is for an 8-bit PCF8574 like I/O-expander:
 : PCF8574-READ  ( dev-addr -- byte )
   device!  1 {i2c-read  bus@  i2c} ;
 ```
+More examples can be found in the file [i2c-examples.f](i2c-examples.f), for 
+the EEPROM code you may adjust the address constant `#EEPROM`.
 
 ### Implementations
 
