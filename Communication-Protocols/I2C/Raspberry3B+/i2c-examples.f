@@ -67,20 +67,20 @@ hex
 \ Example-4  Write data to EEPROM
 \ Note that: a target address starts on page boundaries!!!!
 
-\ 24C64   page write: The 32K/64K EEPROM is capable of 32-BYTE page writes.
-\ 24C256  page write: The 128K/256K EEPROM is capable of 64-BYTE page writes.
-\ 24C512  page write: The 512K/1024K EEPROM is capable of 128-BYTE page writes.
-\ 24C2048 page write: Is capable of 256-BYTE page writes.
+\ 24C64   0x020 page write: The 32K/64K EEPROM is capable of 32-BYTE page writes.
+\ 24C256  0x040 page write: The 128K/256K EEPROM is capable of 64-BYTE page writes.
+\ 24C512  0x080 page write: The 512K/1024K EEPROM is capable of 128-BYTE page writes.
+\ 24C2048 0x100 page write: Is capable of 256-BYTE page writes.
 \ The 24C1024 & 24C2048 require a different scheme because some
 \ of the address bits are part of the device address!
 
 \ sa1 = address to copy from, ta1 = address where the EE-page starts, sa2 = Start of the next page to copy
 \ ta2 = address of the next EE-page, dev = Device address of EEPROM. +n = Page size of that EEPROM 
-: WRITE-PAGE    ( sa1 ta1 dev +n -- sa2 ta2 )   \ Universal EEPROM page write
-    >r  device!                                 \ Save data stream length & target addr.\ sa1 ta1
-    r@ 2 + {i2c-write  tuck b-b  bus! bus!      \ Correct block length, sent EE addr.   \ ta1 sa1
-    r@ bounds do  i c@ bus!  loop  i2c}         \ Write EEPROM page                     \ ta1 sa2
-    begin  {device-ok?} until  swap r> + ;      \ Leave source addr. & corrected targ. address
+: WRITE-PAGE    ( sa1 ta1 dev +n -- sa2 ta2 )    \ Universal EEPROM page write
+    >r  device!                                  \ Save data stream length & target addr.\ sa1 ta1
+    r@ 2 + {i2c-write  tuck b-b  bus! bus!       \ Correct block length, sent EE addr.   \ ta1 sa1
+    dup r@ bounds do  i c@ bus!  1+  loop  i2c}  \ Write EEPROM page                     \ ta1 sa2
+    begin  {device-ok?} until  swap r> + ;       \ Leave source addr. & corrected targ. address
 
 \ Example for a very large memory block write for testing
 \ This version uses the page size for a 24C64!!!
