@@ -134,10 +134,10 @@ Function: BUS-MOVE    ( a u -- )      Sent string of 'u' bytes from 'a' over the
 ### I2C pseudo code with high level factorisation
 
 ```
-Function: PCF8574-WRITE ( byte dev-addr -- )
+Function: >PCF8574  ( byte dev-addr -- )
   perform device!  1  perform {i2c-write  perform bus!  perform i2c}
 
-Function: PCF8574-READ  ( dev-addr -- byte )
+Function: PCF8574>  ( dev-addr -- byte )
   perform device!  1  perform {i2c-read  perform bus@  perform i2c}
 ```
   ***
@@ -269,14 +269,30 @@ SCL SDA or constant IO  \ I2C bus lines
 
 This example is for an 8-bit PCF8574 like I/O-expander:
 ```forth
-: PCF8574-WRITE ( byte dev-addr -- )
+: >PCF8574  ( byte dev-addr -- )
   device!  1 {i2c-write  bus!  i2c} ;
 
-: PCF8574-READ  ( dev-addr -- byte )
+: PCF8574>  ( dev-addr -- byte )
   device!  1 {i2c-read  bus@  i2c} ;
 ```
 More examples can be found in the file [i2c-examples.f](i2c-examples.f), for 
-the EEPROM code you may adjust the address constant `#EEPROM`.
+the EEPROM code you may adjust the address constant `#EEPROM`.  
+See the list of example words below.  
+
+|  Word | Stack |  Description |
+| ------ | ------------ | --------------------------------------------------------------- | 
+| `I2C?` | ( dev -- ) | Show or device 'dev' is present on the bus | 
+| `SCAN-I2C` | ( -- ) | Show a grid with all devic addresses found on the bus |  
+| `>PCF8574` | ( b dev -- ) | Write data to 8-bit I/O-extender with 'dev' address | 
+| `PCF8574>` | ( dev -- b ) | Read data from 8-bit I/O-extender with 'dev' address | 
+| `EC@` | ( addr -- b ) | Fetch byte from address in EEPROM | 
+| `EC!` | ( b addr -- ) | Store byte to address in EEPROM | 
+| `EDMP` | ( addr -- ) | Dump EEPROM memory from EEPROM 'addr' onward | 
+| `WRITE-PAGE` | ( sa1 ta1 dev +n -- sa2 ta2 ) | Write '+n' bytes data from 'sa1' to 'ta1' in 'dev' etc. | 
+| `WRITE-MEMORY` | ( sa ta u -- ) | Write 'u' bytes data from 'sa' to 'ta' |
+| `EEFILL` | ( a u b -- ) | Fill 'u' EEPROM bytes from address 'a' with byte 'b' |
+
+   ***
 
 ### Implementations
 
