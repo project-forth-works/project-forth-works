@@ -282,7 +282,7 @@ See the list of example words below.
 |  Word | Stack |  Description |
 | ------ | ------------ | --------------------------------------------------------------- | 
 | `I2C?` | ( dev -- ) | Show or device 'dev' is present on the bus | 
-| `SCAN-I2C` | ( -- ) | Show a grid with all devic addresses found on the bus |  
+| `SCAN-I2C` | ( -- ) | Show a grid with all device addresses found on the bus |  
 | `>PCF8574` | ( b dev -- ) | Write data to 8-bit I/O-extender with 'dev' address | 
 | `PCF8574>` | ( dev -- b ) | Read data from 8-bit I/O-extender with 'dev' address | 
 | `EC@` | ( addr -- b ) | Fetch byte from address in EEPROM | 
