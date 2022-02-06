@@ -79,7 +79,7 @@ hex
 : WRITE-PAGE    ( sa1 ta1 dev +n -- sa2 ta2 )   \ Universal EEPROM page write
     >r  device!                                 \ Save data stream length & target addr.\ sa1 ta1
     r@ 2 + {i2c-write  tuck b-b  bus! bus!      \ Correct block length, sent EE addr.   \ ta1 sa1
-    r@ 0 do  count bus!  loop  i2c}             \ Write EEPROM page                     \ ta1 sa2
+    r@ bounds do  i c@ bus!  loop  i2c}         \ Write EEPROM page                     \ ta1 sa2
     begin  {device-ok?} until  swap r> + ;      \ Leave source addr. & corrected targ. address
 
 \ Example for a very large memory block write for testing
