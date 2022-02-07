@@ -1,5 +1,5 @@
-(* E37F5UM - For noForth C&V FR5xxx, eUSCI I2C on MSP430FR5xxx using pull-ups.
-   The bitrate values are for an 8 MHz DCO, for 16 MHz they should be doubled.
+(* FR5xxx, eUSCI I2C on MSP430FR5xxx using external pull-ups.
+   The bitrate values are for a 16 MHz DCO, for 8 MHz they must be halved.
    This is a ported version, for the FRAM MSP devices, code Vsn 1.10
 
   The most hard to find data are those for the selection registers.
@@ -20,16 +20,16 @@
   note that two 10k pullup resistors has te be mounted and that's it.
   For RUNNER2 and SHOW we need a second PCF8574 with eight switches
   and a different I2C-address. The minimum I2C clock for this code is
-  2500 Hz, that is a bitrate divisor of 6400.
+  2500 Hz, that is a bitrate divisor of 6400!!!
 
-  User words: >DEV  {I2WRITE)  {I2WRITE  {I2READ)  {I2READ
-              I2STOP}  I2IN  I2IN}  I2OUT  I2OUT}  I2C?
-              I2C-SETUP  {I2ACK?}  {POLL}
+  User words:  I2C-ON  {I2C-WRITE  {I2C-READ   I2C}
+               BUS@  BUS!  DEVICE!  {DEVICE-OK?}
+  Additional:  {I2C-OUT  {I2C-IN  {POLL}  BUS!}  BUS@}  BUS-MOVE
 
-  An example, first execute I2C-SETUP  After that the I2C is setup as a
+  An example, first execute I2C-ON  After that the I2C is setup as a
   master. Sent byte 'b' to an I2C device with address 'a'.
-    : >SLAVE    ( b a -- )  {i2write  i2out} ;
-    : >PCF8574  ( b -- )    40 >slave ;
+    : >SLAVE    ( b a -- )  1 {i2c-write  bus!  i2c} ;
+    : >PCF8574  ( b -- )    20 >slave ;
 
  Addresses  - Labels       - Bit patterns
  1CC   15C  - WDTCL        - Off already
@@ -70,90 +70,93 @@ FR5994  - UCB0 P1.6 = SDA, P1.7 = SCL, UCB1 P5.0 = SDA, P5.1 = SCL
 *)
 
 hex  v: inside also  definitions
-code INT-OFF  C232 ,  4F00 ,  end-code
-
-: I2C-SETUP ( -- )
-    int-off
-    C0 20A *bic     \ P1SEL0     I2C to pins
-    C0 20C *bis     \ P1SEL1
-    01 640 **bis    \ UCB0CTLW0  reset eUSCI
-    FF1 640 !       \ UCB0CTLW0  I2C master using SMCLK
-\   dm 40 646 !     \ UCB0BRW    Bitrate 400 KHz with 16 MHz DCO
-\   dm 80 646 !     \ UCB0BRW    Bitrate 200 KHz with 16 MHz DCO
-    dm 160 646 !    \ UCB0BRW    Bitrate 100 KHz with 16 MHz DCO
-    01 640 **bic    \ UCB0CTLW0  Resume eUSCI
-    02 66C **bis ;  \ UCB0IFG    Start with TX buffer empty
-
-: I2CA  ( fl -- )   ?abort ;        \ I2C error message
+code INT-OFF    ( -- )      C232 ,  4F00 ,  end-code
+: I2C-CLEAR     ( -- )      2 66C ! ;   \ UCB0IFG  reset USCI
+: ?I2C          ( fl -- )   ?abort ;    \ I2C error message
 
 \ 01 = wait for data received to RX; 02 = wait for TX to be sent
-\ : I2READY   ( bit -- )
+\ : I2C-WAIT       ( bit -- )
 \     80  begin
-\      over 66C bit* if  2drop exit  then  ( UCB0IFG )
+\      over 66C bit* if  2drop exit  then \ UCB0IFG
 \  1- dup 0= until  true ?abort ;
-code I2READY   ( bit -- )
-    400 # day mov       \ 1024 to counter (day)
+code I2C-WAIT   ( bit -- )
+    200 # day mov       \ Timeout
     begin,
-        tos 66C & .b bit  cs? if,  sp )+ tos mov  next  then,
+        tos 66C & .b bit  cs? if,  sp )+ tos mov  next  then, \ UCB0IFG
         #1 day sub
     0=? until,
-chere >r  \ Reuse of code
+chere >r  \ Reuse error message
     ip push
-    ' i2ca >body # ip mov
+    ' ?I2C >body # ip mov
     next
 end-code
 
 \ 02 = wait for startcond. to finish; 04 = wait for stopcond. to finish
-\ : I2DONE    ( bit -- )  \ wait until startcond. or stopcond. is done
-\    200  begin
-\        over 640 bit* 0= if  2drop exit  then  ( UCB0CTLW0 )
+\ : I2C-DONE      ( bit -- )  \ Wait until startcond. or stopcond. is done
+\    80  begin
+\        over 640 bit* 0= if  2drop exit  then \ UCB0CTLW0
 \    1- dup 0= until  true ?abort ;
-code I2DONE     ( bit -- )
-    2000 # day mov      \ 8192 to counter (day)
+code I2C-DONE     ( bit -- )
+    200 # day mov       \ Timeout!
     begin,
-        tos 640 & .b bit  cc? if,  sp )+ tos mov  next  then,
+        tos 640 & .b bit  cc? if,  sp )+ tos mov  next  then, \ UCB0CTLW0
         #1 day sub
     0=? until,
     r> jmp
 end-code
 
-v: extra definitions
-: I2START   ( -- )      2 640 **bis ;       \ UCB0CTLW0
-: I2STOP    ( -- )      4 640 **bis ;       \ UCB0CTLW0
-: I2NACK    ( -- )      8 640 **bis ;       \ UCB0CTLW0
-: I2ACK?    ( -- fl )   20 66C bit* 0= ;    \ UCB0IFG
-: I2OUT     ( b -- )    64E c!  2 i2ready ; \ UCB0TXBUF TX to shiftreg.
-: I2IN      ( -- b )    1 i2ready  64C c@ ; \ UCB0RXBUF Read databyte
-: >DEV      ( a -- )    2/ 660 c! ;         \ UCB0I2CSA Set I2C device address
-: I2STOP}   ( -- )      i2stop  4 i2done ;  \ Stop condition & check
-: I2OUT}    ( b -- )    i2out  i2stop} ;    \ Write last I2C databyte!
-: I2IN}     ( -- b )    i2stop i2in 4 i2done ; \ Read last I2C databyte!
-: {I2WRITE) ( -- )      12 640 **bis 2 i2ready ; \ UCB0CTLW0  Start I2C write
+value SUM  value 1ST?   \ Hold number of bytes to send & flag first data byte
+v: extra definitions \ Basic I2C bus primitives
+: I2C-ON    ( -- )
+    int-off
+    1 640 **bis     \ UCB0CTLW0  USCI in reset state
+    C0 20A *bic     \ P1SEL0     I2C to pins
+    C0 20C *bis     \ P1SEL1
+    FD1 640 !       \ UCB0CTLW0  I2C master transmitter using SMCLK
+\   dm 16 646 !     \ UCB0BRW    Bitrate 1 MHz with 16 MHz DCO
+\   dm 20 646 !     \ UCB0BRW    Bitrate 800 KHz with 16 MHz DCO
+\    dm 40 646 !     \ UCB0BRW    Bitrate 400 KHz with 16 MHz DCO
+    dm 80 646 !     \ UCB0BRW    Bitrate 200 KHz with 16 MHz DCO
+\   dm 160 646 !    \ UCB0BRW    Bitrate 100 KHz with 16 MHz DCO
+    1 640 **bic     \ UCB0CTLW0  Resume eUSCI
+    i2c-clear ;     \            Start with TX buffer empty
 
-: {I2READ)  ( -- )              \ Send I2C device address for reading
-    10 640 **bic  2 640 **bis   \ UCB0CTLW0  Setup read & start
-    2 i2ready  2 i2done ;       \ Wait for start condition & ack
+: DEVICE!       ( dev -- )      7F and  660 c! ; \ UCB0I2CSA  Set I2C device (or target) address
 
-: {I2WRITE  ( b a -- )          \ Send I2C device address for writing
-    >dev  {i2write)  64E c!     \ Set dev. addr, send start condition & store 1st databyte
-    2 i2done  2 i2ready ;       \ UCB0TXBUF Send first data to TX
+: BUS@          ( -- b )            \ Read databyte 'b' from I2C-bus
+    -1 +to sum  sum 0= if  4 640 **bis  then
+    1 i2c-wait  64C c@ ;            \ UCB0RXBUF 
 
-: {I2READ   ( a -- )            \ Set and send I2C device address for reading
-    >dev   {i2read) ;           \ UCB0I2CSA Set slave address
+: BUS!          ( b -- )            \ Output 'b' on I2C-bus
+    64E c!  1st? if  0 to 1st?  2 i2c-done  then \ UCB0TXBUF
+    -1 +to sum  2 i2c-wait  sum 0= if  4 640 **bis  then ; \ UCB0CTLW0 
 
-: {I2ACK?}  ( -- fl )           \ Flag 'fl' is true when in ACK is received
-    {i2write)  i2stop}  i2ack? ;
+: {I2C-WRITE    ( +n -- )           \ (Repeated)start for I2C write, keep record length
+    to sum  -1 to 1st?  12 640 **bis \ UCB0CTLW0  
+    2 i2c-wait  noop noop ;         \ eUSCI needs a short delay here!
 
-\ This routine may be used when writing to EEPROM memory devices.
+: {I2C-READ     ( +n -- )           \ (Repeated)start for I2C read, keep record length
+    to sum  10 640 **bic            \ UCB0CTLW0
+    2 640 **bis  2 i2c-done ;       \ UCB0CTLW0
+    
+: I2C}          ( -- )              \ End I2C bus transfer
+     4 640 **bis  4 i2c-done  0 to 1st? ; \ UCB0CTLW0
+
+: {DEVICE-OK?}  ( -- fl )           \ Flag 'fl' is true when an ACK is received
+    i2c-clear  0 {i2c-write  i2c}  20 66C bit** 0= ; \ UCB0IFG
+
+
+\ Possible extensions:
+\ This routine may be used when writing to EEPROM or alike memory devices.
 \ The waiting for the write to succeed is named acknowledge polling.
-: {POLL}    ( -- )      begin  {i2ack?} until ; \ Wait until an ACK is received
+: {POLL}        ( -- )          begin  {device-ok?} until ; \ Wait until addressed device is ready
+: {I2C-OUT      ( dev +n -- )   swap device!  {i2c-write ;  \ Open I2C device for writing
+: {I2C-IN       ( dev +n -- )   swap device!  {i2c-read ;   \ Open I2C device for reading
+: BUS@}         ( -- b )        bus@  i2c} ;                \ Read last I2C databyte!
+: BUS!}         ( b -- )        bus!  i2c} ;                \ Write last I2C data byte
+: BUS-MOVE      ( a u -- )      bounds ?do i c@ bus! loop ; \ Send string of bytes from 'a' with length 'u
 
-
-\ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
-: I2C?      ( a -- )            \ Result is true when device 'a' is on I2C bus
-    i2c-setup >dev {i2ack?} . ; \ Address device, present?
-
-v: fresh definitions
+v: fresh
 shield USCI-I2C\  freeze
 
 \ End ;;;
