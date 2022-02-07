@@ -4,9 +4,15 @@
   Connect the I2C-print from the Forth users group or any other module
   with I2C compatible chip{s} and connect the power lines. P1.7 to SDA and
   P1.6 to SCL, note that two 10k pullup resistors has te be mounted, that's it.
-  User words:  >DEV  {I2WRITE)  {I2WRITE  {I2READ)  {I2READ
-               I2STOP}  I2IN  I2IN}  I2OUT  I2OUT}  I2C?
-               I2C-SETUP  {I2ACK?}  {POLL}
+
+  User words:  I2C-ON  {I2C-WRITE  {I2C-READ   I2C}
+               BUS@  BUS!  DEVICE!  {DEVICE-OK?}
+  Additional:  {I2C-OUT  {I2C-IN  {POLL}  BUS!}  BUS@}  BUS-MOVE
+ 
+  An example, first execute I2C-ON  After that the I2C is setup as
+  a master. Sent byte 'b' to an I2C device with address 'a'.
+    : >SLAVE    ( b a -- )  1 {i2c-write  bus!  i2c} ;
+    : >PCF8574  ( b -- )    20 >slave ;
 
   10 20 - P1IN   Input bits
   10 21 - P1OUT  Output bits
@@ -20,20 +26,15 @@
  *)
 
 hex  v: inside also definitions
-value DEV
-: I2C-SETUP     ( -- )
-    C0 27 *bic  C0 22 *bis  C0 21 *bis  \ P1REN, P1DIR, P1OUT
-    C0 26 *bic  C0 42 *bic ;            \ P1SEL, P1SEL2
-
-\ Minimal period is 5 us, is about 100 kHz clock
-routine WAIT     ( -- adr )
-    12 # moon mov    ( 12 is about 5 us at 16MHz )
+value DEV  value SUM  value NACK?
+routine WAIT     ( -- adr ) \ Minimal period is 5 us, is about 100 kHz clock
+\   0F # moon mov   \ 15 is about 5 us at 16MHz
+    #4 moon mov     \ 4 is about 5 us at 8 MHz
     begin, #1 moon sub =? until,
     rp )+ pc mov              ( ret )
 end-code
 
-\ Give I2C start condition
-code I2START    ( -- )
+code I2START    ( -- )  \ Give I2C start condition
     40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
     wait # call
     80 # 22 & .b bis  80 # 21 & .b bic  \ P1DIR, P1OUT  clr-sda
@@ -41,52 +42,8 @@ code I2START    ( -- )
     next
 end-code
 
-\ Give I2C stop condition
-code I2STOP}    ( -- )
-    40 # 21 & .b bic  40 # 22 & .b bis  \ P1OUT, P1DIR  clr-scl
-    80 # 21 & .b bic  80 # 22 & .b bis  \ P1DIR, P1OUT  clr-sda
-    wait # call
-    40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
-    wait # call
-    80 # 21 & .b bis  80 # 22 & .b bic  \ P1OUT, P1DIR  set-sda
-    next
-end-code
-
-\ Generate I2C ACK
-code I2ACK      ( -- )
-    40 # 21 & .b bic  40 # 22 & .b bis  \ P1OUT, P1DIR  clr-scl
-    80 # 21 & .b bic  80 # 22 & .b bis  \ P1DIR, P1OUT  clr-sda
-    wait # call
-    40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
-    wait # call
-    next
-end-code
-
-\ Generate I2C noACK
-code I2NACK     ( -- )
-    40 # 21 & .b bic  40 # 22 & .b bis  \ P1OUT, P1DIR  clr-scl
-    80 # 21 & .b bis  80 # 22 & .b bic  \ P1OUT, P1DIR  set-sda
-    wait # call
-    40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
-    wait # call
-    next
-end-code
-
-\ Flag 'f' is true if an I2C ACK is received otherwise false
-code I2ACK?     ( -- f )
-    40 # 21 & .b bic  40 # 22 & .b bis  \ P1OUT, P1DIR  clr-scl
-    80 # 21 & .b bis  80 # 22 & .b bic  \ P1OUT, P1DIR  set-sda
-    wait # call
-    40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
-    wait # call
-    tos sp -) mov
-    80 #  20 & .b bit                   \ P1IN  test ack
-    tos tos subc                        \ Make flag
-    next
-end-code
-
-\ Send the byte b out on the I2C bus
-code (I2OUT     ( b -- )
+v: extra definitions
+code BUS!       ( b -- )    \ Send the byte b out on the I2C bus
     tos w mov
     sp )+ tos mov
     #8 day mov
@@ -102,11 +59,30 @@ code (I2OUT     ( b -- )
         wait # call
         #1 day sub
     =? until,       \ ready?
+    40 # 21 & .b bic  40 # 22 & .b bis  \ P1OUT, P1DIR  clr-scl
+    80 # 21 & .b bis  80 # 22 & .b bic  \ P1OUT, P1DIR  set-sda
+    wait # call
+    40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
+    wait # call
+    80 #  20 & .b bit                   \ P1IN  test ack
+    sun sun subc                        \ Make flag
+    #-1 sun bix                         \ Invert flag
+    sun  adr NACK? & mov                \ Save ACK/NACK flag
     next
 end-code
 
+v: inside definitions
+: {I2C-ADDR     ( +n -- )       drop  i2start  dev bus! ; \ Start I2C write with address from DEV
+
+
+\ Higher level I2C access, hides internal details!
+v: extra definitions
+: I2C-ON        ( -- )
+    C0 27 *bic  C0 22 *bic  C0 21 *bis  \ P1REN, P1DIR, P1OUT
+    C0 26 *bic  C0 42 *bic ;            \ P1SEL, P1SEL2
+
 \ Receive de byte b from the I2C bus
-code (I2IN      ( -- b )
+code BUS@       ( -- b )
     tos sp -) mov
     #0 tos mov
     #8 day mov
@@ -120,41 +96,45 @@ code (I2IN      ( -- b )
         tos tos addc                        \ Add bit to 'b'
         #1 day sub
     =? until,       \ ready?
+    #1 adr sum & sub
+    40 # 21 & .b bic  40 # 22 & .b bis  \ P1OUT, P1DIR  clr-scl
+    #0 adr sum & cmp                    \ ACK?
+    0<>? if,    80 # 21 & .b bic        \ P1DIR, P1OUT  clr-sda
+    else,       80 # 21 & .b bis        \ P1DIR, P1OUT  set-sda
+    then,       80 # 22 & .b bis
+    wait # call
+    40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
+    wait # call
     next
 end-code
 
-v: extra definitions
-: I2OUT     ( b -- )    (i2out  i2ack? drop ; \ Write byte & drop Ack
-: I2IN      ( -- b )    (i2in  i2ack ;        \ Read byte & give Ack
-
-
-\ : >DEV      ( a -- )    FE and  to dev ;        \ Set device address
-code >DEV   ( a -- )
-    FE # tos bia  tos adr dev & mov  sp )+ tos mov  next
+code I2C}       ( -- )  \ Give I2C stop condition
+    40 # 21 & .b bic  40 # 22 & .b bis  \ P1OUT, P1DIR  clr-scl
+    80 # 21 & .b bic  80 # 22 & .b bis  \ P1DIR, P1OUT  clr-sda
+    wait # call
+    40 # 21 & .b bis  40 # 22 & .b bic  \ P1OUT, P1DIR  set-scl
+    wait # call
+    80 # 21 & .b bis  80 # 22 & .b bic  \ P1OUT, P1DIR  set-sda
+    next
 end-code
 
-: I2OUT}        ( b -- )    i2out  i2stop} ;
-: I2IN}         ( -- b )    (i2in  i2nack  i2stop} ;
-: {I2WRITE)     ( -- )      i2start  dev (i2out ;   \ Start I2C write
-: {I2READ)      ( -- )      i2start  dev 1+ i2out ; \ Start read to device
+code DEVICE!    ( a -- )
+    tos tos add  FE # tos bia  tos adr dev & mov  sp )+ tos mov  next
+end-code
+: {DEVICE-OK?}  ( -- fl )   0 {i2c-addr  i2c}  nack? 0= ; \ 'f' is true when an ACK is received
+: {I2C-WRITE    ( +n -- )   {i2c-addr  nack? ?abort ;   \ Start I2C write
+: {I2C-READ     ( +n -- )   to sum  i2start  dev 1+ bus!  nack? ?abort ; \ Start read to device
 
-: {I2WRITE     ( b a -- )
-    >dev  {i2write)  i2ack? 0= ?abort  i2out ;      \ Start write to dev 'a'
 
-: {I2READ      ( a -- )    >dev  {i2read) ;         \ Start read to dev. 'a'
+\ Waiting for an EEPROM write to succeed is named acknowledge polling.
+: {POLL}    ( -- )          begin  {device-ok?} until ; \ Wait until ACK received
+: {I2C-OUT  ( dev +n -- )   swap  device!  {i2c-write ;
+: {I2C-IN   ( dev +n -- )   swap  device!  {i2c-read ;
+: BUS!}     ( b -- )        bus!  i2c} ;
+: BUS@}     ( -- b )        bus@  i2c} ;
+: BUS-MOVE  ( a u -- )      bounds ?do i c@ bus! loop ; \ Send string of bytes from 'a' with length 'u
 
-: {I2ACK?}  ( -- fl )           \ Flag 'fl' is true when an ACK is received
-    {i2write)  i2ack?  i2stop} ;
-
-\ This routine may be used when writing to EEPROM memory devices.
-\ The waiting for the write to succeed is named acknowledge polling.
-: {POLL}        ( -- )      begin  {i2ack?} until ; \ Wait until ACK received
-
-\ Prints -1 if device with address 'a' is present on I2C-bus otherwise 0.
-: I2C?          ( a -- )
-    i2c-setup >dev {i2ack?} . ;
-
-v: fresh definitions
+v: fresh
 shield BB-I2C\  freeze
 
 \ End
