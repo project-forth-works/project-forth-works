@@ -1,5 +1,5 @@
 \ Rolling dice on an OLED screen
-\ Uses the graphic character set and a random generator
+\ Uses the graphic character set and a random number generator
 \ From well known words: UMIN MS
 
 decimal     \ Add Brodies pseudo random number generator
@@ -21,23 +21,17 @@ hex
 : FIVE      one  four ;
 : SIX       four 24 3 dot  54 3 dot ;
 
-: .DICE     ( +n -- )       \ Print dice
-    &page
-    dup 1 = if  one     then
-    dup 2 = if  two     then
-    dup 3 = if  three   then
-    dup 4 = if  four    then
-    dup 5 = if  five    then
-        6 = if  six     then ;
+create 'DICE
+    ' one , ' two , ' three , ' four , ' five , ' six , 
 
-: ROLL          6 choose 1+ ;    \ Roll dice once
-: DO-DICE       roll .dice ;     \ Randomly print the dice
-: ROLL-DICE     7 0 do  i 1+ 20 * ms  do-dice  loop ; \ Let the die roll out
+: ROLL          6 choose ;    \ Roll dice once
+: .DICE         roll cells 'dice + @ execute ; \ Randomly print the dice value
+: ROLL-DICE     7 0 do  i 1+ 20 * ms  .dice  loop ; \ Let the die roll out
 
-: DICE      ( -- )          \ Roll dice once stop when akey was pressed
+: DICE      ( -- )          \ Roll dice, stop when a key is pressed
     &page  graphic  20 >bright
     begin  
-        7 0 do  roll drop  loop  do-dice  
+        7 0 do  roll drop  loop  .dice  
     key? until  key drop
     roll-dice  C0 >bright ; \ Roll out & show result
 
