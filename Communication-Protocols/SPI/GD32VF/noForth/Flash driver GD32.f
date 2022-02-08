@@ -23,7 +23,7 @@ FDUMP     (a u -- )         = Dump u bytes of flash memory beging at address a
 
 *)
 
-: {FL         ( c -- )          {spi ; \ Open SPI to flash & send command c
+: {FL         ( c -- )          {spi  spi-out ; \ Open SPI to flash & send command c
 
 : {FREAD      ( a c -- b )
     {fl  h-h spi-out    \ Send command, split address & send high byte
@@ -49,7 +49,7 @@ inside
     0  90 {fread spi-in  spi}  . . ;
 
 : FDUMP       ( a u -- )
-    4 SPI-setup  0 ?do
+    spi-on  0 ?do
         cr  dup 0 d.str 5 rtype ." : "  \ Print address
          dup  10 for                    \ Dump 16 bytes
             fc@+ 2 .r space             \ Print 16 bytes in hex.
@@ -87,7 +87,7 @@ forth
 : FILL2         ( -- )      0 #sect 1- do  i  'buffer i + c!  -1 +loop ;
 : FILL3         ( c -- )    #sect 0 do  dup  'buffer i + c!  loop  drop ;
 
-4 spi-setup
+spi-on
 fill1       0 write-sector
 fill2       1 write-sector
 ch W fill3  2 write-sector

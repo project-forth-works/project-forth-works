@@ -6,7 +6,7 @@ The output is printed and increased by one until a key is pressed
 *)
 
 : COUNTER       ( -- )
-    4 spi-setup  0
+    spi-on  0
     begin
         spi-i/o  dup .  1+  80 ms
     key? until  drop ;

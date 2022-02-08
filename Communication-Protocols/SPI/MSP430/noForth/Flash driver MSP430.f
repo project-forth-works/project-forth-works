@@ -49,7 +49,7 @@ v: inside
     0  90 {fread spi-in  spi}  . . ;
 
 : FDUMP         ( da u -- )
-    4 SPI-setup  0 ?do
+    spi-on  0 ?do
         cr  2dup d.str 5 rtype ." : "   \ Print address
          2dup  10 for                   \ Dump 16 bytes
             fc@+ 2 .r space             \ Print 16 bytes in hex.
@@ -88,7 +88,7 @@ v: forth
 : FILL2         ( -- )      0 #sect 1- do  i  'buffer i + c!  -1 +loop ;
 : FILL3         ( c -- )    #sect 0 do  dup  'buffer i + c!  loop  drop ;
 
-4 spi-setup
+spi-on
 fill1       0 write-sector
 fill2       1 write-sector
 ch W fill3  2 write-sector

@@ -100,7 +100,7 @@ and TRANS=0. At last, disable the SPI by clearing SPIEN bit.
 
 hex
 v: fresh
-code {SPI)      ( -- )  \ Open an SPI data stream 
+code {SPI       ( -- )  \ Open an SPI data stream 
     sun 40011000 li     \ PORTC_ODR  Port-C output address
     w C sun X) .mov     \ Read Port-C
     w -2 .andi          \ Clear bit-0
@@ -193,9 +193,9 @@ code  SPI-OUT   ( b -- )
     next
 end-code
 
-: {SPI          ( b -- )        {spi) spi-out ;
+: SPI-ON        ( b -- )        4 spi-setup ;
 
-4 spi-setup \ Activate SPI0 with 3.25MHz clock
+4 spi-on    \ Activate SPI0 with 3.25MHz clock
 shield SPI\  freeze
 
 \ End ;;;

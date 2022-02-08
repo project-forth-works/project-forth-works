@@ -33,8 +33,8 @@ v: fresh
     18100000 40010800 **bis \ Port_A CRL  Set pins PA5,6,7
     40 4001080C **bis       \ Port_A OCTL PA.6 Activate pull-up
 \ Output mode push-pull 10MHz 
-    000000FF 40011000 **bic \ Port_C CRL  Clear pin PC0
-    00000011 40011000 **bis \ Port_C CRL  Set pin PC0
+    000000FF 40011000 **bic \ Port_C CRL  Clear pin PC0 & PC1
+    00000011 40011000 **bis \ Port_C CRL  Set pin PC0 & PC1
     1 4001100C **bis        \ Port_C out  CS high
     20 4001080C **bic ;     \ Port_A OCTL PA.5  CLK = 0
 
@@ -43,7 +43,7 @@ false [if]  \ Clock high level version = 300 kHz, low level version = 1 MHz
 : CLOCK-HI     ( -- )      20 4001080C **bis ;      \ PA5_OCTL  SPI clock
 : CLOCK-LOW    ( -- )      20 4001080C **bic ;      \ PA5_OCTL  SPI clock
 : CLOCK        ( -- )      clock-hi  clock-low ;
-: {SPI)        ( -- )      1 4001100C **bic ;       \ PC0_OCTL  SPI on, CS=low
+: {SPI         ( -- )      1 4001100C **bic ;       \ PC0_OCTL  SPI on, CS=low
 : SPI}         ( -- )      1 4001100C **bis ;       \ PCO_OCTL  SPI off, CS=high
 
 \ Write a bit to the SPI-bus, read abit from the SPI-bus
@@ -86,7 +86,7 @@ code CLOCK      ( -- )
     next
 end-code
 
-code  {SPI)     ( -- )
+code  {SPI      ( -- )
     sun 4001100C li     \ PORTC_ODR  Port-C output address
     w sun ) .mov        \ Read Port-C
     w -2 .andi          \ Clear bit-0
@@ -140,9 +140,9 @@ end-code
 : SPI-IN        ( -- b )
     0  8 for  2*  clock-hi  read-bit or  clock-lo  next ;
 
-: {SPI          ( b -- )        {spi) spi-out ;
+: SPI-ON        ( -- )      1 spi-setup ;
 
-1 spi-setup
+spi-on
 v: fresh  
 shield spi\  freeze
 

@@ -22,7 +22,7 @@ P1.7  - MOSI                    \ Data bitstream out  x1=Mosi
 
 hex
 v: fresh
-: B0-SPI-SETUP  ( -- )
+: B0-SPI-ON     ( -- )
     1 69 *bis       \ UCB0CTL1  Reset USCI
     F0 22 c!        \ P1DIR     P1.4, P1.5, P1.6 and P1.7 output
     E0 26 *bis      \ P1SEL     P1.5 P1.6 P1.7 is SPI
@@ -48,9 +48,8 @@ end-code
 : SPI-OUT       ( b -- )    spi-i/o drop ;  \ Write b to SPI-bus
 : SPI-IN        ( -- b )    0 spi-i/o ;     \ Read b from SPI
 : SPI}          ( -- )      10 21 *bis ;    \ P1OUT  SPI off CS=high
-: {SPI)         ( -- )      10 21 *bic ;    \ P1OUT  SPI on, CS=low
-: {SPI          ( b -- )    {spi) spi-out ;
+: {SPI          ( -- )      10 21 *bic ;    \ P1OUT  SPI on, CS=low
 
-spi-setup
+spi-on
 v: fresh  
 shield spi\  freeze

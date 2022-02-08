@@ -8,8 +8,8 @@ UCA1 = OLED
 \ OLED primitives
 : COMM      ( -- )          4 203 *bic ;            \ OLED command
 : DATA      ( -- )          4 203 *bis ;            \ OLED screen data
-: {CMD      ( b -- )        comm  {spi ;            \ Start OLED command stream
-: {DATA     ( b -- )        data  {spi ;            \ Start OLED data stream
+: {CMD      ( b -- )        comm  {spi  spi-out ;   \ Start OLED command stream
+: {DATA     ( b -- )        data  {spi  spi-out ;   \ Start OLED data stream
 : OL}       ( b -- )        spi-out spi} ;          \ End an OLED stream
 : >BRIGHT   ( b -- )        81 {cmd ol} ;           \ b = 0 to 255 (max. brightness)
 : ON/OFF    ( flag -- )     1 and AE or {cmd spi} ; \ Display on/off
@@ -25,10 +25,10 @@ value X  value Y
     4 rshift 10 or ol} ;
 
 : OLED-SETUP    ( -- )
-    spi-setup
-    8C 205 *bis             \ P1DIR     Init CS, DC & RES
+    spi-on
+    8C 205 *bis             \ P2DIR     Init CS, DC & RES
     80 203 *bic  1 ms  80 203 *bis \ Hardware reset of OLED
-    0C 203 *bis             \ P1OUT     CS & DC = 1
+    0C 203 *bis             \ P2OUT     CS & DC = 1
     false on/off            \ Display off
     D5 {cmd  080 spi-out    \ Set oscillator clock
     A8 spi-out  3F spi-out  \ Set multiplexer ratio
@@ -228,6 +228,30 @@ create 'THIN    \ Start of a character type, original version Albert Nijhof
 || ...............X
 || ...............X
 || ...............X
+
+|| ....XXXXXXXXXXXX
+|| ...X............
+|| ..X.............
+|| ..X.............
+|| ..X.............
+|| ...X............
+|| ....XXXXXXXXXXXX
+
+|| .......XXXXXXXXX
+|| .....XX.........
+|| ...XX...........
+|| ..X.............
+|| ...XX...........
+|| .....XX.........
+|| .......XXXXXXXXX
+
+|| ...XXXXXXXXXXXXX
+|| ..X.............
+|| ...X............
+|| ....XXX.........
+|| ...X............
+|| ..X.............
+|| ...XXXXXXXXXXXXX
 align
 
 : THIN-EMIT ( c -- )            \ Only valid for uppercase characters!
@@ -243,13 +267,12 @@ align
 : THIN      ( -- )      ['] thin-emit to o-emit ;
 
 : DEMO      ( -- )
-    OLED-setup  thin            \ Init. OLED & select char. type
+    oled-setup  thin            \ Init. OLED & select char. type
     begin
         &page  FF ms            \ Wipe screen
-        2 0 do                  \ Print text demo
-            i 8 *  i 4 * xy &" PROJECT"  80 ms
-            i 8 * 10 +  i 4 * 2 + xy &" FORTH"  FF ms
-        loop  400 ms
+         0 0 xy &" PROJECT"  80 ms
+        18 2 xy &" FORTH"    80 ms
+        30 4 xy &" WORKS"    400 ms
     key? until  &page ;         \ Until a key was pressed
 
 ' demo  to app
