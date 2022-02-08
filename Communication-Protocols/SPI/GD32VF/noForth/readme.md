@@ -19,7 +19,7 @@
 | [SPI-loopback.f](SPI-loopback.f)  | `COUNTER` | A counter as simplest loopback test |
 | [Flash driver GD32.f](Flash%20driver%20GD32.f)  | `4 SPI-SETUP`| Activate SPI-interface to W25Q64 Flash memory chip| 
 |                        | `FILL1 0 write-sector` | Fill buffer with pattern en write to Flash sector 0 |  
-|                        | `0. 100 FDUMP` |  Dump sector 0 showing the written contents, etc. |
+|                        | `0 100 FDUMP` |  Dump sector 0 showing the written contents, etc. |
 | [SPI OLED display.f](SPI%20OLED%20display.f) | `DEMO` | Initialise OLED & display P-F-W until a key is hit |
 |                        | `&PAGE` | Erases the OLED and sets the cursor in upper left corner |
 
