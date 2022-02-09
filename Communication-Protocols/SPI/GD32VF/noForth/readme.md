@@ -1,9 +1,9 @@
 # SPI protocol for the GD32VF103 
-- **Bitbang on port-A**  
+- [**Bitbang on port-A**](bbSPI%20v100.f)  
   Note that the highlevel generates a 300 kHz clock, the low level variant a 1 MHz clock.  
   The bitbang SPI setup has no restrictions at all. More on I/O-ports from page 101ff
   of the user manual mentioned below.
-- **Hardware SPI on port-A**  
+- [**Hardware SPI on port-A**](SPI0%20v100.f)  
   The upper limit of the SPI clock of the GD32 is 27 MHz, so always check your settings  
   With noForth you may add the SPI setup routine to the APP vector.  
   ***The first version  of SPI-setup did not initialise the NSS pin, thanks to Martin Bitter & Wolfgang Strauss this is corrected.*** 
