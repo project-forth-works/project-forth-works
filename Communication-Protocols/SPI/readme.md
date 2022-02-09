@@ -130,4 +130,5 @@ hex
 ```
 ### Implementations
 
-Have a look at the sub directories for implementations for different systems. 
+Have a look at the sub directories for implementations for different systems.  
+See: [MSP430](MSP430), [GD32VF](GD32VF)
