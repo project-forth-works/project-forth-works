@@ -1,11 +1,9 @@
 # GD32VF103 versions of the SPI protocol
 
-For these systems: [noForth](noForth), [mecrisp-quintus](mecrisp-quintus), ...
+For these systems in bitbang and/or hardware SPI:  
+    [noForth](noForth), [mecrisp-quintus](mecrisp-quintus), ...
 
-  ***
-  
-- Bitbang
-- Hardware SPI  
+  ***  
 
 ![Inlezen een karakter in noForth](https://user-images.githubusercontent.com/11397265/120066830-9a2a3d00-c078-11eb-8c5e-d7b48160e945.jpg)
 ****Read a character using SPI from a W25Q64 external Flash memory****
