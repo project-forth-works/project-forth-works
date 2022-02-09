@@ -22,7 +22,7 @@ P1.7  - MOSI                    \ Data bitstream out  x1=Mosi
 
 hex
 v: fresh
-: B0-SPI-ON     ( -- )
+: SPI-ON        ( -- )
     1 69 *bis       \ UCB0CTL1  Reset USCI
     F0 22 c!        \ P1DIR     P1.4, P1.5, P1.6 and P1.7 output
     E0 26 *bis      \ P1SEL     P1.5 P1.6 P1.7 is SPI
