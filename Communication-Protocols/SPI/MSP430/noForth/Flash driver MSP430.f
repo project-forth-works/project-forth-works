@@ -23,7 +23,7 @@ FDUMP     ( da u -- )         = Dump u bytes of flash memory beging at address a
 
 *)
 
-: {FL           ( c -- )        {spi ; \ Open SPI to flash & send command c
+: {FL         ( c -- )          {spi  spi-out ; \ Open SPI to flash & send command c
 
 : {FREAD        ( da c -- b )
     {fl  swap spi-out   \ Send command, swap address & send high byte
