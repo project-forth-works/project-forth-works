@@ -1,5 +1,9 @@
 # GD32VF103 versions of the SPI protocol
 
+For these systems: [noForth](noForth), [mecrisp-quintus](mecrisp-quintus), ...
+
+  ***
+  
 - Bitbang
 - Hardware SPI  
 
