@@ -195,7 +195,7 @@ end-code
 
 : SPI-ON        ( b -- )        4 spi-setup ;
 
-4 spi-on    \ Activate SPI0 with 3.25MHz clock
+spi-on      \ Activate SPI0 with 3.25MHz clock
 shield SPI\  freeze
 
 \ End ;;;
