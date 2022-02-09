@@ -4,7 +4,7 @@
 
 This program simulates the way a forest fire develops after a lightning-strike. The idea is based on a publication by B. Drossel and F. Schwabl, Self-organized critical forest-fire model, Physical Review Letters, Vol. 69, No. 11, September 1992.
 
-The program funcions as follows:
+The program functions as follows:
 
 The program starts with clearing a grid of 512x384 bytes, corresponding to an area without trees.
 
@@ -29,9 +29,5 @@ Than the program starts executing an endless loop. In each loop the following is
 	
 The program is not very fast. Performing 10.000 loops takes 7.4 ms. So you have to wait a bit till the effect is seen, but it will come!
 
-
-https://youtu.be/jhH7B7DqVm0
-
-
-			
-
+![Forest fire](https://user-images.githubusercontent.com/11397265/153283094-db5d024c-45ec-4c4a-891d-a9860b052ef2.jpg)
+[**Forest fire on YouTube**](https://youtu.be/jhH7B7DqVm0)
