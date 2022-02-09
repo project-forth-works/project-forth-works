@@ -24,7 +24,7 @@ Bitbang and hardware specific SPI will both be among the specific implementation
 
 ### Pseudo code for (bitbang) SPI input & output
 ```
-Function: SPI-SETUP ( -- )
+Function: SPI-ON  ( -- )
   Initialise MOSI & SCK as output, MISO as input
 ```
 
@@ -83,9 +83,10 @@ For a machine with byte wide I/O ports.
 
 **The used addresses are for port-1 of the MSP430G2553:**
 ```forth
-Extra words: TUCK  
+\ Extra words: TUCK  
 
-Words with hardware dependencies:
+hex
+\ Words with hardware dependencies:
 : *BIS  ( mask addr -- )        tuck c@ or  swap c! ; 
 : *BIC  ( mask addr -- )        >r  invert  r@ c@ and  r> c! ;
 : BIT*  ( mask addr -- b )      c@ and ;
@@ -94,7 +95,7 @@ Words with hardware dependencies:
 21 constant P1OUT       \ Output register of port-1
 22 constant P1DIR       \ Direction register of port-1
 
-: SPI-SETUP         ( -- )
+: SPI-ON       ( -- )
     B0 P1DIR c!         \ P1.4, P1.6 & P1.7 are outputs, P1.5 is input
     20 P1OUT *bic ;     \ Start with clock low
 
