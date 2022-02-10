@@ -3,16 +3,16 @@ name: Update index
 # Controls when the action will run.
 # on: workflow_dispatch
 on:
-  push:
-    branches:
-     - main
-    paths:
-     - '**/README.md'
-     - '**/readme.md'
+  - push:
+      branches:
+       - main
+      paths:
+       - '**/README.md'
+       - '**/readme.md'
 
-  workflow_dispatch:
-    tags:
-      description: 'For manual testing'
+  - workflow_dispatch:
+      tags:
+        description: 'For manual testing'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
