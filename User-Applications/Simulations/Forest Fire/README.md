@@ -31,5 +31,6 @@ The program is not very fast. Executing 10.000 loops takes around 7.4 ms. With a
 
 [**Forest fire on YouTube**](https://youtu.be/JNGmbZAHrhY)
 
-![Forest fire](https://user-images.githubusercontent.com/11397265/153283094-db5d024c-45ec-4c4a-891d-a9860b052ef2.jpg)
+
+![Waldbrand2](https://user-images.githubusercontent.com/4964288/153408550-665f2bef-2022-4393-87c9-7bdef45b0746.jpg)
 
