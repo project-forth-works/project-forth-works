@@ -21,7 +21,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: project-forth-works/project-forth-works.github.io
-          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
           path: project-forth-works.github.io
       
       - name: setup python
