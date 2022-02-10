@@ -27,7 +27,9 @@ Than the program starts executing an endless loop. In each loop the following is
 	update the screen for the tree or fire based on the age of the tree or 			fire
 	next loop
 	
-The program is not very fast. Performing 10.000 loops takes 7.4 ms. So you have to wait a bit till the effect is seen, but it will come!
+The program is not very fast. Executing 10.000 loops takes around 7.4 ms. With a grid of 512x384 and the default settings it takes about 1 minute (~80 milion loops) before a major forest-fire develops.
+
+[**Forest fire on YouTube**](https://youtu.be/JNGmbZAHrhY)
 
 ![Forest fire](https://user-images.githubusercontent.com/11397265/153283094-db5d024c-45ec-4c4a-891d-a9860b052ef2.jpg)
-[**Forest fire on YouTube**](https://youtu.be/jhH7B7DqVm0)
+
