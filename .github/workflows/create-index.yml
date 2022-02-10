@@ -1,17 +1,16 @@
 name: Update index
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the v1.2 branch
+# Controls when the action will run.
 on:
    workflow_dispatch:
      tags:
        description: 'For manual testing'
    push:
-     branches:
-       - main
-     paths:
-       - '**/README.md'
-       - '**/readme.md'
+    branches:
+      - main
+    paths:
+      - '**/README.md'
+      - '**/readme.md'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
