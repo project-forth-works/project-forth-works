@@ -1,6 +1,6 @@
-\ Waldbrand v2.0
+\ Waldbrand v2.1
 \ 11feb2021: simulation of a forest-fire - wabiForth 3.2.8 and later
-\ 201344 bytes (including grid-buffer), 29 defintions
+\ 201424 bytes (including grid-buffer), 29 defintions
 
 \ This small program simulates a forrest-fire. The idea comes from B. Drossel
 \ and F. Schwabl, Self-organized critical forest-fire model,
@@ -33,7 +33,7 @@ unused word#
 create mycolortable 32 cells allot
 mycolortable constant colortable ( to speed up things a very little bit... )
 
-0 value total
+2variable dtotal
 32 value #colors
 
 	 black   black vdyellow  orange yellow    red  green  green
@@ -121,7 +121,7 @@ create (field) scrnsize allot
 
 : go
 	defwin
-	0 to total
+	d% 0 dtotal 2!
 	clearfld
 	black 0 >wincanvas cls
 
@@ -131,9 +131,8 @@ create (field) scrnsize allot
 			leave
 		else
 			10000loop
-			10000 +to total
-			home
-			total .
+			d% 10000 dtotal 2@ d+ dtotal 2!
+			home dtotal 2@ d.
 		then
 	loop
 
