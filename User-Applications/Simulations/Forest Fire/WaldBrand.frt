@@ -1,25 +1,27 @@
-\ Waldbrand v2.1
+\ Waldbrand v2.3
 \ 11feb2021: simulation of a forest-fire - wabiForth 3.2.8 and later
-\ 201424 bytes (including grid-buffer), 29 defintions
 
-\ This small program simulates a forrest-fire. The idea comes from B. Drossel
+\ This program simulates a forest-fire. The idea comes from B. Drossel
 \ and F. Schwabl, Self-organized critical forest-fire model,
 \ Physical Review Letters, Vol. 69, No. 11, September 1992, pp. 16291632.
 
 \ The principle is this: The simulation uses a 512 by 384 field. Every loop a
-\ random cell is selected and checked if it is empty or not. If empty, there is a
+\ random cell is selected and checked if it is empty (=0) or not. If empty, there is a
 \ small change that a tree starts growing. If the cell is not empty, the action depends
 \ on whether it is a tree or a fire. A tree has a very small change of getting hit
 \ by lightning and otherwise the age of the tree is upped by one (upto 255)
 \ if the cell is on fire, the age of the fire is lower by 1 till zero.
 \ after the action the screen is updated for the cell.
 
-\ a counter of the number of loopsis available in the lower left corner.
+\ a counter of the number of loops is available in the lower left corner.
 
-forget waldbase : waldbase ;
-unused word#
+: toroid ( n l )							\ high level version
+    2dup >= if - else
+        over 0 < if + else
+            drop then
+    then ;
 
-: defwin
+: defwin \ defines a floating translucent window for displaying the counter
 	    200 100 2 makewin
 	translucent 2 >wincanvas				\ window 2 is tranlucent
 				2 wincls
@@ -27,11 +29,11 @@ unused word#
 	      white 2 >winink
 	       true 2 winvisible
 
-	       true 0 uart>task#
-	          2 0 win#>task# ;
+	       true 0 uart>task#				\ no printing on the UART
+	          2 0 win#>task# ;				\ print @ window 2
 
 create mycolortable 32 cells allot
-mycolortable constant colortable ( to speed up things a very little bit... )
+mycolortable constant colortable ( to speed things up a very little bit... )
 
 2variable dtotal
 32 value #colors
@@ -63,27 +65,30 @@ create (field) scrnsize allot
 : clearfld scrnsize 0 do 0 myfld i + c! loop ;
 : scraddr ( x y -- addr ) swap maxyscr * + myfld + ; ( 35.6c )
 
-: check8n ( -- t/f ) ( 540c )
-	x 1- maxxscr toroid  y 						scraddr c@ ignite = if true exit then
-	x 1- maxxscr toroid  y 1- maxyscr toroid	scraddr c@ ignite = if true exit then
-	x 1- maxxscr toroid  y 1+ maxyscr toroid	scraddr c@ ignite = if true exit then
-	x    				 y 1- maxyscr toroid	scraddr c@ ignite = if true exit then
-	x    				 y 1+ maxyscr toroid	scraddr c@ ignite = if true exit then
-	x 1+ maxxscr toroid	 y						scraddr c@ ignite = if true exit then
-	x 1+ maxxscr toroid	 y 1- maxyscr toroid	scraddr c@ ignite = if true exit then
-	x 1+ maxxscr toroid	 y 1+ maxyscr toroid 	scraddr c@ ignite = if true exit then
+: (onfire?) ( -- f/t ) scraddr c@ ignite = ;
+\ : (onfire?) ( -- f/t ) scraddr c@ 12 ignite within ;
+
+: check8n ( -- t/f )
+	x 1- maxxscr toroid  y 						(onfire?) if true exit then
+	x 1- maxxscr toroid  y 1- maxyscr toroid	(onfire?) if true exit then
+	x 1- maxxscr toroid  y 1+ maxyscr toroid	(onfire?) if true exit then
+	x    				 y 1- maxyscr toroid	(onfire?) if true exit then
+	x    				 y 1+ maxyscr toroid	(onfire?) if true exit then
+	x 1+ maxxscr toroid	 y						(onfire?) if true exit then
+	x 1+ maxxscr toroid	 y 1- maxyscr toroid	(onfire?) if true exit then
+	x 1+ maxxscr toroid	 y 1+ maxyscr toroid 	(onfire?) if true exit then
 	false ;
 
 : newcell
 	maxxscr rndm to x					\ select a rndm cell
 	maxyscr rndm to y ;
 
-: updatescr
+: updatescr ( -- )
 	x y scraddr c@
 	3 rshift							\ div by 8
 	4* colortable + @					\ 4* plus colortable
-	0 >winink
-	x y draw2x2 ;
+	0 >winink							\ implementation specific
+	x y draw2x2 ;						\ implementation specific
 
 : tree! ( cell -- )
 	check8n if							\ kijk of een vd buren brand
@@ -107,10 +112,15 @@ create (field) scrnsize allot
 
 	1- 0 max x y scraddr c!	;			\ else brand -> age -1 (till 0)
 
+: dolightning
+	x y scraddr c@						\ get value from cell
+	lghttrh > if						\ is it a tree? yes -> set it on fire
+		lghttrh x y scraddr c! then ;
+
 : 1loop
 	newcell
 	lightning rndflag if				\ lightning-strike?
-		lghttrh x y scraddr c!			\ yes: make fire
+		dolightning						\ yes: make fire
 	else								\ no: update cell
 		docell
 	then
@@ -120,8 +130,8 @@ create (field) scrnsize allot
 : 10000loop 10000 0 do 1loop loop ;
 
 : go
-	defwin
-	d% 0 dtotal 2!
+	defwin								\ define floating window
+	d% 0 dtotal 2!						\ reset total
 	clearfld
 	black 0 >wincanvas cls
 
@@ -131,17 +141,15 @@ create (field) scrnsize allot
 			leave
 		else
 			10000loop
-			d% 10000 dtotal 2@ d+ dtotal 2!
+			d% 10000 dtotal 2@ d+ dtotal 2! \ print counter
 			home dtotal 2@ d.
 		then
 	loop
 
-	0 0 win#>task#
- 	false 0 uart>task#
+	0 0 win#>task#						\ restore printing on win0
+ 	false 0 uart>task#					\ restore printing @ UART
 
 	vdcyan 0 >wincanvas
 	 white 0 >winink ;
 
-word# swap - .
-unused - .
 
