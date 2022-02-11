@@ -1,5 +1,6 @@
-\ 23dec2021: simulation of a forest-fire - wabiForth 3.2.6 and later
-\ 200924 bytes, 27 defs
+\ Waldbrand v2.0
+\ 11feb2021: simulation of a forest-fire - wabiForth 3.2.8 and later
+\ 201344 bytes (including grid-buffer), 29 defintions
 
 \ This small program simulates a forrest-fire. The idea comes from B. Drossel
 \ and F. Schwabl, Self-organized critical forest-fire model,
@@ -13,12 +14,26 @@
 \ if the cell is on fire, the age of the fire is lower by 1 till zero.
 \ after the action the screen is updated for the cell.
 
+\ a counter of the number of loopsis available in the lower left corner.
+
 forget waldbase : waldbase ;
 unused word#
+
+: defwin
+	    200 100 2 makewin
+	translucent 2 >wincanvas				\ window 2 is tranlucent
+				2 wincls
+		 50 700 2 >winorig
+	      white 2 >winink
+	       true 2 winvisible
+
+	       true 0 uart>task#
+	          2 0 win#>task# ;
 
 create mycolortable 32 cells allot
 mycolortable constant colortable ( to speed up things a very little bit... )
 
+0 value total
 32 value #colors
 
 	 black   black vdyellow  orange yellow    red  green  green
@@ -105,6 +120,8 @@ create (field) scrnsize allot
 : 10000loop 10000 0 do 1loop loop ;
 
 : go
+	defwin
+	0 to total
 	clearfld
 	black 0 >wincanvas cls
 
@@ -114,8 +131,14 @@ create (field) scrnsize allot
 			leave
 		else
 			10000loop
+			10000 +to total
+			home
+			total .
 		then
 	loop
+
+	0 0 win#>task#
+ 	false 0 uart>task#
 
 	vdcyan 0 >wincanvas
 	 white 0 >winink ;

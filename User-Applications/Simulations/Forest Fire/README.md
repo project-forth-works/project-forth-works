@@ -27,9 +27,9 @@ Then the program starts executing an endless loop. In each loop the following is
 	update the screen for the tree or fire based on the age of the tree or 			fire
 	next loop
 	
-The program is not very fast. Executing 10.000 loops takes around 7.4 ms. With a grid of 512x384 and the default settings it takes about 1 minute (~80 million loops) before a major forest-fire develops.
+The program is not very fast. Executing 10.000 loops takes around 7.4 ms. With a grid of 512x384 and the default settings it takes about 80 million loops) before a major forest-fire develops.
 
-You can play around with the different settings of the program to see what happens. If you raise the chance of a lightning-strike you will see that there will be more fires, but never very big. If you raise the chance of a new tree there will be a high density of trees quickly, resulting in larger fires. It is also possible to raise the  time it takes for a tree to catch fire from a neighbouring tree.
+It is interesting to play around with the different settings of the program to see what happens. If you raise the chance of a lightning-strike you will see that there will be more fires, but never very big. If you raise the chance of a new tree growing there will be a high density of trees quickly, resulting in larger fires. It is also possible to raise the time it takes for a tree to catch fire from a neighbouring tree by lowering the value IGNITE. The fire will spread more slowly.
 
 
 [**Forest fire on YouTube**](https://youtu.be/JNGmbZAHrhY)
