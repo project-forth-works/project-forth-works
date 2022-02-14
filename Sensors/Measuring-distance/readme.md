@@ -1,6 +1,6 @@
 # Measuring distances
 
-The idea is to measuring distance using ultrasonic sensors.  
+The idea is to measuring distance using ultrasonic and other sensors.  
 
 
 ## Ultrasonic sensors
