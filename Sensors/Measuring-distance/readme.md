@@ -21,7 +21,7 @@ Most sensors have four wires and use two wires for communication.
 
 ```
 1) VCC  = Mostly % Volt but some work from 2.4 Volt
-2) TRIG = Trigger input ( 10 µsec. positive pulse )
+2) TRIG = Trigger input ( 10 Âµsec. positive pulse )
 3) ECHO = Result, the length of the positive pulse is the measured distance
 4) GND  = Ground pin
 ```
@@ -40,7 +40,7 @@ Function: US-ON  ( -- )
   Set the output low.
 
 Function: DISTANCE  ( -- distance )
-  Give 10 µsec. pulse in the trigger output
+  Give 10 Âµsec. pulse in the trigger output
   Wait until the echo input goes high
   Initialise a counter
   Increase counter in a loop until echo goes low again
@@ -84,7 +84,4 @@ hex
 
 ``` 
 
-More info look at the Egel project chapter 8, chapter 13 and/or chapter 17.  
-
-
- 
+More info look at the Egel project [chapter 8](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e008), [chapter 13](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e013) and/or [chapter 17](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e017).  
