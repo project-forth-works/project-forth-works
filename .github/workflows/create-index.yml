@@ -31,7 +31,12 @@ jobs:
         with:
           repository: project-forth-works/project-forth-works.github.io
           path: project-forth-works.github.io
-      
+
+      - name: setup ssh-agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.PFW_GH_IO_DEPL_KEY }}
+          
       - name: setup python
         uses: actions/setup-python@v2
         with:
@@ -45,7 +50,6 @@ jobs:
       - name: commit updated index
         run: |
           cd project-forth-works.github.io
-          echo  ${{ secrets.PFW_GH_IO_DEPL_KEY }} | ssh-add -kq -t 60 -
           git config --global user.name 'create-index'
           git config --global user.email 'create-index@users.noreply.github.com'
           git add idx.html
