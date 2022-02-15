@@ -6,12 +6,18 @@ A reflection sensor is most of the time a sensor that uses
 
 ## The used sensor
 
-The TNCD5000 is a sensitive photo diode and an infrared led in one case.
+**The TNCD5000 is a sensitive photo diode and an infrared led in one case.**
+![TCND5000](https://user-images.githubusercontent.com/11397265/154144243-3562aae3-f703-405f-9148-8460dfb92e05.jpg)  
 
-This is a sketch of the used schematics.
+  ***
+**This is a sketch of the used schematics.**
+![Sketch schematics](https://user-images.githubusercontent.com/11397265/154144262-307428fa-ce24-453f-a98e-5db9d4db09f9.jpg)  
 
-This is a part of the schematics of my Cosey robot.
+  ***
+**This is a part of the schematics of my Cosey robot.**
+![Reflection sensor schematics](https://user-images.githubusercontent.com/11397265/154144288-a7196a4c-be4e-4c2a-8405-c2779fa51ce2.jpg)  
 
+***
 ## Pseudo code
 
 ```
