@@ -9,13 +9,20 @@ The most well known ultrasonic sensor is the HC-SR04 but there are a lot
 of different types available. Most use the same protocol. Some of them are
 different.  
 
-
 |  Sensor | Voltage |  Some data |
 | -------- | ------------ | ----------------------- | 
 | HC-SR04 | 5 Volt | Range 2 cm to 220 cm |
 | US-015  | 5 Volt | Range | 8 cm to 350 cm |
 | RCW-0001 | 3 to 5 Volt | 1 cm to 350 cm |
 | US-100 | 2.4 to 5 Volt | 4 cm to 350 cm |
+
+<p align="left">
+<img src="https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/p13%20-%20three%20different%20us-sensors.jpg"
+ width="500" height="240" />
+      <b>Some US-sensor modules</b>
+</p>  
+
+  ***
 
 Most sensors have four wires and use two wires for communication.
 
