@@ -6,22 +6,18 @@ A reflection sensor is most of the time a sensor that uses
 
 ## The used sensor
 
-**The TNCD5000 is a sensitive photo diode and an infrared led in one case.**
-![TCND5000](https://user-images.githubusercontent.com/11397265/154144243-3562aae3-f703-405f-9148-8460dfb92e05.jpg)  
+|  |  |
+| ---- | --- | 
+| ![TCND5000](https://user-images.githubusercontent.com/11397265/154144243-3562aae3-f703-405f-9148-8460dfb92e05.jpg) |  ![Sketch schematics](https://user-images.githubusercontent.com/11397265/154144262-307428fa-ce24-453f-a98e-5db9d4db09f9.jpg) |
+|![Reflection sensor schematics](https://user-images.githubusercontent.com/11397265/154144288-a7196a4c-be4e-4c2a-8405-c2779fa51ce2.jpg) | **Upper left:** The TNCD5000 is a sensitive photo diode and an infrared led in one case. **Upper right**  A sketch of the TCND5000 driver. **Lower left:** As used in my Cosey robot, note that the resistor values changed! |
 
-  ***
-**This is a sketch of the used schematics.**
-![Sketch schematics](https://user-images.githubusercontent.com/11397265/154144262-307428fa-ce24-453f-a98e-5db9d4db09f9.jpg)  
-
-  ***
-**This is a part of the schematics of my Cosey robot.**
-![Reflection sensor schematics](https://user-images.githubusercontent.com/11397265/154144288-a7196a4c-be4e-4c2a-8405-c2779fa51ce2.jpg)  
+ 
 
 ***
 ## Pseudo code
 
 ```
-Function: RELECTION  ( adc -- +n )
+Function: REFLECTION  ( adc -- +n )
   Read adc input 'adc' leave the reading '+n'
 
 Function: FLOOR  ( adc -- +s )
@@ -88,4 +84,4 @@ Function: BACKWARD?  ( -- flag )
 \ True if reflection sensor on the backside goes over the edge
 : BACKWARD?         ( -- f )    10 >on  0E floor 5 < ;
 ```
-More info look at each individual subject.  
+More info look at specific implementations, if any.  
