@@ -9,11 +9,12 @@ A reflection sensor is most of the time a sensor that uses
 |  |  |
 | ---- | --- | 
 | ![TCND5000](https://user-images.githubusercontent.com/11397265/154144243-3562aae3-f703-405f-9148-8460dfb92e05.jpg) |  ![Sketch schematics](https://user-images.githubusercontent.com/11397265/154144262-307428fa-ce24-453f-a98e-5db9d4db09f9.jpg) |
-|![Reflection sensor schematics](https://user-images.githubusercontent.com/11397265/154144288-a7196a4c-be4e-4c2a-8405-c2779fa51ce2.jpg) | |
-
-  **Upper left:** The TNCD5000 is a sensitive photo diode and an infrared led in one case.  
-  **Upper right**  A sketch of the TCND5000 driver.  
-  **Lower left:** As used in my Cosey robot, note that the resistor values changed!  
+| ![Cosey floor sensors on the front side sm](https://user-images.githubusercontent.com/11397265/154559970-26f69aa7-d06c-43a0-a1d3-ee4ff6014d69.jpg) | ![Reflection sensor schematics](https://user-images.githubusercontent.com/11397265/154144288-a7196a4c-be4e-4c2a-8405-c2779fa51ce2.jpg) | 
+ 
+  **Upper left:**  The TNCD5000 is a sensitive photo diode and an infrared led in one case.  
+  **Upper right:** A sketch of the TCND5000 driver.  
+  **Lower left:** Five sensors mounted on Cosey's PCB.  
+  **Lower Right:** Piece of schematics of the Cosey robot, note that the resistor values have changed!   
 
 ***
 ## Pseudo code
@@ -87,3 +88,6 @@ Function: BACKWARD?  ( -- flag )
 : BACKWARD?         ( -- f )    10 >on  0E floor 5 < ;
 ```
 More info look at specific implementations, if any.  
+
+**Cosey robot V1.0**
+![Cosey V1 0](https://user-images.githubusercontent.com/11397265/154557981-a7b3d33a-0dc0-47c8-b40c-a01395871c94.jpg)
