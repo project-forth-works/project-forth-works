@@ -3,6 +3,12 @@
 The idea is to give examples for a variety of avialable sensors.  
 To measure time, temperature, pressure, magnetism, distance, light level, etc.  
 
+**Some examples**
+| LM75 | APDS9300 | PIR | Switch | Reflection |  
+| ---- | -------- | --- | ------ | ---------- |  
+| ![LM75 temperature sensor](https://user-images.githubusercontent.com/11397265/154798280-a0c6dd93-676c-4301-925d-88984904f4e4.jpg)  | ![ADPS9300 light sensor](https://user-images.githubusercontent.com/11397265/154798292-9c3b40ce-b7af-441e-ba1c-d94350d0d21a.jpg) | ![PIR-sensor example](https://user-images.githubusercontent.com/11397265/154798297-0391d3e3-3ed6-4926-bfb7-337668134196.jpg) | ![Mechanical touch sensor](https://user-images.githubusercontent.com/11397265/154798394-5ae9f9bf-3c89-4a43-bd54-f2d936f69e82.jpg) | ![Ushi reflection sensor-3a](https://user-images.githubusercontent.com/11397265/154798472-a9057e57-5b72-4e76-a287-f931f350666e.jpg) |
+
+   ***
 
 |  Sensor | Purpose |  Short description |
 | -------- | ------------ | --------------------------------------------------------------- | 
