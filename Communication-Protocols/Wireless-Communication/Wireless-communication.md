@@ -1,7 +1,7 @@
 # Wireless Communication
 
 The idea is to let computers talk to each other without wires.
-These days there are a let of wireless protocols and frequencies available.
+These days there are a lots of wireless protocols and frequencies available.
 Well known protocols are Wifi & Bluetooth, but there are a lot more.
 
 **HC08 Bluetooth transceiver on Cosey**
