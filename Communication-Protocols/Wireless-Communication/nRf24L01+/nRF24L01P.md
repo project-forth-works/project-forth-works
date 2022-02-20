@@ -13,7 +13,7 @@ adjustable output power, CRC, etc.
 ## Software
 
 [**USCIB SPI MSP v100.f**](https://github.com/project-forth-works/project-forth-works/blob/main/Communication-Protocols/SPI/MSP430/noForth/USCIB%20SPI%20MSP%20v100.f), SPI driver for MSP430G2553  
-[**basic 24L01dn G2553 example.f**](basic%2024L01dn%20G2553%20example.f), Basic transceiver routines using Dynamic payloed option  
+[**Basic 24L01dn G2553 example.f**](basic%2024L01dn%20G2553%20example.f), Basic transceiver routines using Dynamic payloed option  
 [**Transmit test.f**](Transmit%20test.f ), Transmit command, receive & display data  
 [**Receive test.f**](Receive%20test.f), On command increase a counter and sent data back  
 [**Range checker G2553 usci.f**](Range%20checker%20G2553%20usci.f), Tools to help testing the range & placement of the transceivers  
