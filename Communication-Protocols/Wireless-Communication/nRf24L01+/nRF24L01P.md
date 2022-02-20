@@ -4,7 +4,10 @@ The nRF24L01+ is a cheap 2.4GHz transceiver module with a low level
 part of the communication layer already in hardware available.
 Features of the nRF24L01+ are, auto retransmit, RF ACK handshake,
 32 byte payload, Fifo of 3 deep, 120 selectable frequencies, 
-adjustable output power, CRC, etc.
+adjustable output power, CRC, etc.   
+
+**Bidirectional transmit & receive in action on the Egel kit**
+![nRF24 bidirectional test](https://user-images.githubusercontent.com/11397265/154851672-ad18f3f9-d11a-442c-b3bd-ba4cf5b9e943.jpg)
 
 
 ## Software
