@@ -3,6 +3,7 @@ Description and implementation of communication protocols
 
 - [SPI](SPI)
 - [I2C](I2C)
+- [Wireless communication](Wireless-Communication)
 - RS232/RS485, etc.
 - 1-Wire
 - USB
