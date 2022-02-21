@@ -1,4 +1,4 @@
-# nRF24L01+
+# nRF24L01+ 2.4GHz transceiver
 
 The nRF24L01+ is a cheap 2.4GHz transceiver module with a low level
 part of the communication layer already in hardware available.
