@@ -30,6 +30,6 @@
           then
         then
         led-off
-    key? until  drop ;              \         Remove counter
+    key? until  drop  10 29 *bic ;  \         Remove counter
 
 \ End ;;;
