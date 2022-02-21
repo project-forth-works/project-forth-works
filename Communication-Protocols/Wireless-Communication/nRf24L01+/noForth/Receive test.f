@@ -2,7 +2,7 @@
 
 Recieve T, increase counter & transmit : and counter back
 
-\ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
+\ B-B     ( 16-bit -- bl bh ) Split 16-bit to a low byte & high byte
 
 *)
 
