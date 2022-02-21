@@ -16,22 +16,19 @@ Recieve T, increase counter & transmit : and counter back
     kick-nrf24  ." Receiver " #me .
     10 2A *bis  10 029 *bis         \ P2DIR, P2OUT  Power mosfet on
     100 ms  10 29 *bic   00         \ P2OUT   and off, init. counter
+    read-mode
     begin
-        read-mode  cr #me .         \         Extra statusflag RESET added
-        xkey dup [char] T = if
-            emit  [char] = emit     \         Get command & show
-            10 29 *bix              \         P2OUT  Toggle power mosfet output
+        response? if                \         Action on nRF24? 
+          cr  #me 1 .r              \         Yes, show node number
+          xkey dup [char] T = if    \         Char 'T' received?
+            emit  ." = "            \         Yes, show
+            10 29 *bix              \ P2OUT   Toggle power mosfet output
             dup b-b 6 >pay  5 >pay  \         Counter as payload
-            led-on  write-mode      \         to write mode
-            5 0 do
-            [char] : xemit? 0A = while \      Succeed?
-            loop
-            ." TXfault " setup24l01 
-            else
-                dup u.  1+  i .  unloop \      Yes, send counter back, print & incr.
-            then
-        else
-            drop  ." RXfault " setup24l01
+            [char] : xemit          \         Send ':'  & counter back
+            dup u.  1+              \         Show & increase counter
+          else
+            drop  ." RXfault "
+          then
         then
         led-off
     key? until  drop ;              \         Remove counter

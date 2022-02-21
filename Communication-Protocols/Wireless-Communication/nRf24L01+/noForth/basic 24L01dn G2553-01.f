@@ -108,8 +108,9 @@
 \ MSP430 assembly code for speed up:
 \ code IRQ?   ( -- flag )   \ Flag is true when IRQ = low
 \    tos sp -) mov
-\    20 # 28 & .b bit \ P2IN
+\    20 # 28 & .b bit       \ P2IN
 \    tos tos subc
+\    tos adr ack? & mov     \ Save tos in ACK?
 \    next
 \ end-code
 \
@@ -120,22 +121,20 @@
 hex
 \ NOTE: This value must be adjusted for different clock speeds & MPU's!!!
 \ It is the timeout for receiving an ACK handshake after a transmit!!
-  100 constant #IRQ     \ Delay loops for XEMIT)    (8 MHz)
-\ 200 constant #IRQ     \ 16 MHz
+  200 constant #IRQ     \ Delay loops for XEMIT)    (8 MHz)
+\ 400 constant #IRQ     \ 16 MHz
 
-value T?                \ Tracer on/off
+0 value T?              \ Tracer on/off
 : TEMIT     t? if  dup emit  then  drop ;  \ Show copy of char
 : TRON      true to t? ;    : TROFF     false to t? ;
 : LED-ON    1 29 *bis ;     : LED-OFF   1 29 *bic ;
-: /MS       ( u -- )    ms# >r  r@ 0A / to ms#  ms  r> to ms# ;
+: /MS       ( u -- )    0 ?do  140 0 do loop  loop ;
 
-code IRQ?   ( -- flag )   \ Flag is true when IRQ = low
-    tos sp -) mov
-    20 # 28 & .b bit \ P2IN
-    tos tos subc
-    next
-end-code
+0 value ACK?            \ Remember IRQ flag
+: IRQ?      ( -- flag )     20 28 bit* 0=  dup to ack? ;
 
+: RESPONSE? ( -- flag )     \ Leave true when an IRQ was received
+    false  #irq 0 do  irq? if  1-  leave  then  loop ;
 
                     ( USCI-B0 SPI interface to nRF24L01+ )
 
@@ -150,8 +149,8 @@ end-code
 
                 ( Read and write to and from nRF24L01 )
 
-value #CH               \ Used channel number
-value #ME               \ Later contains node number
+0 value #CH             \ Used channel number
+0 value #ME             \ Later contains node number
 \ The first written byte returns internal status always
 \ It is saved in the value STATUS using SPI-COMMAND
 : GET-STATUS    ( -- s )    {spi  FF spi-i/o  spi} ;
@@ -175,7 +174,7 @@ value #ME               \ Later contains node number
 : WAKEUP        ( -- )      0E 0 write-reg ;    \ CRC 2 bytes, Powerup
 : >CHANNEL      ( +n -- )   5 write-reg ;       \ Change RF-channel 7-bits
 
-value RF                \ Contains nRF24 RF setup
+0 value RF              \ Contains nRF24 RF setup
 \ Bitrate conversion table: 0=250 kbit, 1=1 Mbit, 2=2 Mbit, 3=250 kBit.
     20 c, 00 c, 08 c,  20 c, \ 250 kbit, 1 Mbit, 2 Mbit
 : RF!   ( db bitrate -- )   b+b to rf ; \ Save RF-settings
@@ -192,7 +191,7 @@ value RF                \ Contains nRF24 RF setup
 
 \ Dynamic payload additions
 20 constant #PAY            \ Payload size max. 32 bytes
-value PAY                   \ Contains current length of the payload
+0 value PAY                 \ Contains current length of the payload
 : >LENGTH   ( +n -- )       1 max  20 umin  to pay ; \ Set dynamic payload length
 : DEFAULT   ( -- )          7 >length ;
 
@@ -226,8 +225,8 @@ create 'WRITE   #pay allot  \ Transmit buffer
     A9 spi-command 'write pay   \ Store dynamic payload for pipe-0
     0 do  count spi-out  loop  drop  spi}
     8 29 *bis  noop noop noop  8 29 *bic    \ P2OUT  Transmit pulse on CE
-    #irq 0 ?do  irq? if leave then   loop   \ Wait for ACK
-    7 read-reg 20 and ;
+    response? drop  7 read-reg 20 and ;     \ Wait for ACK
+    
 
 : READ-DRX? ( -- f )            \ Receive 1 to 32 bytes
     60 read-reg dup 20 > if  flush-rx  drop false exit  then
@@ -284,9 +283,10 @@ A constant #TRY                 \ Transmit attempts
 : XKEY          ( -- c )
     begin
         begin
-            begin irq? 0= while ch ? temit repeat \ Something happened?
-        7 read-reg 40 and 0= while  \ Is it a payload (RX?)
+            7 read-reg 40 and 0=    \ Payload received?
+        ack? and while              \ and IRQ noticed
             setup24l01  read-mode   \ No, restart 24L01
+            response? drop
         repeat
         read-drx?        \ Yes read payload packet
     until  0 pay>       \ Now read command from packet
@@ -298,6 +298,7 @@ A constant #TRY                 \ Transmit attempts
     dup >r  1 >pay  #me 2 >pay      \ Set Destination & origin nodes
     F0 F0 F0 F0 r@ 0A write-addr    \ Receive address P0
     F0 F0 F0 F0 r> 10 write-addr ;  \ Transmit address
+
 
 shield 24L01\   freeze
 
