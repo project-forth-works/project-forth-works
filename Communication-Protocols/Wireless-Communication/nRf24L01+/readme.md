@@ -25,7 +25,7 @@ adjustable output power, CRC, etc.
 | ---------------| --------------- | --------------------------- |  
 | `SETUP24L01`   | ( -- )          | Initialise nRF24l01 |  
 | `TRON`         | ( -- )          | Tracer active |
-| `TROFF`        | ( -- )          | Trace inactive |
+| `TROFF`        | ( -- )          | Tracer inactive |
 | `>RF`          | ( db rate -- )  | Set transmit strength & bitrate |  
 | `>LENGTH`      | ( +n -- )       | Set size of current payload |  
 | `>PAY`         | ( b +n -- )     | Store byte b at location +n of the payload |  
