@@ -13,12 +13,12 @@ value WAIT
     kick-nrf24  to wait
     ." Transmitter " #me . space
     begin
-        cr  ch T xemit  read-mode
-        #irq 0 do  irq? 0= while  loop
-            true ?abort  then       \ No answer, stop
-            i 2 .r unloop  xkey emit
-            space 5 pay> 6 pay> b+b u.
+        cr  ch T xemit  #me 1 .r    \ Transmit T, show myself
+        response? if                \ Wait for an answer
+            xkey emit               \ Get it & show
+            space 5 pay> 6 pay> b+b u. \ Fetch counter, show & wait
             wait ms
+        then
     key? until ;
 
 : TEST1     50 transmit1 ;
