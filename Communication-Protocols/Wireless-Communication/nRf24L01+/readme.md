@@ -1,9 +1,9 @@
 # nRF24L01+ 2.4GHz transceiver
 
-The nRF24L01+ is a cheap 2.4GHz transceiver module with a low level
+The [nRF24L01+](https://www.sparkfun.com/datasheets/Components/SMD/nRF24L01Pluss_Preliminary_Product_Specification_v1_0.pdf) is a cheap 2.4GHz transceiver module with a low level
 part of the communication layer already in hardware available.
-Features of the nRF24L01+ are, auto retransmit, RF ACK handshake,
-32 byte payload with variable length, Fifo of 3 deep, 120 selectable frequencies, 
+Features of the nRF24L01+ are, adjustable auto retransmit, RF ACK handshake, a 1 to 32 byte payload 
+with variable length (Dynamic Payload), Fifo of 3 deep, 120 selectable frequencies, 
 adjustable output power, CRC, etc.   
 
 **Bidirectional transmit & receive in action on the Egel kit**
@@ -28,7 +28,10 @@ adjustable output power, CRC, etc.
 | `TROFF`        | ( -- )          | Trace inactive |
 | `>RF`          | ( db rate -- )  | Set transmit strength & bitrate |  
 | `>LENGTH`      | ( +n -- )       | Set size of current payload |  
-| `XEMIT?`       | ( c -- +n )     | Send byte c, +n are the retries (max=10) |
+| `>PAY`         | ( b +n -- )     | Store byte b at location +n of the payload |  
+| `PAY>`         | ( +n -- b )     | Read byte b from location +n of the payload |  
+| `RESPONSE?`    | ( -- flag )     | Wait a bit, stop & leave true when an IRQ was received |  
+| `XEMIT?`       | ( c -- +n )     | Send byte c, +n are the retries (max=10) |  
 | `XEMIT`        | ( c -- )        | Send byte c to addressed nRF24 |  
 | `XKEY`         | ( -- c )        | Receive byte c that is addressed to me |  
 | `SET-DEST`     | ( +n -- )       | Set address to nRF24 +n |  
