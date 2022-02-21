@@ -169,25 +169,51 @@ Here is Albert Nijhof's approach:
 \ -----
 ```
 
-`(*`  
-a) This simple code was intended for small systems.
-That's why I avoided the word `COMPARE`. Unfortunately,
-"REFILL" was unavoidable.
+> `(*`  
+> a) This simple code was intended for small systems.
+> That's why I avoided the word `COMPARE`. Unfortunately,
+> "REFILL" was unavoidable.
+>
+>
+> b) The delimiter `*)` must be the first word on a line.
+> This is not to keep the code simple or make it
+> faster. I purposely chose this because it is better,
+> it provides a clearly readable layout.  
+> `*)`
+>
+> Compare this with:
+>
+> `(*`  
+> a) This simple code was intended for small systems.
+> That's why I avoided the word `COMPARE`. Unfortunately,
+> "REFILL" was unavoidable.
+> 
+> b) This is not to keep the code simple or make it
+> faster. I purposely chose this because it is better,
+> it provides a clearly readable layout. `*)`
 
+This code has some interesting properties:
 
-b) The delimiter `*)` must be the first word on a line.
-This is not to keep the code simple or make it
-faster. I purposely chose this because it is better,
-it provides a clearly readable layout.  
-`*)`
+- It uses a character based comparison to detect `*)` instead 
+  of a string based `COMPARE`.
 
-Compare this with:
+- It uses 3 nested BEGIN UNTIL loops to iterate the input stream.  
+  Each UNTIL has a condition
+    1. the length of the parse word is 2
+    2. the first character is the character '*'
+    3. the second character is the character ')'  
+  
+  Only if all of the UNTIL conditions are met (first AND second AND third) 
+  the nested loops end, otherwise they branch back to one of the 
+  BEGINs and keep parsing the next line of the input stream. 
+  Essentially the code inspects the first token on each line (possible with
+  leading white space).
 
-`(*`  
-a) This simple code was intended for small systems.
-That's why I avoided the word `COMPARE`. Unfortunately,
-"REFILL" was unavoidable.
+- When testing the UNTIL conditions the address of the next character
+  is left over on the stack and needs to be dropped somewhere.   
+  The code does this at the *beginning* of the loops and to make that
+  work even on the first iteration the code puts a dummy 0 on the stack 
+  before the beginning of the loops.  
+  The address also must be dropped when all UNTIL conditions are satisfied, 
+  i.e. when `*)` is found. This is done right after the loop.
 
-b) This is not to keep the code simple or make it
-faster. I purposely chose this because it is better,
-it provides a clearly readable layout. `*)`
