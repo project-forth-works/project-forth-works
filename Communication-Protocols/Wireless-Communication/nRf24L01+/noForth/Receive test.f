@@ -33,7 +33,7 @@ Recieve T, increase counter & transmit : and counter back
           then
         then
         led-off
-    key? until  drop ;              \         Remove counter
+    key? until  drop  10 29 *bic ;  \         Remove counter, output off
 
 ' receiver  to app
 shield RECEIVER\  freeze
