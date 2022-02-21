@@ -36,7 +36,7 @@ adjustable output power, CRC, etc.
 | `XKEY`         | ( -- c )        | Receive byte c that is addressed to me |  
 | `SET-DEST`     | ( +n -- )       | Set address to nRF24 +n |  
 
-**Bidirectional demo commands**
+**Bidirectional demo commands**  
 
 |    Command    |      Stack      |           Function          |  
 | --------------| --------------- | --------------------------- |  
@@ -52,5 +52,11 @@ adjustable output power, CRC, etc.
 | `CARRIER`      | ( +n -- )        | Check only frequency channel +n |  
 | `WAVE`         | ( +n pwr -- )    | Send carrier on channel +n with strength pwr |  
 | `PULSE`        | ( +n pwr p -- )  | Send carrier on channel +n with strength pwr in p millisec. pulses |  
+
+   ***
+   
+**Bidirectional transmit & receive test in action**  
+
+https://user-images.githubusercontent.com/11397265/154994487-bffd043c-1e07-403d-8e72-6fbb5ada894f.mp4  
 
 Later on a self constructing mesh network will be added.
