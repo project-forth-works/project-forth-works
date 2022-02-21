@@ -1,4 +1,4 @@
-\ This version USCI_B0 runs on noForth C2553 version 200202 & later.
+\ This version-01, USCI_B0 runs on noForth C2553 version 200202 & later.
 \
 \ USCI hardware SPI on MSP430G2553 using port-1 & port-2.
 \ SPI i/o interfacing the nRF24L01 with two or more Launchpad boards
@@ -68,8 +68,8 @@
 \    Standby to TX/RX:       0,13 ms
 \    Transmit pulse CE high: 0,01 ms
 \
-\ Sensitivity: 2Mbps – -83dB, 1Mbps – 87dB, 250kbps – -96dB.
-\ Receiving current: 2Mbps – 15mA, 1Mbps – 14.5mA, 250kbps – 14mA
+\ Sensitivity: 2Mbps â€“ -83dB, 1Mbps â€“ 87dB, 250kbps â€“ -96dB.
+\ Receiving current: 2Mbps â€“ 15mA, 1Mbps â€“ 14.5mA, 250kbps â€“ 14mA
 \
 \ On board PCB antenna, transmission distance reach 240M in open area, but
 \ 2.4G frequency is not good to pass through walls, also interfere by
@@ -78,7 +78,7 @@
 \ Software parts to adjust for different clock speeds:
 \ 1) B0-SPI-SETUP - SPI clock speed
 \ 2) #IRQ         - Software timing loop to wait for ACK
-\ 3) WRITE-DTX?   - Transmit pulse CE (10 µsec software timing)
+\ 3) WRITE-DTX?   - Transmit pulse CE (10 Âµsec software timing)
 \
 \ Dynamic payload length
 \
@@ -98,7 +98,7 @@
 \
 \ Extra routines needed:
 \
-\ /MS     ( u -- )            Wait in steps of 100 µsec.
+\ /MS     ( u -- )            Wait in steps of 100 Âµsec.
 \ *BIS    ( mask addr -- )    Set the bits represented by mask at address
 \ *BIC    ( mask addr -- )    Clear the bits represented by mask at address
 \ BIT*    ( mask addr -- b )  Leave the bits b from mask that were high at address
@@ -124,13 +124,13 @@ hex
   200 constant #IRQ     \ Delay loops for XEMIT)    (8 MHz)
 \ 400 constant #IRQ     \ 16 MHz
 
-0 value T?              \ Tracer on/off
+value T?                \ Tracer on/off
 : TEMIT     t? if  dup emit  then  drop ;  \ Show copy of char
 : TRON      true to t? ;    : TROFF     false to t? ;
 : LED-ON    1 29 *bis ;     : LED-OFF   1 29 *bic ;
 : /MS       ( u -- )    0 ?do  140 0 do loop  loop ;
 
-0 value ACK?            \ Remember IRQ flag
+value ACK?              \ Remember IRQ flag
 : IRQ?      ( -- flag )     20 28 bit* 0=  dup to ack? ;
 
 : RESPONSE? ( -- flag )     \ Leave true when an IRQ was received
@@ -149,8 +149,8 @@ hex
 
                 ( Read and write to and from nRF24L01 )
 
-0 value #CH             \ Used channel number
-0 value #ME             \ Later contains node number
+value #CH             \ Used channel number
+value #ME             \ Later contains node number
 \ The first written byte returns internal status always
 \ It is saved in the value STATUS using SPI-COMMAND
 : GET-STATUS    ( -- s )    {spi  FF spi-i/o  spi} ;
@@ -174,7 +174,7 @@ hex
 : WAKEUP        ( -- )      0E 0 write-reg ;    \ CRC 2 bytes, Powerup
 : >CHANNEL      ( +n -- )   5 write-reg ;       \ Change RF-channel 7-bits
 
-0 value RF              \ Contains nRF24 RF setup
+value RF              \ Contains nRF24 RF setup
 \ Bitrate conversion table: 0=250 kbit, 1=1 Mbit, 2=2 Mbit, 3=250 kBit.
     20 c, 00 c, 08 c,  20 c, \ 250 kbit, 1 Mbit, 2 Mbit
 : RF!   ( db bitrate -- )   b+b to rf ; \ Save RF-settings
@@ -191,7 +191,7 @@ hex
 
 \ Dynamic payload additions
 20 constant #PAY            \ Payload size max. 32 bytes
-0 value PAY                 \ Contains current length of the payload
+value PAY                   \ Contains current length of the payload
 : >LENGTH   ( +n -- )       1 max  20 umin  to pay ; \ Set dynamic payload length
 : DEFAULT   ( -- )          7 >length ;
 
@@ -259,7 +259,7 @@ A constant #TRY                 \ Transmit attempts
     loop
     flush-tx  reset ;
 
-0 value #FAIL   \ Note XEMIT failures
+value #FAIL     \ Note XEMIT failures
 : BUSY      ( -- )
     read-mode  40 0 do                  \ Wait while a channel is busy
         4 /ms  9 read-reg 0=            \ Check for no carrier?
