@@ -2,6 +2,8 @@
 
 Recieve T, increase counter & transmit : and counter back
 
+\ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
+
 *)
 
 : KICK-NRF24    ( -- )
