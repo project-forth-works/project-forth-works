@@ -3,7 +3,7 @@
 \ Transmit T & receive a count as answer
 \
 
-value WAIT
+0 value WAIT
 : KICK-NRF24    ( -- )
     0 to #me  55 to #ch  1 to rf
     b0-spi-setup  5 ms  setup24L01
