@@ -13,11 +13,11 @@ the second number. You would like to write
 
 If the the system you use does not define the word `<=` you have several choices to deal with this:
 
-- Instead of `<=` you can write the *substitution phrase* `> INVERT` as *less or equal* is the same as *not greater*.
+- Instead of `<=` you can write the *substitution phrase* `> 0=` as *less or equal* is the same as *not greater*.
 
 - Or you can define the missing operator and make use of the substitution phrase in the definition:
   
-      : <= ( n1 n2 -- f )  > INVERT ;
+      : <= ( n1 n2 -- f )  > 0= ;
 
 It is not always reasonable to make a new definition. Sometimes it is better to just use the substitution phrase
 as is in the program.
@@ -53,7 +53,7 @@ Here are some substitution phrases that you can use and that might be used in pr
 | `-`                 | `<>`             | dito                                         |
 | `= 0=`              | `<>`             |                                              |          
 | `swap <`            | `>`              |                                              |          
-| `> invert`          | `<=`             |                                              |
+| `> 0=`              | `<=`             |                                              |
 | `0=`                | `not`            | if `not` would work on proper flags          |          
 | `0= 0=`             | `0<>`            |                                              |          
 | `swap >r >r`        | `2>r`            |                                              |
