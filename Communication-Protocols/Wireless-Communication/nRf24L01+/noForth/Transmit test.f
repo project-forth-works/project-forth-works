@@ -2,6 +2,8 @@
 
 Transmit T & receive a count as answer
 
+\ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
+
 *)
 
 value WAIT
