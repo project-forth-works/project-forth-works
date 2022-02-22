@@ -2,7 +2,7 @@
 
 For these systems there is SPI in bitbang and/or hardware version:  
 
-[noForth](noForth), SPI for noForth including lots of examples  
+[noForth](noForth), SPI for noForth including examples, OLED, Flash memory, etc.  
 [mecrisp-quintus](mecrisp-quintus), SPI for mecrisp including a BME280 & SD-card example  
 
   ***  
