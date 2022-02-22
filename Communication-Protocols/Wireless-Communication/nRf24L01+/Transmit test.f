@@ -1,4 +1,4 @@
-\ Basic nRF24 bidirectional SEND & RECEIVE routines
+\ Basic nRF24 bidirectional TRANSMIT & RECEIVE routines
 \
 \ Transmit T & receive : and a count as answer
 \
