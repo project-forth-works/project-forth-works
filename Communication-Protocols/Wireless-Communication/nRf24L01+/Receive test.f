@@ -1,4 +1,4 @@
-\ Basic nRF24 bidirectional test routines
+\ Basic nRF24 bidirectional RECEIVE & TRANSMIT routines
 \
 \ Recieve T, increase counter & transmit : and counter back
 \
@@ -8,12 +8,11 @@
     b0-spi-setup  5 ms  setup24L01
     0 set-dest  get-status .  troff ;
 
-\ Receiver software, does no longer hang!
 \ Trace info: <cr> #me - T=" - counter
-\         or: <cr> #me - "xXfault "
+\         or: <cr> #me - T=RXfault "
 : RECEIVER   ( -- )
     kick-nrf24  ." Receiver " #me .
-    10 2A *bis  10 029 *bis         \ P2DIR, P2OUT  Power mosfet on
+    10 2A *bis  10 029 *bis         \ P2DIR, P2OUT  Power output on
     100 ms  10 29 *bic   00         \ P2OUT   and off, init. counter
     read-mode
     begin
