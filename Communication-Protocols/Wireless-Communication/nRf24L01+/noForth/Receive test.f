@@ -2,6 +2,10 @@
 
 Recieve T, increase counter & transmit : and counter back
 
+\ Extra words: MS
+\ *BIS    ( mask addr -- )    Set the bits represented by mask at address
+\ *BIC    ( mask addr -- )    Clear the bits represented by mask at address
+\ *BIX    ( mask addr -- )    XOR the bits represented by mask with the bits at address
 \ B-B     ( 16-bit -- bl bh ) Split 16-bit to a low byte & high byte
 
 *)
@@ -11,7 +15,6 @@ Recieve T, increase counter & transmit : and counter back
     b0-spi-setup  5 ms  setup24L01
     0 set-dest  get-status .  troff ;
 
-\ Receiver software, does no longer hang!
 \ Trace info: <cr> #me - T=" - counter
 \         or: <cr> #me - "xXfault "
 : RECEIVER   ( -- )
