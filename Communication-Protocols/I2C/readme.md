@@ -302,6 +302,6 @@ Have a look at the sub directories for implementations for different systems.
 - [MSP430](MSP430), bitbang & hardware specific I2C implementations for MSP430
 - [GD32VF103](GD32VF), bitbang & hardware specific I2C implementations for the Risc-V
 - [Raspberry3B+](Raspberry3B+), bitbang & hardware specific I2C implementation for BCM2835 
-- [Generic device drivers](Device-drivers), EEPROM, OLED, LCD, Clocks, etc.
+- [Generic device drivers](Device-drivers), for EEPROM, OLED, LCD, Clocks, etc.
 
 
