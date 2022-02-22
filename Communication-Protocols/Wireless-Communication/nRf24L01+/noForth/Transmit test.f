@@ -2,11 +2,12 @@
 
 Transmit T & receive a count as answer
 
+\ Extra words: MS
 \ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
 
 *)
 
-value WAIT
+value WAIT      \ Hold on/off period time
 : KICK-NRF24    ( -- )
     0 to #me  55 to #ch  1 to rf
     b0-spi-setup  5 ms  setup24L01
@@ -14,6 +15,7 @@ value WAIT
 
 : TRANSMIT1     ( delay -- )
     kick-nrf24  to wait
+    10 2A *bis  10 29 *bic          \ Output off
     ." Transmitter " #me . space
     begin
         cr  ch T xemit  #me 1 .r    \ Transmit T, show myself
