@@ -1,5 +1,9 @@
 \ Basic nRF24 bidirectional RECEIVE & TRANSMIT routines
 \
+\ Extra words: MS
+\ *BIS    ( mask addr -- )    Set the bits represented by mask at address
+\ *BIC    ( mask addr -- )    Clear the bits represented by mask at address
+\ *BIX    ( mask addr -- )    XOR the bits represented by mask with the bits at address
 \ Recieve T, increase counter & transmit : and counter back
 \
 
