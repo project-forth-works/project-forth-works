@@ -11,13 +11,13 @@ Click [here if you want to read more about **Project Forth Works**](https://Proj
   *** 
 ### We have until now the following categories:
 
-- [****Template****](https://github.com/project-forth-works/project-forth-works.github.io/tree/main/Template) ; A detailed example of how publish on P.F.W.
-- [****Algorithms****](Algorithms) ; Random numbers, etc.
-- [****Communication-Protocols****](Communication-Protocols) ; SPI, etc.
-- [****Data-Structures****](Data-Structures) ; Primitive circular buffer, etc. 
-- [****System-Software****](System-Software) ; Assembler, Disassembler, etc.
-- [****Programming-Tools****](Programming-Tools) ; Development support, helpers
-- [****Programming Pearls****](Programming-Pearls) ; Examples of idomatic (Forth) programming style 
-- [****User-Applications****](User-Applications) ; Games, Robotics, etc. 
-- [****Curiosites****](Curiosities) ; Not so serious contributions. 
-- [****Sensors****](Sensors) ; All types of electronic sensors.
+- [****Template****](https://github.com/project-forth-works/project-forth-works.github.io/tree/main/Template) ; A detailed example of how publish on P.F.W.  
+- [****Algorithms****](Algorithms) ; Random numbers, etc.  
+- [****Communication-Protocols****](Communication-Protocols) ; SPI, etc.  
+- [****Data-Structures****](Data-Structures) ; Primitive circular buffer, etc.  
+- [****System-Software****](System-Software) ; Assembler, Disassembler, etc.  
+- [****Programming-Tools****](Programming-Tools) ; Development support, helpers  
+- [****Programming Pearls****](Programming-Pearls) ; Examples of idomatic (Forth) programming style  
+- [****User-Applications****](User-Applications) ; Games, Robotics, etc.  
+- [****Curiosites****](Curiosities) ; Not so serious contributions but interesting and/or entertaining.  
+- [****Sensors****](Sensors) ; Electronic sensors for measuring temperature, distance, etc.  
