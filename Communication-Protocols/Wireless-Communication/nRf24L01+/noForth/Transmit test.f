@@ -3,6 +3,8 @@
 Transmit T & receive a count as answer
 
 \ Extra words: MS
+\ *BIS    ( mask addr -- )    Set the bits represented by mask at address
+\ *BIC    ( mask addr -- )    Clear the bits represented by mask at address
 \ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
 
 *)
