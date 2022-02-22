@@ -33,5 +33,5 @@
   
 ### More information on the GD32VF103
 - [Datasheet](http://gd32mcu.com/download/down/document_id/221/path_type/1), GD32VF103 Datasheet Rev 1.3.pdf  
-- [User manual](http://gd32mcu.com/download/down/document_id/222/path_type/1), GD32VF103User Manual EN V1.2.pdf  
+- [User manual](http://gd32mcu.com/download/down/document_id/222/path_type/1), GD32VF103 User Manual EN V1.2.pdf  
 
