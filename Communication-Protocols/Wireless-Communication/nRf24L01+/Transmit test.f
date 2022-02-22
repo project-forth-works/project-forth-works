@@ -6,6 +6,7 @@
 \ *BIS    ( mask addr -- )    Set the bits represented by mask at address
 \ *BIC    ( mask addr -- )    Clear the bits represented by mask at address
 \ *BIX    ( mask addr -- )    XOR the bits represented by mask with the bits at address
+\ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
 \
 
 0 value WAIT      \ Hold on/off period time
