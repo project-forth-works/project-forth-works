@@ -1,7 +1,9 @@
 # GD32VF103 versions of the SPI protocol
 
-For these systems in bitbang and/or hardware SPI:  
-    [noForth](noForth), [mecrisp-quintus](mecrisp-quintus), ...
+For these systems there is SPI in bitbang and/or hardware version:  
+
+[noForth](noForth), SPI for noForth including lots of examples  
+[mecrisp-quintus](mecrisp-quintus), SPI for mecrisp including a BME280 & SD-card example  
 
   ***  
 
