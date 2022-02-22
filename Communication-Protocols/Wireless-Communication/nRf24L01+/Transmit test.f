@@ -2,6 +2,11 @@
 \
 \ Transmit T & receive : and a count as answer
 \
+\ Extra words: MS
+\ *BIS    ( mask addr -- )    Set the bits represented by mask at address
+\ *BIC    ( mask addr -- )    Clear the bits represented by mask at address
+\ *BIX    ( mask addr -- )    XOR the bits represented by mask with the bits at address
+\
 
 0 value WAIT      \ Hold on/off period time
 : KICK-NRF24    ( -- )
