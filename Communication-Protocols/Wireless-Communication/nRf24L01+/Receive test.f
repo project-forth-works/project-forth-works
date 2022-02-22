@@ -1,10 +1,12 @@
 \ Basic nRF24 bidirectional RECEIVE & TRANSMIT routines
 \
+\ Recieve T, increase counter & transmit : and counter back
+\
 \ Extra words: MS
 \ *BIS    ( mask addr -- )    Set the bits represented by mask at address
 \ *BIC    ( mask addr -- )    Clear the bits represented by mask at address
 \ *BIX    ( mask addr -- )    XOR the bits represented by mask with the bits at address
-\ Recieve T, increase counter & transmit : and counter back
+\ B-B     ( 16-bit -- bl bh ) Split 16-bit to a low byte & high byte
 \
 
 : KICK-NRF24    ( -- )
@@ -16,7 +18,7 @@
 \         or: <cr> #me - T=RXfault "
 : RECEIVER   ( -- )
     kick-nrf24  ." Receiver " #me .
-    10 2A *bis  10 029 *bis         \ P2DIR, P2OUT  Power output on
+    10 2A *bis  10 29 *bis          \ P2DIR, P2OUT  Power output on
     100 ms  10 29 *bic   00         \ P2OUT   and off, init. counter
     read-mode
     begin
