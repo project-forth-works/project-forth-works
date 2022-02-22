@@ -2,7 +2,9 @@
 
 ## Bitbang, USCI and eUSCI versions
 
-For these systems: [noForth](noForth), ...
+For those systems:  
+
+[noForth](noForth), With examples, WS2812 driver, OLED, Flash memory, etc.  
 
   ***
   
