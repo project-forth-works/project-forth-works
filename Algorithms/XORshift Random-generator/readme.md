@@ -174,9 +174,8 @@ At least one seed must have one of the bits set for the generator to work.
 
 ### Links:
 
-- Description of [DIEHARD](https://en.wikipedia.org/wiki/Diehard_tests) test
-- George Marsaglia, “[XORShift Random Number Generators](https://www.jstatsoft.org/index.php/jss/article/view/v008i14/xorshift.pdf)”, Journal of Statistical Software 2003.
-- [Chapter 70 of the Egel-project](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e070)
-shows some other random-generators and a grafical test based on DIEHARD to show the effect of low-quality generators.
+- [DIEHARD](https://en.wikipedia.org/wiki/Diehard_tests), Description of the Diehard tests
+- George Marsaglia, [XORShift Random Number Generators](https://www.jstatsoft.org/index.php/jss/article/view/v008i14/xorshift.pdf), Journal of Statistical Software 2003.
+- [Chapter 70 of the Egel-project](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e070), shows some other random-generators and a grafical test based on DIEHARD to show the effect of low-quality generators.
 
 
