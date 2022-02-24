@@ -1,4 +1,4 @@
-# MSP430 implementation for nRF24L01+ 2.4GHz transceiver
+# MSP430 implementation for nRF24L01+
 
 The [nRF24L01+](https://www.sparkfun.com/datasheets/Components/SMD/nRF24L01Pluss_Preliminary_Product_Specification_v1_0.pdf) is a cheap 2.4GHz transceiver module with a low level
 part of the communication layer already in hardware available.
