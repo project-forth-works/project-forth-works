@@ -17,9 +17,8 @@ adjustable output power, CRC, etc.
 [**Transmit test.f**](Transmit%20test.f ), Transmit command, receive & display data  
 [**Receive test.f**](Receive%20test.f), On command increase a counter and sent data back  
 [**Range checker G2553 usci.f**](Range%20checker%20G2553%20usci.f), Tools to help testing the range & placement of the transceivers  
-[**MSP430 noForth**](MSP430/noForth), a noForth implementation of the example code
-[**MSP430 noForth**](MSP430/noForth), a GD32VF103 plementation of the example code
-[**GD32VF noForth**](GD32VF/noForth), a MSP430 noForth implementation of the example code
+[**MSP430 noForth**](MSP430/noForth), a noForth implementation of the example code  
+[**GD32VF noForth**](GD32VF/noForth), a MSP430 noForth implementation of the example code  
 
 
 ## Basic nRF24L01+ commands
