@@ -4,10 +4,10 @@
 PA5     = SCK     - B       40010800
 PA6     = MISO    - B
 PA7     = MOSI    - B
-PC1     = CE      - 3       40011000
+PC1     = CS      - 3       40011000
 
-UCA1 = OLED
-    (RST=P2.7, SIMO=P2.5, CLK=P2.4, CS=P2.3, DC=P2.2,)
+SPI0 = OLED
+    (MISO=PA6, MOSI=PA7, CLK=PA5, CS=PC1, DC=PC2, RST=PC3) 
 
 *)
 
