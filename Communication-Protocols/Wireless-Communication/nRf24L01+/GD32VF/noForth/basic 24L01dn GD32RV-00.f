@@ -1,7 +1,7 @@
 \ This version-00, SPI0 runs on noForth RCV version 201030 & later.
 \
-\ Hardware orBitBang SPI on GD32VF103 using port-A & port-C.
-\ SPI i/o interfacing the nRF24L01 
+\ Hardware or BitBang SPI on GD32VF103 using bits of port-A, port-B & port-C.
+\ SPI0 i/o interfacing the nRF24L01 
 \
 \ Connect the SPI lines of USCIB PA5=CLOCKPULSE, PA6=DATA-IN, PA7=DATA-OUT
 \ PC0=CSN, PC1=CE, PC2=IRQ of the nRF24L01. On the Egel kit it's just putting 
@@ -19,22 +19,22 @@
 \              | |                 |
 \              --|RST          XOUT|- Idem
 \                |                 |
-\          IRQ ->|PC2           PA7|-> Data Out (UCB0SIMO)
+\          IRQ ->|PC2           PA7|-> Data Out (MOSI0)
 \                |                 |
-\           CE <-|PC1           PA6|<- Data In (UCB0SOMI)
+\           CE <-|PC1           PA6|<- Data In (MISO0)
 \                |                 |
-\          CSN <-|PC3           PA5|-> Serial Clock Out (UCB0CLK)
+\          CSN <-|PC3           PA5|-> Serial Clock Out (CLK0)
 \                |                 |
 \          LED <-|PB5         PB0&1|-> Power out
 \
 \ Concept: Willem Ouwerkerk & Jan van Kleef, october 2014
-\ Current version: Willem Ouwerkerk, 24 februari 2022
+\ Current version: Willem Ouwerkerk, 25 februari 2022
 \
-\ Launchpad & Egel kit documentation for USCI SPI
+\ SEEED GD32VF103 board documentation for SPI0, etc.
 \
 \ PA & PC are used for interfacing the nRF24L01+
-\ PC0  - CE flash chip           \ SPI enable low      x1=Select
-\ PC1  - CE                      \ Device enable high  x1=Enable
+\ PC0  - CE flash mem.           \ SPI enable low      x1=Select
+\ PC1  - CE nRF24                \ Device enable high  x1=Enable
 \ PC2  - IRQ                     \ Active low output   x0=Interrupt
 \ PC3  - CSN                     \ SPI enable low      x1=Select
 \ PA5  - CLOCKPULSE              \ Clock               x1=Clock
@@ -88,10 +88,7 @@
 \ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
 \ B-B     ( 16-bit -- bl bh ) Split 16-bit to a low byte & high byte
 \
-\ : /MS       ( u -- )    0 ?do  140 0 do loop  loop ;
-\
-\ value ACK?              \ Remember IRQ flag
-\ : IRQ?      ( -- flag )     20 28 bit* 0=  dup to ack? ;
+\ : /MS       ( u -- )    0 ?do  1E00 0 do loop  loop ;
 \
 
 hex
@@ -119,8 +116,8 @@ end-code
 
 \ NOTE: This value must be adjusted for different clock speeds & MPU's!!!
 \ It is the timeout for receiving an ACK handshake after a transmit!!
-  FFF constant #IRQ     \ Delay loops for XEMIT)    (104 MHz)
-\ 7FF constant #IRQ     \ 72 MHz
+  1200 constant #IRQ     \ Delay loops for XEMIT (104 MHz)
+\  900 constant #IRQ     \ 72 MHz
 
 value T?                \ Tracer on/off
 : TEMIT     t? if  dup emit  then  drop ;  \ Show copy of char
