@@ -23,4 +23,4 @@ To measure time, temperature, pressure, magnetism, distance, light level, etc.
 | [BME280](https://github.com/project-forth-works/project-forth-works/blob/main/Communication-Protocols/SPI/GD32VF/mecrisp-quintus/BME280/BMP280.fs) | Pressure, temperature & humidity |  Measure pressure, temperature and humidity |
 | [TCND5000](Reflection-sensors) | Reflection sensor | Detection of nearby subjects, other examples are: [IS471F](https://www.sigmaelectronica.net/manuals/IS471F.pdf) or [CNY70](https://www.vishay.com/docs/83751/cny70.pdf),  see [Ushi book](https://home.hccnet.nl/willem.ouwerkerk/download/ushiboek.pdf) | 
 
-More info look at each individual subject.  
+More info look at each individual subject.
