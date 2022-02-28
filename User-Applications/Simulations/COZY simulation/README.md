@@ -26,6 +26,7 @@ On a Raspberry Pi 3b+ the program perfoms around 0.5 milion loops per second. An
 [**COZY on YouTube**](https://www.youtube.com/watch?v=tQSjMcs5nKY)
 
 
-![Bubble shaped end-result]![bubbles_PFW](https://user-images.githubusercontent.com/4964288/155993982-91e6fed1-5e4b-4cb5-b012-232f1d79a39a.jpg)
+[**Bubble shaped end result88](https://user-images.githubusercontent.com/4964288/155994393-9e047d5a-a5a9-47d3-b712-589d5037d598.jpg)
+
 
 
