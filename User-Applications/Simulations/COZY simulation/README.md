@@ -2,7 +2,7 @@
 
 ## COZY
 
-This program is a simulation of agents which, if given the chance, move to a place where they feel more at home. In other words, to a place where they feel cozy. It is a very simple simulation but it has a suprising end-result: the end result looks like 4 bubbles. Even if 2 of these bubbles touch, the end result still looks correct.
+This program is a simulation of agents which, if given the chance, move to a place where they feel more at home. In other words, to a place where they feel cozy. It is a very simple simulation but it has a suprising end-result: the end result looks like 4 bubbles. And if 2 or 3 of these bubbles touch, they still look like bubbles would.
 
 
 The program functions as follows:
@@ -17,7 +17,7 @@ Next an endless loop is started. In each loop the following is done:
 		count the neighbours with the same color as the first agent 	
 	Swap two agents on the grid if the number of same-coloured neigbours is 			higher at the location of the second agent than at the location of 			the first agent.
 
-In other words: an agent moves to the alternative locations if there are more equals ajoining that location.
+In other words: an agent moves to the alternative locations if there are more equals adjoining that location.
 	
 On a Raspberry Pi 3b+ the program performs around 0.5 milion loops per second. At the start of the simuation the agents move rapidly. But than the speed of change slows down. Reaching the end result, more or less bubble like shapes, is stable after 50-75 bilion loops. That takes 1-1.5 days on a Raspberry 3b+. Fortunately the Raspberry does not consume a lot of power.
 
