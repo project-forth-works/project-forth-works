@@ -16,8 +16,7 @@ value WAIT      \ Hold on/off period time
     1 set-dest  get-status .  troff ;
 
 : TRANSMIT1     ( delay -- )
-    kick-nrf24  to wait
-    10 2A *bis  10 29 *bic          \ Output off
+    kick-nrf24  to wait  power-off
     ." Transmitter " #me . space
     begin
         cr  ch T xemit  #me 1 .r    \ Transmit T, show myself
