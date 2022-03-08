@@ -1,8 +1,10 @@
 # noForth versions of the SPI protocol
 
-- Bitbang: [MSP430G2xxx](bbSPI%20MSP-G%20v100.f), [MSP430FR59xx](bbSPI%20MSP-FR%20v100.f)
-- USCI B0: [MSP430G2xxx](USCIB%20SPI%20MSP%20v100.f)
-- eUSCI A1: [MSP430FR59xx](eUSCI-A1%20SPI%20MSP%20v100.f)
+- [MSP430G2xxx](bbSPI%20MSP-G%20v100.f), bitbang SPI version for the MSP430G2xxx  
+- [MSP430FR59xx](bbSPI%20MSP-FR%20v100.f), bitbang SPI version for the MSP430FR59xx  
+- [MSP430F14x](bbSPI%20MSP-F149%20v100.f), bitbang SPI version for the MSP430F14x 
+- [MSP430G2xxx](USCIB%20SPI%20MSP%20v100.f), USCI B0 SPI version for the MSP430G2xxx  
+- [MSP430FR59xx](eUSCI-A1%20SPI%20MSP%20v100.f), eUSCI A1 SPI version for the MSP430FR59xx  
 
 ![SPI OLED test](https://user-images.githubusercontent.com/11397265/120072220-fbf7a080-c092-11eb-9faf-abe96bc6d1c5.jpg)
 ****SPI used to drive an OLED display & W25Q16 external Flash memory****
