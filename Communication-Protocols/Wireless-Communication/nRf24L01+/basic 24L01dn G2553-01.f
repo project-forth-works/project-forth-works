@@ -32,7 +32,7 @@
 \          LED <-|2.0          P2.4|-> Power out
 \
 \ Concept: Willem Ouwerkerk & Jan van Kleef, october 2014
-\ Current version: Willem Ouwerkerk, 28 januari 2021
+\ Current version: Willem Ouwerkerk, 8 march 2022
 \
 \ Launchpad & Egel kit documentation for USCI SPI
 \
@@ -76,7 +76,7 @@
 \ 2.4G wifi signal significantly.
 \
 \ Software parts to adjust for different clock speeds:
-\ 1) B0-SPI-SETUP - SPI clock speed
+\ 1) SPI-ON       - SPI clock speed
 \ 2) #IRQ         - Software timing loop to wait for ACK
 \ 3) WRITE-DTX?   - Transmit pulse CE (10 µsec software timing)
 \
@@ -126,8 +126,10 @@ hex
 
 0 value T?              \ Tracer on/off
 : TEMIT     t? if  dup emit  then  drop ;  \ Show copy of char
-: TRON      true to t? ;    : TROFF     false to t? ;
-: LED-ON    1 29 *bis ;     : LED-OFF   1 29 *bic ;
+: TRON      true to t? ;    : TROFF      false to t? ;
+: LED-ON    1 29 *bis ;     : LED-OFF    1 29 *bic ;
+: POWER-ON  10 29 *bis ;    : POWER-OFF  10 29 *bic ;
+: POWER-BIP 10 29 *bix ;
 : /MS       ( u -- )    0 ?do  140 0 do loop  loop ;
 
 0 value ACK?            \ Remember IRQ flag
@@ -138,13 +140,15 @@ hex
 
                     ( USCI-B0 SPI interface to nRF24L01+ )
 
-: B0-SPI-SETUP  ( -- )
+code CE-HIGH    ( -- )  D2F2 ,  29 , ( #8 29 & .b bis ) next end-code
+code CE-LOW     ( -- )  C2F2 ,  29 , ( #8 29 & .b bic ) next end-code
+: SPI-SETUP     ( -- )
     spi-on
     19 2A *bis      \ P2DIR     P2.3 is CE, P2.0=Led, P2.4 is power out
     20 2A *bic      \ P2DIR     P2.5 is input
     20 2F *bis      \ P2REN     P2.5 resistor on (IRQ)
     21 29 *bis      \ P2OUT     P2.5 pullup, led on
-    08 29 *bic ;    \ P2OUT     ce  = 0 (Red led off = 9)
+    ce-low ;        \           ce  = 0
 
 
                 ( Read and write to and from nRF24L01 )
@@ -193,11 +197,10 @@ hex
 20 constant #PAY            \ Payload size max. 32 bytes
 0 value PAY                 \ Contains current length of the payload
 : >LENGTH   ( +n -- )       1 max  20 umin  to pay ; \ Set dynamic payload length
-: DEFAULT   ( -- )          7 >length ;
 
 \ Elementary command set for the nRF24L01+
 : SETUP24L01    ( -- )
-( ) default             \ Default payload length
+( ) 9 >length           \ Default payload length
 ( ) 3 1C write-reg      \ Allow dynamic payload on Pipe 0 & 1
 ( ) 6 1D write-reg      \ Enable dynamic payload, ACK on!
     0C 0 write-reg      \ Enable CRC, 2 bytes
@@ -224,8 +227,8 @@ create 'WRITE   #pay allot  \ Transmit buffer
 : WRITE-DTX? ( -- 0|20 )        \ Send #PAY bytes payload & leave 20 if an ACK was received
     A9 spi-command 'write pay   \ Store dynamic payload for pipe-0
     0 do  count spi-out  loop  drop  spi}
-    8 29 *bis  noop noop noop  8 29 *bic    \ P2OUT  Transmit pulse on CE
-    response? drop  7 read-reg 20 and ;     \ Wait for ACK
+    ce-high  noop noop noop  ce-low     \ Transmit pulse on CE
+    response? drop  7 read-reg 20 and ; \ Wait for ACK
     
 
 : READ-DRX? ( -- f )            \ Receive 1 to 32 bytes
@@ -242,12 +245,12 @@ create 'WRITE   #pay allot  \ Transmit buffer
                     ( Send and receive commands for nRF24L01 )
 
 : WRITE-MODE    ( -- )          \ Power up module as transmitter
-    8 29 *bic  wakeup           \ P2OUT  CE low, receive off, wakeup transmitter
+    ce-low  wakeup              \ Receive off, wakeup transmitter
     1 pipes-on  reset  2 /ms ;  \ Reset flags & pipe-0 active, wait 200 microsec.
 
 : READ-MODE     ( -- )
     0F 0 write-reg  2 pipes-on  \ Power up module as receiver, activate pipe-1
-    reset  8 29 *bis  2 /ms ;   \ P2OUT  Enable receive mode, wait 200 microsec.
+    reset  ce-high  2 /ms ;     \ Enable receive mode, wait 200 microsec.
 
 A constant #TRY                 \ Transmit attempts
 8 constant #RETRY               \ Re-transmit attempts for XEMIT
@@ -291,7 +294,7 @@ A constant #TRY                 \ Transmit attempts
         read-drx?        \ Yes read payload packet
     until  0 pay>       \ Now read command from packet
     reset  flush-rx     \ Empty pipeline
-    8 29 *bic ;         \ To standby II
+    ce-low ;            \ To standby II
 
 \ Set destination address to node from stack, receive address is my "me"
 : SET-DEST      ( node -- )

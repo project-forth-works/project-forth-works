@@ -26,7 +26,7 @@
 \ Test if other 2.4GHz transmitters are active on selected frequency
 \ Busy channels at my place: 0D, 30 to 4C at night there are more
 : CHECK         ( -- )
-    setup24L01  get-status . \ Init.
+    spi-setup  setup24L01  get-status . \ Init.
     7E 0 do
         i >channel          \ Select channel number 0 to 7D
         cr  i 2 .r space    \ Show tested channel
@@ -40,7 +40,7 @@
 
 \ Show carriers on the channel number from the stack
 : CARRIER   ( channel -- )  \ #CH = default channel
-    setup24L01  get-status . \ Initialise
+    spi-setup  setup24L01  get-status . \ Initialise
     >channel                \ Set channel to be checked
     begin check) key? until \ Check carrier on 'channel'
                             \ Show presence
@@ -48,10 +48,10 @@
 
 : WAVE      ( channel power -- ) \ #CH = default channel
     2E and >r               \ Keep power & bitrate settings in range
-    b0-spi-setup  ." on "   \ Init SPI
+    spi-setup  ." on "      \ Init SPI
     2 0 write-reg  15 /ms   \ Power up for constant carrier
     r> 90 or  6 write-reg   \ Activate carrier, bitrate & power
-    >channel  8 29 *bis     \ Set channel
+    >channel  ce-high       \ Set channel
     begin  key? until       \ Wait for key
     setup24l01  read-mode ; \ Then stop carrier
 
@@ -59,10 +59,10 @@
 : PULSE     ( channel power pulselength -- ) \ #CH = default channel
     to pl  2E and >r        \ Keep power & bitrate settings in range
     begin
-        b0-spi-setup        \ Init SPI
+        spi-setup           \ Init. nRF24 SPI
         2 0 write-reg  15 /ms   \ Power up for constant carrier
         r@ 90 or  6 write-reg   \ Activate carrier, bitrate & power
-        dup >channel  8 29 *bis \ Set channel
+        dup >channel  ce-high   \ Set channel
         pl ms               \ Carrier for PL ms
         setup24l01  pl ms   \ Then stop carrier for PL ms
     key? until              \ Wait for key

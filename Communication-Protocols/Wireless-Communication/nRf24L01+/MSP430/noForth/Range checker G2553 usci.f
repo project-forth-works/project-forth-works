@@ -51,7 +51,7 @@ Extra words: MS
 
 : WAVE      ( channel power -- ) \ #CH = default channel
     2E and >r               \ Keep power & bitrate settings in range
-    b0-spi-setup  ." on "   \ Init SPI
+    spi-setup  ." on "      \ Init SPI
     2 0 write-reg  15 /ms   \ Power up for constant carrier
     r> 90 or  6 write-reg   \ Activate carrier, bitrate & power
     >channel  8 29 *bis     \ Set channel
@@ -62,7 +62,7 @@ value PL                    \ Pulselength for on/off rhythm
 : PULSE     ( channel power pulselength -- ) \ #CH = default channel
     to pl  2E and >r        \ Keep power & bitrate settings in range
     begin
-        b0-spi-setup        \ Init SPI
+        spi-setup           \ Init SPI
         2 0 write-reg  15 /ms   \ Power up for constant carrier
         r@ 90 or  6 write-reg   \ Activate carrier, bitrate & power
         dup >channel  8 29 *bis \ Set channel

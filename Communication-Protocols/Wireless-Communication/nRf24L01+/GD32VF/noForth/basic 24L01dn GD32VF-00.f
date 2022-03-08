@@ -59,7 +59,7 @@
 \ 2.4G wifi signal significantly.
 \
 \ Software parts to adjust for different clock speeds:
-\ 1) SPI0-SETUP   - SPI clock speed
+\ 1) SPI-ON       - SPI clock speed
 \ 2) #IRQ         - Software timing loop to wait for ACK
 \ 3) WRITE-DTX?   - Transmit pulse CE (10 µsec software timing)
 \
@@ -121,8 +121,10 @@ end-code
 
 value T?                \ Tracer on/off
 : TEMIT     t? if  dup emit  then  drop ;  \ Show copy of char
-: TRON      true to t? ;        : TROFF     false to t? ;
-: LED-ON    20 portb-odr *bic ; : LED-OFF   20 portb-odr *bis ;
+: TRON      true to t? ;        : TROFF      false to t? ;
+: LED-ON    20 portb-odr *bic ; : LED-OFF    20 portb-odr *bis ;
+: POWER-ON  3 portb-odr *bis ;  : POWER-OFF  3 portb-odr *bic ;
+: POWER-BIP 3 portb-odr *bix ;
 : /MS       ( u -- )    ms# >r  r@ 0A / to ms#  ms  r> to ms# ;
 
 value ACK?              \ Remember IRQ flag
@@ -135,13 +137,15 @@ value ACK?              \ Remember IRQ flag
 
                     ( USCI-B0 SPI interface to nRF24L01+ )
 
-: SPI0-SETUP  ( -- )
+: CE-HIGH   ( -- )      2 4001100C **bis ;
+: CE-LOW    ( -- )      2 4001100C **bic ;
+: SPI-SETUP ( -- )
     spi-on 23 portb-odr *bis \ Activate SPI0 & leds
     44244422 portb-crl !    \ Port_B CRL  Set PB0, PB1 & PB5 as output (Reset $44444444)
     0000FFFF 40011000 **bic \ Port_C CRL  Clear pin PC0 to PC2, CSN CE & IRQ
     00001811 40011000 **bis \ Port_C CRL  Set pin PC0 to PC3
     5 4001100C **bis        \ Port_C out  CSN high, IRQ pullup
-    2 4001100C **bic ;      \ Port_C out  CE low
+    ce-low ;
 
 
                 ( Read and write to and from nRF24L01 )
@@ -190,11 +194,10 @@ value RF              \ Contains nRF24 RF setup
 20 constant #PAY            \ Payload size max. 32 bytes
 value PAY                   \ Contains current length of the payload
 : >LENGTH   ( +n -- )       1 max  20 umin  to pay ; \ Set dynamic payload length
-: DEFAULT   ( -- )          7 >length ;
 
 \ Elementary command set for the nRF24L01+
 : SETUP24L01    ( -- )
-( ) default  led-on     \ Default payload length
+( ) 9 >length  led-on   \ Default payload length
 ( ) 3 1C write-reg      \ Allow dynamic payload on Pipe 0 & 1
 ( ) 6 1D write-reg      \ Enable dynamic payload, ACK on!
     0C 0 write-reg      \ Enable CRC, 2 bytes
@@ -221,8 +224,8 @@ create 'WRITE   #pay allot  \ Transmit buffer
 : WRITE-DTX? ( -- 0|20 )        \ Send #PAY bytes payload & leave 20 if an ACK was received
     A9 spi-command 'write pay   \ Store dynamic payload for pipe-0
     0 do  count spi-out  loop  drop  spi}
-    2 4001100C **bis  30 for next  2 4001100C **bic \ PCODR  Transmit 10µs pulse on CE
-    response? drop  7 read-reg 20 and ;     \ Wait for ACK
+    ce-high  30 for next  ce-low \ Transmit 10µs pulse on CE
+    response? drop  7 read-reg 20 and ; \ Wait for ACK
     
 
 : READ-DRX? ( -- f )            \ Receive 1 to 32 bytes
@@ -239,12 +242,12 @@ create 'WRITE   #pay allot  \ Transmit buffer
                     ( Send and receive commands for nRF24L01 )
 
 : WRITE-MODE    ( -- )          \ Power up module as transmitter
-    2 4001100C **bic  wakeup    \ PCODR  CE low, receive off, wakeup transmitter
+    ce-low  wakeup              \ Receive off, wakeup transmitter
     1 pipes-on  reset  2 /ms ;  \ Reset flags & pipe-0 active, wait 200 microsec.
 
 : READ-MODE     ( -- )
     0F 0 write-reg  2 pipes-on  \ Power up module as receiver, activate pipe-1
-    reset  2 4001100C **bis  2 /ms ; \ PCODR  Enable receive mode, wait 200 microsec.
+    reset  ce-high  2 /ms ;     \ Enable receive mode, wait 200 microsec.
 
 A constant #TRY                 \ Transmit attempts
 8 constant #RETRY               \ Re-transmit attempts for XEMIT
@@ -288,7 +291,7 @@ value #FAIL     \ Note XEMIT failures
         read-drx?       \ Yes read payload packet
     until  0 pay>       \ Now read command from packet
     reset  flush-rx     \ Empty pipeline
-    2 4001100C **bic ;  \ PCODR  To standby II
+    ce-low ;            \ To standby II
 
 \ Set destination address to node from stack, receive address is my "me"
 : SET-DEST      ( node -- )

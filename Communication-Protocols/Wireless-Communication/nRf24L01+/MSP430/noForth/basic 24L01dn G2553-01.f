@@ -1,10 +1,8 @@
-\ This version-01, USCI_B0 runs on noForth C2553 version 200202 & later.
+\ This version-01, runs on noForth C2553 version 200202 & later.
 \
-\ USCI hardware SPI on MSP430G2553 using port-1 & port-2.
-\ SPI i/o interfacing the nRF24L01 with two or more Launchpad boards
-\ Micro Launchpads and/or Egel kits.
+\ SPI on MSP430G2553 using port-1 & port-2.
 \
-\ Connect the SPI lines of USCIB P1.5=CLOCKPULSE, P1.6=DATA-IN, P1.7=DATA-OUT
+\ Connect the SPI lines of P1.5=CLOCKPULSE, P1.6=DATA-IN, P1.7=DATA-OUT
 \ P1.4=CSN,  P2.3=CE of the nRF24L01. On the Egel kit it's just putting the
 \ module in the connector marked nRF24L01!!
 \
@@ -76,7 +74,7 @@
 \ 2.4G wifi signal significantly.
 \
 \ Software parts to adjust for different clock speeds:
-\ 1) B0-SPI-SETUP - SPI clock speed
+\ 1) SPI-ON       - SPI clock speed
 \ 2) #IRQ         - Software timing loop to wait for ACK
 \ 3) WRITE-DTX?   - Transmit pulse CE (10 µsec software timing)
 \
@@ -121,17 +119,26 @@
 hex
 \ NOTE: This value must be adjusted for different clock speeds & MPU's!!!
 \ It is the timeout for receiving an ACK handshake after a transmit!!
-  200 constant #IRQ     \ Delay loops for XEMIT)    (8 MHz)
-\ 400 constant #IRQ     \ 16 MHz
+  300 constant #IRQ     \ Delay loops for XEMIT)    (8 MHz)
+\ 600 constant #IRQ     \ 16 MHz
 
 value T?                \ Tracer on/off
 : TEMIT     t? if  dup emit  then  drop ;  \ Show copy of char
-: TRON      true to t? ;    : TROFF     false to t? ;
-: LED-ON    1 29 *bis ;     : LED-OFF   1 29 *bic ;
-: /MS       ( u -- )    0 ?do  140 0 do loop  loop ;
+: TRON      true to t? ;    : TROFF      false to t? ;
+: LED-ON    1 29 *bis ;     : LED-OFF    1 29 *bic ;
+: POWER-ON  10 29 *bis ;    : POWER-OFF  10 29 *bic ;
+: POWER-BIP 10 29 *bix ;
+: /MS       ( u -- )    ms# >r  r@ 0A / to ms#  ms  r> to ms# ;
 
 value ACK?              \ Remember IRQ flag
-: IRQ?      ( -- flag )     20 28 bit* 0=  dup to ack? ;
+\ MSP430 assembly code for speed up:
+code IRQ?   ( -- flag ) \ Flag is true when IRQ = low
+    8324 , 4784 , 0 ,   \  tos sp -) mov
+    B0F2 , 20 , 28 ,    \ 20 # 28 & .b bit    \ P2IN
+    7707 ,              \ tos tos subc
+    4782 , adr ack? ,   \ tos adr ack? & mov  \ Save tos in ACK?
+    next
+end-code
 
 : RESPONSE? ( -- flag )     \ Leave true when an IRQ was received
     false  #irq 0 do  irq? if  1-  leave  then  loop ;
@@ -193,11 +200,10 @@ value RF              \ Contains nRF24 RF setup
 20 constant #PAY            \ Payload size max. 32 bytes
 value PAY                   \ Contains current length of the payload
 : >LENGTH   ( +n -- )       1 max  20 umin  to pay ; \ Set dynamic payload length
-: DEFAULT   ( -- )          7 >length ;
 
 \ Elementary command set for the nRF24L01+
 : SETUP24L01    ( -- )
-( ) default             \ Default payload length
+( ) 9 >length           \ Default payload length
 ( ) 3 1C write-reg      \ Allow dynamic payload on Pipe 0 & 1
 ( ) 6 1D write-reg      \ Enable dynamic payload, ACK on!
     0C 0 write-reg      \ Enable CRC, 2 bytes

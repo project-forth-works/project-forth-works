@@ -12,12 +12,11 @@
 0 value WAIT      \ Hold on/off period time
 : KICK-NRF24    ( -- )
     0 to #me  55 to #ch  1 to rf
-    b0-spi-setup  5 ms  setup24L01
+    spi-setup  5 ms  setup24L01
     1 set-dest  get-status .  troff ;
 
 : TRANSMIT      ( delay -- )
-    kick-nrf24  to wait
-    10 2A *bis  10 29 *bic          \ Output off
+    kick-nrf24  to wait  power-off
     ." Transmitter " #me . space
     begin
         cr  ch T xemit  #me 1 .r    \ Transmit T, show myself

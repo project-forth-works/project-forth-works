@@ -12,12 +12,11 @@ Transmit T & receive a count as answer
 value WAIT      \ Hold on/off period time
 : KICK-NRF24    ( -- )
     0 to #me  55 to #ch  1 to rf
-    spi0-setup  5 ms  setup24L01
+    spi-setup  5 ms  setup24L01
     1 set-dest  get-status .  troff ;
 
 : TRANSMIT1     ( delay -- )
-    kick-nrf24  to wait
-    23 portb-adr *bis               \ Outputs off
+    kick-nrf24  to wait  power-off
     ." Transmitter " #me . space
     begin
         cr  ch T xemit  #me 1 .r    \ Transmit T, show myself
