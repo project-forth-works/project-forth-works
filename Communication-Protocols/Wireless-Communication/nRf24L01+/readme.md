@@ -25,6 +25,7 @@ adjustable output power, CRC, etc.
 
 |    Command     |      Stack      |           Function          |  
 | ---------------| --------------- | --------------------------- |  
+| `SPI-SETUP`    | ( -- )          | Activate whole nRF24 SPI interface |  
 | `SETUP24L01`   | ( -- )          | Initialise nRF24l01 |  
 | `TRON`         | ( -- )          | Tracer active |
 | `TROFF`        | ( -- )          | Tracer inactive |
@@ -32,11 +33,14 @@ adjustable output power, CRC, etc.
 | `>LENGTH`      | ( +n -- )       | Set size of current payload |  
 | `>PAY`         | ( b +n -- )     | Store byte b at location +n of the payload |  
 | `PAY>`         | ( +n -- b )     | Read byte b from location +n of the payload |  
+| `IRQ?`         | ( -- flag )     | Leave true when an nRF24 interrupt has gone off |  
 | `RESPONSE?`    | ( -- flag )     | Wait a bit, stop & leave true when an IRQ was received |  
+| `CE-HIGH`      | ( -- )          | nRF24 to transmit modus |  
+| `CE-LOW`       | ( -- )          | nRF24 to receive or standby modus |  
 | `XEMIT?`       | ( c -- +n )     | Send byte c, +n are the retries (max=10) |  
 | `XEMIT`        | ( c -- )        | Send byte c to addressed nRF24 |  
 | `XKEY`         | ( -- c )        | Receive byte c that is addressed to me |  
-| `SET-DEST`     | ( +n -- )       | Set address to nRF24 +n |  
+| `SET-DEST`     | ( +n -- )       | Set address of destination nRF24 to +n |  
 
 
 **Bidirectional demo commands**  
