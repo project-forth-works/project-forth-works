@@ -12,5 +12,5 @@ adjustable output power, CRC, etc.
 
 ## Software
 
-[**MSP430 noForth**](MSP430/noForth), a noForth implementation of the example code  
+[**MSP430 noForth**](noForth), a noForth implementation of the nRF24L01+ driver with examples
 Etc.  
