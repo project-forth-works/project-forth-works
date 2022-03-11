@@ -187,8 +187,8 @@ This switch alternately activates the words `ALL-ON` or `ALL-OFF`.
 The mesh network code adds some additional words for constructing
 new functions above the basic node command interpreter. These are:
 
-|   Word    |   Stack       |       Function        |  
-| --------- | ------------- | --------------------- |  
+|   Word    |      Stack       |       Function        |  
+| --------- | ---------------- | --------------------- |  
 | `ALL`     | ( -- a )      | Address of a BIT-table with all found nodes |  
 | `DIRECT`  | ( -- a )      | Address of a BIT-table with direct accessable nodes |  
 | `INDIRECT`| ( -- a )      | Address of a BIT-table with indirect accessable nodes |  
