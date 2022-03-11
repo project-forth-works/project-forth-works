@@ -123,7 +123,7 @@ value T?                \ Tracer on/off
 : TEMIT     t? if  dup emit  then  drop ;  \ Show copy of char
 : TRON      true to t? ;        : TROFF      false to t? ;
 : LED-ON    20 portb-odr *bic ; : LED-OFF    20 portb-odr *bis ;
-: POWER-ON  3 portb-odr *bis ;  : POWER-OFF  3 portb-odr *bic ;
+: POWER-ON  3 portb-odr *bic ;  : POWER-OFF  3 portb-odr *bis ;
 : POWER-BIP 3 portb-odr *bix ;
 : /MS       ( u -- )    ms# >r  r@ 0A / to ms#  ms  r> to ms# ;
 
