@@ -50,14 +50,14 @@ hex
 1 constant #TYPE            \ I am a power switch
 0 constant #SUB             \ I contain +n (no) sub nodes
 10 constant #N              \ Max. number of nodes used
-#n 10 /mod swap 0 > abs  +  \ Calculate half words for table  *****WO*****
-2* constant #MAP            \ Convert to byte size of bitmap  *******WO******
+#n 10 /mod swap 0 > abs  +  \ Calculate half words for table
+2* constant #MAP            \ Convert to byte size of bitmap
 
 \ EXEC handles execution tables, it needs the table address on the
 \ stack. Note that, all data needs te be cell aligned. The last command
 \ token is always -1 and ERR-XT is then the error recovery routine.
 \ Like: CREATE EXEC-TABLE  C0 ,  XT0 ,  C1 , XT1  ...  -1 , ERR-XT ,
-\ c = command token, exec-table = start address of execution table  *****WO*****
+\ c = command token, exec-table = start address of execution table
 : EXEC      ( c exec-table -- ?? )
     swap >r                 \ Save char
     begin
@@ -68,7 +68,7 @@ hex
     then  rdrop             \ Drop char
     cell+ @ execute ;       \ Execute token
 
-: LOC       ( node a -- bit halfword-addr ) \ Bit location in byte-addr *****WO*****
+: LOC       ( node a -- bit halfword-addr ) \ Bit location in byte-addr
     over 4 rshift 2*        \ Convert to half word addresses
     #map 1- and +  >r       \ Mask overflow and make halfword address
     0F and 1 swap lshift  r> ; \ Convert low nibble to bit mask
@@ -152,7 +152,7 @@ value PWR       \ nRF24 scan TX-power
 : >PAYLOAD  ( a +n -- ) 5 '>pay +  #map move ;  \ Copy map a to the payload at offset +n
 
 
-\ Alternative MS routine that waits for answers to commands  *****WO*****
+\ Alternative MS routine that waits for answers to commands
 code TICK   ( -- u )        \ Read half (low 32-bits) of rdcycle register
     sp -) tos .mov
     tos B00 zero csrrs      \ Read low counter
@@ -197,7 +197,7 @@ value TCK   \ Remember start time
 \ QUIT early on answer commands!
 value 'HANDLER \ Contains token of HANDLER)
 : <<WAIT>>    ( -- )
-    #ms ( 30ms) 4C2C00 > if   RF-ERROR rf-check  then   \ Check lost connections *****WO*****
+    #ms ( 30ms) 4C2C00 > if   RF-ERROR rf-check  then   \ Check lost connections
     read-mode  begin
         irq? if  xkey 'handler execute  then  (ms)      \ Now with HANDLER
     wait? 0= until  read-mode ;
@@ -216,7 +216,7 @@ value HOP#  \ Holds direct hopping node
 : >DEST     ( node -- )
     dup FF = if set-dest exit then  \ Is it not a registered node?
     dup indirect get* if            \ Yes, is it a indirect node?
-        dup hops + c@  dup set-dest \ Yes, fetch node used for hopping  *WO*
+        dup hops + c@  dup set-dest \ Yes, fetch node used for hopping
         to hop#  1 >pay  exit       \ Set dest with correct (hopping) destination
     then
     dup direct get* 0= to non?      \ A direct node, check if node does not exists?
@@ -373,7 +373,7 @@ create DATA-BUFFER #map 2* allot
     setup24l01  read-mode ;
 
 v: inside also
-\ Receive and execute commands from another node  *****WO*****
+\ Receive and execute commands from another node
 : OUTPUTON  ( -- )      -1 to on?  power-on   <ok ;
 : OUTPUTOFF ( -- )      0 to on?   power-off  <ok ;
 : FORTH>    ( -- ?? )   5 'pay>  4 pay>  evaluate  ready  .ok ;
