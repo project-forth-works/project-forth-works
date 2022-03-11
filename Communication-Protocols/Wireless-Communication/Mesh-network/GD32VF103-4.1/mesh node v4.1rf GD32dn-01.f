@@ -374,8 +374,8 @@ create DATA-BUFFER #map 2* allot
 
 v: inside also
 \ Receive and execute commands from another node  *****WO*****
-: OUTPUTON  ( -- )      -1 to on?  3 portb-odr *bic  <ok ;
-: OUTPUTOFF ( -- )      0 to on?   3 portb-odr *bis  <ok ;
+: OUTPUTON  ( -- )      -1 to on?  power-on   <ok ;
+: OUTPUTOFF ( -- )      0 to on?   power-off  <ok ;
 : FORTH>    ( -- ?? )   5 'pay>  4 pay>  evaluate  ready  .ok ;
 
 
@@ -459,8 +459,8 @@ chere  -1 ,  to #me     \ Headerless node data address
     5 ms  setup24L01            \ Wakeup & init. nRF24
     #me set-dest  run           \ Init. addresses & to run mode
     .status  tron               \ Print status, tracer on
-    3 portb-odr *bis  0 to on?  \ Outputs off  *****WO*****
-    ready ( 1 0 *bis  int-on  ) \ IE1  Activate MS
+    power-off  0 to on?         \ Outputs off
+    ready                       \ Init. <<WAIT>>
     ['] handler)  to 'handler   \ Add NODE handler to <<WAIT>>
     ['] xkey)  to 'key  read-mode ; \ Add KEY & node handler to KEY
 
