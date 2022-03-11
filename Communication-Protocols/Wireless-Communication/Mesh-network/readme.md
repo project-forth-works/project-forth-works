@@ -1,4 +1,5 @@
 # Mesh network
+![mesh in action](https://user-images.githubusercontent.com/11397265/157903902-66324963-a68f-43bf-bdf6-fc22b96b761f.jpg)
 
 ## The idea
 
@@ -10,13 +11,15 @@ The transceiver used here is the nRf24L01 or the Chinese clone named
 
 ## Built on top
 
-The basis for this example are these files: [SPI](), [Basic 24L01dn]() file
-and the [bit array](), these are used for the driver of the network layer.
+The basis for this example are these files: [SPI](../../SPI/), 
+[Basic 24L01dn](../nRf24L01+/basic%2024L01dn%20G2553-01.f) file
+and the [bit array](https://github.com/project-forth-works/project-forth-works/tree/main/Data-Structures/Bit-Array), 
+these are used for the driver of the network layer.
 This driver uses **dynamic payload** to optimise the troughput of the network.
 
-[Generic](Generic-version), Forth version of the mesh network
-[For MSP430G2553](G2553-4.1), noForth mesh network version
-[For GD32VF103](GD32VF103-4.1), noForth mesh network version
+[Generic forth](Generic-version), version of the mesh network  
+[MSP430G2553](G2553-4.1), noForth mesh network version  
+[GD32VF103](GD32VF103-4.1), noForth mesh network version  
 
 ## Flexible RF settings
 
@@ -33,7 +36,7 @@ the following parameters:
 ## Payload structure
 
 The **Dynamic payload** format is 1 to 32 bytes. For this implementation
-the minimum payload size is 2 bytes, the command and destination! 
+the minimum payload size is 2 bytes (the command and destination). 
 This is because the node handler does a check on the destination before accepting
 a command. The complete payload is described in the table below.
 
@@ -49,18 +52,19 @@ a command. The complete payload is described in the table below.
 
 ## Time out on network commands
 
-Because network commands can get lost, an important function is a timeout
-on the command response. This timeout has to be constructed with a built-in timer 
-of the used microcontroller or using the cycle counter as present on some.
+Because network commands can be lost, an important feature is a time-out on the command response. 
+This time-out must be constructed with a built-in timer of the microcontroller used, 
+or by using a built-in cycle counter if present.  
 This is code example is for the GD32VF103 Risc-V microcontroller:
-
-```forth
+```fort
+hex
 code TICK   ( -- u )    \ Read half (low 32-bits) of 64-bit rdcycle counter
     sp -) tos .mov
     tos B00 zero csrrs  \ Read low counter
     next
 end-code
 
+decimal
 : MS        ( ms -- )        
     104000 *            \ Convert MS to CPU ticks
     tick >r             \ Save tick counter
@@ -115,7 +119,7 @@ is evaluated, an error leaves this loop too.
 
 #### Example code
 ```forth
-0 value LEN  create BUF 20 allot
+hex  0 value LEN  create BUF 20 allot
 : GET?      ( -- 0|1B )
     0  key? if                              \ Key pressed?
         key dup 1B = if  or  exit  then     \ Yes, exit on escape char!
@@ -172,6 +176,11 @@ This switch alternately activates the words `ALL-ON` or `ALL-OFF`.
 | `>F`      | ( +n ccc -- ) | Execute the forth word ccc on node +n |   
 | `SCANX`   | ( -- )    | Scan & note direct accessible nodes |  
 
+   ***
+
+![scanx](https://user-images.githubusercontent.com/11397265/157905223-70621a30-4d84-4d40-b706-f30acef52bed.jpg)  
+**SCANX in action**
+
 
 ## Network tools
 
@@ -198,6 +207,7 @@ new functions above the basic node command interpreter. These are:
 
 #### Generic forth example code
 ```forth
+hex
 : RUN-FORW  ( -- )      \ Running light on all outputs in my network
     run  begin
         all >user
@@ -206,7 +216,8 @@ new functions above the basic node command interpreter. These are:
         off  30 <wait>  repeat
     halt? until ;
 ```
-
+   ***
+   
 [BUILD](Generic-version\Tools\Build%20(3.9d).f), constructs a (hopping) mesh network  
 [PING](Generic-version\Tools\Ping-2.f), check node connection/availability  
 [DEMO's](Generic-version\Tools\Mesh-demos.f), that activate the node outputs in different ways  
