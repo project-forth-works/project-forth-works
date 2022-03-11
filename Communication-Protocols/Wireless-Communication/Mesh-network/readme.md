@@ -179,7 +179,7 @@ This switch alternately activates the words `ALL-ON` or `ALL-OFF`.
    ***
 
 ![scanx](https://user-images.githubusercontent.com/11397265/157905223-70621a30-4d84-4d40-b706-f30acef52bed.jpg)  
-**SCANX in action**
+**SCANX result**
 
 
 ## Network tools
