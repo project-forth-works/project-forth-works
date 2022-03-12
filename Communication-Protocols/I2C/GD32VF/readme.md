@@ -1,5 +1,8 @@
 # I2C for the GD32VF103
 
+- [I2C](Mecrisp), for Mecrisp (not ready).  
+- [I2C](noForth), implementation & examples for noForth.  
+
 ![bitbang I2C on GD32VF sm](https://user-images.githubusercontent.com/11397265/123394697-b64dcb00-d59f-11eb-82f1-ce43c2ab7c64.jpg)
 **Bitbang I2C on the GD32VF103 SEED board**
 
