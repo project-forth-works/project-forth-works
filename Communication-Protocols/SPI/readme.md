@@ -132,6 +132,6 @@ hex
 
 Have a look at the sub directories for implementations for different systems.  
 
-[MSP430](MSP430), SPI implementations for MSP430  
-[GD32VF](GD32VF), SPI implementations for GD32VF103  
+- [MSP430](MSP430), SPI implementations for MSP430  
+- [GD32VF](GD32VF), SPI implementations for GD32VF103  
 
