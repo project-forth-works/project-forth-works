@@ -161,6 +161,7 @@ The following implementations are provided:
    Similar to the above Forth-94 implementation this makes use of the SwiftForth `package` mechanism to hide internal word.  
    [primitive-circular-buffer-SwiftForth.f](primitive-circular-buffer-SwiftForth.f).
 
+- [**noForth**](noForth), specific implementation using the Generic Forth approach.  
 
 More efficient definitions could do pointer arithmetic and compare address values to let the index wrap around. 
 Also using addresses instead of an index would allow to avoid address calculation at every access.
