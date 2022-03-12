@@ -2,7 +2,7 @@
 
 Forth applications intended for end users.  
 
-[Simulations](Simulations), collect and discuss simulations.
+- [Simulations](Simulations), collect and discuss simulations.  
 
    ***
 
