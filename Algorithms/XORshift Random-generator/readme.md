@@ -144,6 +144,12 @@ used. You can also use (7, 9, 8).
   dup seed1 xor to seed1 ;
 ```
 
+#### Implementations:
+
+- [ARM](ARM), more on the ARM specific random implementation  
+- [GD32VF103](GD32VF), implementations for the Risc-V  
+- [MSP430](MSP430), implementations for the TI MSP430 series  
+
 #### A few points to note:
 
 There is no limit to the number of seeds. If you want to use a thousand
