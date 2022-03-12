@@ -29,7 +29,7 @@
 
                                             1st         2nd    3th
         Basic 24l01 using usci 2021-01-13:  1464 bytes (1520) (1466/1476:1670|2744) Small tools
-        Mesh node 4.0:                      2320 bytes (2666) (2880/3220:3364|4672)
+        Mesh node 4.x:                      2320 bytes (2666) (2880/3220:3364|4672)
         Total:                              3784 bytes (4186) (4346/4696:5034|7416)
         Free with use of asm, das & tools:  3728 bytes (3316) (3158/2808:1930|92876)
         Free RAM                             140 bytes  (130)  (124/122:90|29176)
@@ -117,7 +117,7 @@ value PWR       \ nRF24 scan TX-power
 : .BITRATE  ( +n -- )   ?dup 0= if ." 250 kBit " exit then . ." Mbit, " ;
 : .STATUS   ( -- )
     base @ >r  decimal
-    cr ." Node v 4.0 nr: "      \ Show node vsn
+    cr ." Node v 4.1 nr: "      \ Show node vsn
     #me . ."  nRF24 "           \ Which node with nRf24
     get-status ?dup if          \ nRF24 not connected?
         E <> if  ." not "  then \ nRF24 not ready?
@@ -441,7 +441,6 @@ create 'COMMANDS    ( -- addr )
 : HANDLER?  ( -- flag )     \ Handle all node data & commands
     irq? if                 \ Payload packet received?
         xkey handler) false \ Yes, get it
-\       RF-ERROR rf-check   \ Try to restore lost nodes
     else                    \ No, own command
         wait? ?dup 0= if
             ( event? )  switch?
@@ -487,7 +486,6 @@ chere  -1 ,  to #me     \ Headerless node data address
     repeat ;
 
 : FINISH    ( -- )
-\   3 for  hop  all >work-me  ch h  >others   next \ Then HOP is needed too
     4 for
         info cr  all >work-me  ch i >others \ Gather all node information
         #me ch I >node 40 <wait> \ Finally on myself & ready
@@ -520,7 +518,7 @@ spi-setup           \ Activate SPI interface
 ' 24l01\ ' das\ -   dm .  ( Basic )
 ' node\  ' 24l01\ - dm .  ( Mesh )
 ' node\  ' das\ -   dm .  ( All )
-border chere - dm .       ( Free flash )  \ *****WO*****
+border chere - dm .       ( Free flash )
 ramborder here - dm .     ( Free ram )
 
 cold
