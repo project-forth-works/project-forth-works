@@ -4,7 +4,7 @@
 Note that the check on CFA's `dasa @ @+ =` is only correct for ITC code.  
 For other systems these lines need adaptation.  
 Not in Generic Forth: `WITHIN  CELL-  1-  @+  <>`  
-- [noForth](noforth), resident noForth assembler.  
+- [noForth](noForth), resident noForth assembler.  
 
 An example of its use, disassemble `DUP`, `?DUP` & `DROP` in noForth:
 ```
