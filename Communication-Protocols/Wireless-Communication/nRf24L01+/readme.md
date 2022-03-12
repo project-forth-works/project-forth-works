@@ -67,4 +67,4 @@ adjustable output power, CRC, etc.
 
 https://user-images.githubusercontent.com/11397265/154994487-bffd043c-1e07-403d-8e72-6fbb5ada894f.mp4  
 
-Later on a self constructing mesh network will be added.
+A self constructing mesh network can be found [here](../Mesh-network).
