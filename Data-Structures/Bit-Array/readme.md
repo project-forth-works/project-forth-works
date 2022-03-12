@@ -82,6 +82,10 @@ Words with hardware dependencies:
 : ZERO   ( a -- )           dup >adr  swap >len 8 /  0 fill ; \ Erase bit-map 
 ```
 ## Implementations
-Have a look at the sub directories for implementations for different systems. 
+Have a look at the sub directories for implementations for different systems.  
+
+- [noForth](noForth), specific bit-array implementation.  
+
+
 
 
