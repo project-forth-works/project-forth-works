@@ -11,7 +11,7 @@ Well known protocols are Wifi & Bluetooth, but there are a lot more.
    
 ## Transceivers
 
-[**nRF24L01P**](nRf24L01+); 2.4GHz transceiver from Nordic semiconductor  
-[**Mesh network**](Mesh-network); Implementation example of a extensible node interpreter.  
-[**Other transceivers**](https://en.wikipedia.org/wiki/RF_module#Transceiver_modules); An overview of available transceivers on different frequencies ([or in a webshop](https://nl.aliexpress.com/premium/transceivers.html?trafficChannel=ppc&SearchText=transceiver%20modules&ltype=premium&SortType=price_asc&minPrice=1.5&maxPrice=12&page=1&groupsort=1&CatId=0)).  
+- [**nRF24L01P**](nRf24L01+); 2.4GHz transceiver from Nordic semiconductor  
+- [**Mesh network**](Mesh-network); Implementation example of a extensible node interpreter.  
+- [**Other transceivers**](https://en.wikipedia.org/wiki/RF_module#Transceiver_modules); An overview of available transceivers on different frequencies ([or in a webshop](https://nl.aliexpress.com/premium/transceivers.html?trafficChannel=ppc&SearchText=transceiver%20modules&ltype=premium&SortType=price_asc&minPrice=1.5&maxPrice=12&page=1&groupsort=1&CatId=0)).  
 
