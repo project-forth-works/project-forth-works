@@ -164,6 +164,8 @@ end-code
 value WAIT? \ Exit <<WAIT>> when false
 value #MS   \ Remember time duration
 value TCK   \ Remember start time
+											  
+															   
 : READY     ( -- )      0 to wait? ;                            \ Exit <<WAIT>> loop
 : >MS       ( u -- )    ms>tk to #ms  tick to tck  -1 to wait? ; \ (Re)start timeout timer
 
@@ -194,7 +196,7 @@ value TCK   \ Remember start time
 
 
 \ Wait MS milliseconds & respond to external network commands
-\ QUIT early on answer commands!
+\ Leave early on an answer command!
 value 'HANDLER \ Contains token of HANDLER)
 : <<WAIT>>    ( -- )
     #ms ( 30ms) 4C2C00 > if   RF-ERROR rf-check  then   \ Check lost connections
@@ -342,7 +344,6 @@ create DATA-BUFFER #map 2* allot
     >r  begin  work up? while  over >node  r@ <wait>  repeat
     drop  rdrop  0 to #fail ;
 
-\ DN: use shortest payload length (5)
 \ 0 scan = max. 4 meters  ( 1 wall )    2 scan = max. 10 meters ( 1 wall )
 \ 4 scan = max. 10 meters ( 2 walls )   6 scan = max. .. meters ( .. )
 : SCANX     ( -- )
@@ -465,11 +466,11 @@ chere  -1 ,  to #me     \ Headerless node data address
 
 
 \ Send Forth command string of max. #PAY-5 bytes to remote node
-: >F)       ( node a u -- ) \ Send string a u to node
-    pay >r  #pay to pay     \ Max. payload length (dn)
-    >r  r@ 4 >pay           \ String length to admin byte
-    5 '>pay r> #b umin move \ Copy command to payload
-    ch F >node  r> to pay ; \ Send command
+: >F)       ( node a u -- )  \ Send string a u to node
+    pay >r  #pay >length     \ Max. payload length (dn)
+    >r  r@ 4 >pay            \ String length to admin byte
+    5 '>pay r> #b umin move  \ Copy command to payload
+    ch F >node  r> >length ; \ Send command
 
 : >F        ( node ccc -- ) 0 parse  >f) ;
 

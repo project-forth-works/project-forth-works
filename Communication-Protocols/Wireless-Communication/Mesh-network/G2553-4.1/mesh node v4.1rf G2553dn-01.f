@@ -448,17 +448,17 @@ chere  -1 ,  to #me     \ Headerless node data address
     #me set-dest  run           \ Init. addresses & to run mode
     .status  tron               \ Print status, tracer on
     power-off  0 to on?         \ Output off
-    ready  1 0 *bis  int-on     \ IE1  Activate MS
+    ready  1 0 *bis  int-on     \ IE1  Activate <WAIT>
     ['] handler)  to 'handler   \ Add NODE handler to <<WAIT>>
     ['] xkey)  to 'key  read-mode ; \ Add KEY & node handler to KEY
 
 
 \ Send Forth command string of max. #PAY-5 bytes to remote node
-: >F)       ( node a u -- ) \ Send string a u to node
-    pay >r  #pay to pay     \ Max. payload length (dn)
-    >r  r@ 4 >pay           \ String length to admin byte
-    5 '>pay r> #b umin move \ Copy command to payload
-    ch F >node  r> to pay ; \ Send command
+: >F)       ( node a u -- )  \ Send string a u to node
+    pay >r  #pay >length     \ Max. payload length (dn)
+    >r  r@ 4 >pay            \ String length to admin byte
+    5 '>pay r> #b umin move  \ Copy command to payload
+    ch F >node  r> >length ; \ Send command
 
 : >F        ( node ccc -- ) 0 parse  >f) ;
 
@@ -496,8 +496,7 @@ chere  -1 ,  to #me     \ Headerless node data address
 
 
 
-' startnode  to app
-v: fresh
+' startnode  to app   v: fresh
 shield NODE\   troff  ( Tracer off )
 
 chere  #me ROM!     \ Store address RF data

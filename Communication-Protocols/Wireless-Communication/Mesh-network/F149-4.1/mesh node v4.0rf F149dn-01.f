@@ -159,6 +159,9 @@ create MSTIMER  9382 ,  adr ms) ,  2402 ,  53B2 ,  adr ms) ,  1300 ,
 : (MS)      ( -- )      wait? if  ms) ?exit  ch ] temit  ready  then ; \ Timeout controller
 mstimer   FFF4 vec!     \ Install watchdog interrupt vector
 
+				  
+																					 
+
 
 \ DN: Use shortest payload length of 2!!
 \ Check any node with an noted RF-ERROR connection, take them
@@ -183,7 +186,7 @@ mstimer   FFF4 vec!     \ Install watchdog interrupt vector
 
 
 \ Wait MS milliseconds & respond to external network commands
-\ QUIT early on answer commands!
+\ Leave early on an answer command!
 value 'HANDLER \ Contains token of HANDLER)
 : <<WAIT>>    ( -- )
     ms) dm 30 > if   RF-ERROR rf-check  then        \ Check lost connections
@@ -205,7 +208,7 @@ value HOP#  \ Holds direct hopping node
 : >DEST     ( node -- )
     dup FF = if set-dest exit then  \ Is it not a registered node?
     dup indirect get* if            \ Yes, is it a indirect node?
-        dup hops + c@  dup set-dest \ Yes, fetch node used for hopping  *WO*
+        dup hops + c@  dup set-dest \ Yes, fetch node used for hopping
         to hop#  1 >pay  exit       \ Set dest with correct (hopping) destination
     then
     dup direct get* 0= to non?      \ A direct node, check if node does not exists?
@@ -252,9 +255,8 @@ value HOP#  \ Holds direct hopping node
 \ The maximum size of the table now is six bytes (48 nodes) due to the length
 \ of the usable payload of 12-bytes in the current payload of 17-bytes!!
 : <HOP      ( -- )
-\   pay  9 >length
     ch H temit  add-conn     \ Send my direct table & indirect table (len=5+4)
-    org ch ^ >node  ( >length ) ;
+    org ch ^ >node ;
 
 : !HOPS     ( a -- )            \ Extend my indirect node tables
     begin  dup up? while        \ Node found in table 'a'
@@ -274,31 +276,28 @@ value HOP#  \ Holds direct hopping node
 
 
 create DATA-BUFFER #map 2* allot
-: <OK       ( -- )
-\   pay  9 >length
-    add-conn  org ch } >node  ( >length ) ; \ Return '}' answer to origin node (len=5+4)
+: <OK       ( -- )      add-conn  org ch } >node ; \ Return '}' answer to origin node (len=5+4)
 
 : PING>     ( -- )
     5 'pay>  data-buffer 4 move \ Copy received data 
     ms) negate +to (ms  ready ; \ Receive PING response
 
 \ Registration of new unregistered nodes
-: <GIVE-NO. ( -- )              \ This is network data command 'N' (5)
-\   pay  5 >length
+: <GIVE-NO. ( -- )              \ This is network data command 'N' (5+1)
     #n 0 ?do
         i all get* 0= if        \ Free node number found?
 \ )         cr ." No. " i .
-            i 4 >pay            \ Yes, set number ready
+            i 5 >pay            \ Yes, set number ready
             org ch # >node      \ and send it back to the requesting node
-            unloop  ( >length ) exit \ ready
+            unloop  exit        \ ready
         then
     loop
-    FF 5 >pay  org ch # >node ( >length ) ; \ No, all node numbers are occupied
+    FF 5 >pay  org ch # >node ; \ No, all node numbers are occupied
 
 : GET-NO.>  ( -- )              \ This is node data command '#'
-    4 pay> FF = ?abort          \ Abort if there are no more node numbers available
+    5 pay> FF = ?abort          \ Abort if there are no more node numbers available
 \   cr ." No. " 5 pay> .
-    4 pay> to #me  ready ;      \ Replace node number
+    5 pay> to #me  ready ;      \ Replace node number
 
 : REGISTER> ( -- )      \ Handle the registration of a new node
     org all get* ?exit  \ Already present, then we are ready
@@ -335,7 +334,6 @@ create DATA-BUFFER #map 2* allot
     >r  begin  work up? while  over >node  r@ <wait>  repeat
     drop  rdrop  0 to #fail ;
 
-\ DN: use shortest payload length (2)
 \ 0 scan = max. 4 meters  ( 1 wall )    2 scan = max. 10 meters ( 1 wall )
 \ 4 scan = max. 10 meters ( 2 walls )   6 scan = max. .. meters ( .. )
 : SCANX     ( -- )
@@ -399,7 +397,7 @@ create 'COMMANDS    ( -- addr )
 \   ch ? ,  ' ping> ,       \ Note an error response  *WO*
   ( Finish )
     -1 ,    ' comm-error ,  \ Message on an command error
-
+	align
 
 
 \ Commands to other nodes directly
@@ -451,7 +449,7 @@ chere  -1 ,  to #me     \ Headerless node data address
     5 ms  setup24L01            \ Wakeup & init. nRF24
     #me set-dest  run           \ Init. addresses & to run mode
     .status  tron               \ Print status, tracer on
-    power-off  0 to on?
+    power-off  0 to on?         \ Output off
     ready  1 0 *bis  int-on     \ IE1  Activate <WAIT>
     ['] handler)  to 'handler   \ Add NODE handler to <<WAIT>>
     ['] xkey)  to 'key  read-mode ; \ Add KEY & node handler to KEY

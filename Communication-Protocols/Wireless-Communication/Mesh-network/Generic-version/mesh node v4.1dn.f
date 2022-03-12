@@ -94,7 +94,7 @@ create TYPES    #n allot    \ Table with node-types
 : GET*  ( node a -- b ) loc bit* ; \ Node present in a?
 
 \ Leave number of nodes found in a bitmap
-: COUNT*    ( a -- +n ) \ Counted noted nodes
+: COUNT*    ( a -- +n ) \ Count noted nodes
     0  #n 0 ?do
         over i swap get* \ Node present?
         if  1+  then    \ Add 1 when found
@@ -140,7 +140,7 @@ value PWR       \ nRF24 scan TX-power
 : SETRF     ( #ch scan-pwr pwr bitrate #me -- )
     to #me  set-my-addr     \ Save & init. my node address
     2dup >rf  rf!  to pwr   \ Save RF-settings & scan power
-    dup >channel  to #ch ;  \ Than channel number
+    dup >channel  to #ch ;  \ Finally channel number
 
 
 \ Switch node states
@@ -189,7 +189,7 @@ mstimer   FFF4 vec!     \ Install watchdog interrupt vector
 
 
 \ Wait MS milliseconds & respond to external network commands
-\ Leave early after an answer command!
+\ Leave early on an answer command!
 value 'HANDLER \ Contains token of HANDLER)
 : <<WAIT>>    ( -- )
     ms) dm 30 > if   RF-ERROR rf-check  then        \ Check lost connections
@@ -211,7 +211,7 @@ value HOP#  \ Holds direct hopping node
 : >DEST     ( node -- )
     dup FF = if set-dest exit then  \ Is it not a registered node?
     dup indirect get* if            \ Yes, is it a indirect node?
-        dup hops + c@  dup set-dest \ Yes, fetch node used for hopping  *WO*
+        dup hops + c@  dup set-dest \ Yes, fetch node used for hopping
         to hop#  1 >pay  exit       \ Set dest with correct (hopping) destination
     then
     dup direct get* 0= to non?      \ A direct node, check if node does not exists?
@@ -337,7 +337,6 @@ create DATA-BUFFER #map 2* allot
     >r  begin  work up? while  over >node  r@ <wait>  repeat
     drop  rdrop  0 to #fail ;
 
-\ DN: use shortest payload length (2)
 \ 0 scan = max. 4 meters  ( 1 wall )    2 scan = max. 10 meters ( 1 wall )
 \ 4 scan = max. 10 meters ( 2 walls )   6 scan = max. .. meters ( .. )
 : SCANX     ( -- )
@@ -401,7 +400,7 @@ create 'COMMANDS    ( -- addr )
 \   ch ? ,  ' ping> ,       \ Note an error response  *WO*
   ( Finish )
     -1 ,    ' comm-error ,  \ Message on an command error
-
+	align
 
 
 \ Commands to other nodes directly
@@ -453,11 +452,11 @@ create 'COMMANDS    ( -- addr )
 
 
 \ Send Forth command string of max. #PAY-5 bytes to remote node
-: >F)       ( node a u -- ) \ Send string a u to node
-    pay >r  #pay to pay     \ Max. payload length (dn)
-    >r  r@ 4 >pay           \ String length to admin byte
-    5 '>pay r> #b umin move \ Copy command to payload
-    ch F >node  r> to pay ; \ Send command
+: >F)       ( node a u -- )  \ Send string a u to node
+    pay >r  #pay >length     \ Max. payload length (dn)
+    >r  r@ 4 >pay            \ String length to admin byte
+    5 '>pay r> #b umin move  \ Copy command to payload
+    ch F >node  r> >length ; \ Send command
 
 : >F        ( node ccc -- ) 0 parse  >f) ;
 
@@ -491,6 +490,8 @@ create 'COMMANDS    ( -- addr )
 
 
 ( Add your own application here, this is a small interactive node )
+
+
 
 0 value LEN  create BUF 20 allot
 : GET       ( -- )
