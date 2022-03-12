@@ -63,7 +63,7 @@ hex
     loop  nip ;
 
 \ Leave the number of the first used item in bit array a on the stack and erase it!
-: >NEXT?    ( a -- false | nr true )
+: UP?       ( a -- false | nr true )
     dup >len 0 ?do              \ Test all bits
         i over get* if          \ Bit set?
             i swap *clr         \ Yes clear bit
@@ -108,7 +108,7 @@ BITMAP SIGNALS copy \ Copy BITMAP to SIGNALS
     dup .bitarray
     cr  ." Used bits "                  \ Show & consume only
     dup >len 0 do
-        dup >next? if  .  then          \ the bits set in array a
+        dup up? if  .  then             \ the bits set in array a
     loop  drop ;
 
 \ End ;;;
