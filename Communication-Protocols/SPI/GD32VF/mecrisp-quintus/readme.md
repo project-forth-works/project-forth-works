@@ -17,12 +17,11 @@ The BME280.fs example relies on the existence of the words: **{SPI SPI} SPI-IN S
 
 At the moment there are two examples: 
 
-- **[BME280.fs**](BME280/readme.md), It is the testcase for the SPI code. It uses the **BME280** sensor chip.  
+- [**BME280.fs**](BME280/readme.md), It is the testcase for the SPI code. It uses the **BME280** sensor chip.  
 With this example one can proof the function of the SPI connection. It resets the **BME280** and reads out the chip ID and some calibration data. One is able to read the raw data of temperature, air humidity and air pressure. To get the real values one has to do some calculations using the calibration data and the formulas published in the datasheet.  
+Also in every SPI code suitable for the **BME280** you will find a short hint how to wire the **BME280** to the GD32VF103 in this special case to the Longan Nano.  
 
-Also in every SPI code suitable for the **BME280** you will find a short hint how to wire the **BME280** to the GD32VF103 in this special case to the Longan Nano.
-
-**[sd-card.fs**](sd-card-bitbang/sdcard.fs), This shows how to access a sd-card plugged in into the **Longan Nano** board. It uses a software SPI.  
+- [**sd-card.fs**](sd-card-bitbang/sdcard.fs), This shows how to access a sd-card plugged in into the **Longan Nano** board. It uses a software SPI.  
 
 
 ### Files
