@@ -219,10 +219,10 @@ hex
 ```
    ***
    
-- [BUILD](Generic-version\Tools\Build%20(3.9d).f), constructs a (hopping) mesh network  
-- [PING](Generic-version\Tools\Ping-2.f), check node connection/availability  
-- [DEMO's](Generic-version\Tools\Mesh-demos.f), that activate the node outputs in different ways  
-- [Simple demo](Generic-version\Tools\automesh.f), Primitive network build routine & running light demo
+- [BUILD](Generic-version/Tools/Build%20(3.9d).f), constructs a (hopping) mesh network  
+- [PING](Generic-version/Tools/Ping-2.f), check node connection/availability  
+- [DEMO's](Generic-version/Tools/Mesh-demos.f), that activate the node outputs in different ways  
+- [Simple demo](Generic-version/Tools/automesh.f), Primitive network build routine & running light demo
 
    ***
    
