@@ -27,7 +27,7 @@
 
                                             1st         2nd    3th
         Basic 24l01 using usci 2021-01-13:  1464 bytes (1520) (1466/1476:1670) Small tools
-        Mesh node 4.0:                      2320 bytes (2666) (2880/3220:3364)
+        Mesh node 4.x:                      2320 bytes (2666) (2880/3220:3364)
         Total:                              3784 bytes (4186) (4346/4696:5034)
         Free with use of small tools:       3728 bytes (3316) (3158/2808:1930)
         Free RAM:                            140 bytes  (130)  (124/122:90)
@@ -111,7 +111,7 @@ value PWR       \ nRF24 scan TX-power
 : .BITRATE  ( +n -- )   ?dup 0= if ." 250 kBit " exit then . ." Mbit, " ;
 : .STATUS   ( -- )
     base @ >r  decimal
-    cr ." Node v 4.0 nr: "      \ Show node vsn
+    cr ." Node v 4.1 nr: "      \ Show node vsn
     #me . ."  nRF24 "           \ Which node with nRf24
     get-status ?dup if          \ nRF24 not connected?
         E <> if  ." not "  then \ nRF24 not ready?
