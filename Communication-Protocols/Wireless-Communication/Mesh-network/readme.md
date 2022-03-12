@@ -17,10 +17,10 @@ and the [bit array](https://github.com/project-forth-works/project-forth-works/t
 these are used for the driver of the network layer.
 This driver uses **dynamic payload** to optimise the troughput of the network.
 
-[Generic forth](Generic-version), version of the mesh network  
-[MSP430G2553](G2553-4.1), noForth mesh network version  
-[GD32VF103](GD32VF103-4.1), noForth mesh network version  
-[MSP430F149](F149-4.1), noForth mesh network version  
+- [Generic forth](Generic-version), version of the mesh network  
+- [MSP430G2553](G2553-4.1), noForth mesh network version  
+- [GD32VF103](GD32VF103-4.1), noForth mesh network version  
+- [MSP430F149](F149-4.1), noForth mesh network version  
 
 ## Flexible RF settings
 
@@ -219,10 +219,10 @@ hex
 ```
    ***
    
-[BUILD](Generic-version\Tools\Build%20(3.9d).f), constructs a (hopping) mesh network  
-[PING](Generic-version\Tools\Ping-2.f), check node connection/availability  
-[DEMO's](Generic-version\Tools\Mesh-demos.f), that activate the node outputs in different ways  
-[Simple demo](Generic-version\Tools\automesh.f), Primitive network build routine & running light demo
+- [BUILD](Generic-version\Tools\Build%20(3.9d).f), constructs a (hopping) mesh network  
+- [PING](Generic-version\Tools\Ping-2.f), check node connection/availability  
+- [DEMO's](Generic-version\Tools\Mesh-demos.f), that activate the node outputs in different ways  
+- [Simple demo](Generic-version\Tools\automesh.f), Primitive network build routine & running light demo
 
    ***
    
