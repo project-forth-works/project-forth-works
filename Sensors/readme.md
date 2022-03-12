@@ -2,8 +2,8 @@
 
 The idea is to give examples for a variety of avialable sensors.  
 To measure time, temperature, pressure, magnetism, distance, light level, etc.  
-- [Measuring distances](Measuring-distance), using ultrasonic and other sensors.
-- [Reflection sensors](Reflection-sensors ), a sensor that uses (infrared) light to detect the precence of an object.
+- [Measuring distances](Measuring-distance), using ultrasonic and other sensors.  
+- [Reflection sensors](Reflection-sensors ), a sensor that uses (infrared) light to detect the precence of an object.  
 
 **Some examples**
 
