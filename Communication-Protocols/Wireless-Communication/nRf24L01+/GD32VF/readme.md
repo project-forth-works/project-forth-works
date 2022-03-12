@@ -12,5 +12,5 @@ adjustable output power, CRC, etc.
 
 ## Software
 
-[**noForth**](noForth), a noForth implementation of the example code  
+- [**noForth**](noForth), implementation of a nRf24L01+ driver  
 Etc.  
