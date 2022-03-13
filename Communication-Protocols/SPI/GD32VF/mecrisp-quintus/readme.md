@@ -50,10 +50,10 @@ https://dl.sipeed.com/shareURL/LONGAN/Nano/DOC
 
 here you'll find among others:
 
-Bumblebee core intro_en.pdf  
-Bumblebee core datasheet_en.pdf  
-GD32VF103_Datasheet_Rev 1.1.pdf  
-GD32VF103_User_Manual_EN_V1.2.pdf  
+[Bumblebee core intro_en.pdf](https://dl.sipeed.com/fileList/LONGAN/Nano/DOC/Bumblebee%20core%20intro_en.pdf)  
+[Bumblebee core datasheet_en.pdf](https://dl.sipeed.com/fileList/LONGAN/Nano/DOC/Bumblebee%20core%20datasheet_en.pdf)  
+[GD32VF103_Datasheet_Rev 1.1.pdf](https://dl.sipeed.com/fileList/LONGAN/Nano/DOC/GD32VF103_Datasheet_Rev%201.1.pdf)  
+[GD32VF103_User_Manual_EN_V1.2.pdf](https://dl.sipeed.com/fileList/LONGAN/Nano/DOC/GD32VF103_User_Manual_EN_V1.2.pdf)  
 
 
 
