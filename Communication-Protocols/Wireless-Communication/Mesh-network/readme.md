@@ -53,9 +53,9 @@ a command. The complete payload is described in the table below.
 
 ## Time out on network commands
 
-Because network commands can be lost, an important feature is a time-out on the command response. 
-This time-out must be constructed with a built-in timer of the microcontroller used, 
-or by using a built-in cycle counter if present.  
+Because network commands can get lost, an important feature is a time-out on the command response. 
+This time-out must be constructed with a built-in timer or by using a built-in cycle counter 
+if present on the microcontroller used.  
 This is code example is for the GD32VF103 Risc-V microcontroller:
 ```fort
 hex
