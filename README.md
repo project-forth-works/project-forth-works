@@ -13,7 +13,7 @@ Click [here if you want to read more about **Project Forth Works**](https://Proj
 
 - [****Template****](https://github.com/project-forth-works/project-forth-works.github.io/tree/main/Template) ; A detailed example of how publish on P.F.W.  
 - [****Algorithms****](Algorithms) ; Random numbers, etc.  
-- [****Communication-Protocols****](Communication-Protocols) ; SPI, etc.  
+- [****Communication-Protocols****](Communication-Protocols) ; SPI, I2C, Wireless, etc.  
 - [****Data-Structures****](Data-Structures) ; Primitive circular buffer, etc.  
 - [****System-Software****](System-Software) ; Assembler, Disassembler, etc.  
 - [****Programming-Tools****](Programming-Tools) ; Development support, helpers  
