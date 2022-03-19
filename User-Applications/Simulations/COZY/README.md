@@ -11,11 +11,11 @@ The central part of the program is a toroidal grid of 256x192 cells. Execution s
 
 Next an endless loop is started. In each loop the following is done:
 
-	Select a random agent in the grid
+-	Select a random agent in the grid
 		count the neighbours with the same color as the first agent
-	Select a second random agent in the grid
+-	Select a second random agent in the grid
 		count the neighbours with the same color as the first agent 	
-	Swap two agents on the grid if the number of same-coloured neigbours is 			higher at the location of the second agent than at the location of 			the first agent.
+-	Swap two agents on the grid if the number of same-coloured neigbours is 			higher at the location of the second agent than at the location of 			the first agent.
 
 In other words: an agent moves to the alternative locations if there are more agents with the same color adjoining that location than the original location.
 
