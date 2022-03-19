@@ -15,9 +15,9 @@ to 16, 32 or 64 bits (or larger...)
 A random number is generated from a seed as follows:
 - Take a copy of the seed
 - Shift that copy left with a certain number of bits
-xor the original seed and the shifted seed to form the result
+- xor the original seed and the shifted seed to form the result
 of the first step
-- These steps are repeated twice, each time with the output of
+- Repeat these steps twice, each time with the output of
 the previous step as input, but with a right shift and finally
 with a left shift.
 
@@ -42,19 +42,19 @@ explanation...
 variable seed - any value but 0x0 is acceptable as seed.
 
 Function: XORshift
-   get value from seed
+-   get value from seed
 
-   make a copy of the value
+-   make a copy of the value
    lshift copy with n bits
    xor with the original
 
-   repeat with the output of the previous cycle and a rshift with m bits
+-   repeat with the output of the previous cycle and a rshift with m bits
 
-   repeat with the output of the previous cycle and a lshift with o bits
+-   repeat with the output of the previous cycle and a lshift with o bits
 
-   return the result on stack
+-   return the result on stack
 
-   store the final result in the variable seed for a next cycle
+-   store the final result in the variable seed for a next cycle
 ```
 
 ### Generic Forth
@@ -74,16 +74,14 @@ variable seed
 ```
 
 ### Adding a second (or more) seed.
-For the 32 bit version 1 seed is not enough to pass the DIEHARD quality tests,
-at least 2 seeds are needed. Adding an extra seed takes a few extra steps.
+For the 32 bit version 1 seed is not enough to pass the DIEHARD quality tests, at least 2 seeds are needed. Adding an extra seed takes a few extra steps.
 
-   first seed is input to the three cyles
-   do the 3 cycles and return the final result
-   update the seeds: second seed is copied into the first seed
-   OR result of the 3 cycles with the value of the second seed
+-   first seed is input to the three cyles
+-   do the 3 cycles and return the final result
+-   update the seeds: second seed is copied into the first seed
+-   OR result of the 3 cycles with the value of the second seed
 
-This way of adding more seeds can be done at infinitum. The more seeds you add, the
-longer the wrap-to-zero period. With two 32 bit seeds, the wrap-to-zero period is 2^64-1 values.
+This way of adding more seeds can be done at infinitum. The more seeds you add, the longer the wrap-to-zero period. With two 32 bit seeds, the wrap-to-zero period is 2^64-1 values.
 
 
 ### The algorithm with 2 seeds in pseudo-code

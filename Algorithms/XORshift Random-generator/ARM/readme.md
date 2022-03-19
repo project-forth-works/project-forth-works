@@ -2,16 +2,13 @@
 
 #### Raspberry Pi 3b+ with wabiForth
 
-Obviously the Forth version of the routines is the same on any processor as
-only standard Forth words are used. But the ARM-processor can do do a neat
-trick: it can do the whole cycle (dup, shift and xor) in 1 opcode!! And as
+The Forth version of the randomisation routines is the same on any processor as only standard Forth words are used. But the ARM-processor can do do a neat
+trick: it can do q cycle (dup, shift and xor) in 1 opcode!! And as
 most Forths include an assembler it is an interesting excersise to see how
-much faster the routine is when coded in assembly. This example is coded
-using wabiForth on a Raspberry 3b+, but the principle is the same for any
-ARMv8 Aarch32 processor.
+much faster the routine is when coded in assembly.
+This example is coded using wabiForth on a Raspberry 3b+, but the principle is the same for any ARMv8 Aarch32 processor.
 
-The routine uses two registers named top and w. Top contains
-the top of the stack, w is a scratch register.
+The routine uses two registers named top and w. Top contains the top of the stack, w is a scratch register.
 
 
 ## XORshift in ARM Aarch32 assembly -
