@@ -12,7 +12,7 @@ So, for instance:
 ```
 Creates a word, called `HX. `HX` will set the numeric base to 16, but ONLY for the word following it. It deals correctly with definitions being compiled, definitions being executed and values.
 
-The name `FFBASE`, by the way, come from the Dutch word 'even'. It means for 'a short while'. In collequial language it is pronounced 'effen', which is also the plural of 'F'. So `FFBASE` in Dutch is pronounced 'EffenBase' and it gives a different numeric base for a very short while.
+The name `FFBASE`, by the way, come from the Dutch word 'even'. It means 'for a short while'. This in collequial language is pronounced 'effen', which is also the plural of 'F'. So `FFBASE` in Dutch is pronounced 'EffenBase' and it gives a different numeric base for a very short while.
 
 
 ## Pseudo code
