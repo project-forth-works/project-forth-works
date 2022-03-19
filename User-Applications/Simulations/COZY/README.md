@@ -19,7 +19,7 @@ Next an endless loop is started. In each loop the following is done:
 
 In other words: an agent moves to the alternative locations if there are more agents with the same color adjoining that location than the original location.
 
-Thisversion of the simulation alays starts with a random agent. It is also possible to select the agents one after the other in some order. But for this simulation that has en unnateral feelingto me.
+This version of the simulation always starts with a random agent. It is also possible to select the agents in a sequential order. But for this simulation that has en unnatural feeling to me.
 	
 On a Raspberry Pi 3b+ the program performs around 0.5 milion loops per second. At the start of the simuation the agents move rapidly. But than the speed of change slows down. Reaching the end result, more or less bubble like shapes, is stable after 50-75 bilion loops. That takes 1-1.5 days on a Raspberry 3b+. Fortunately the Raspberry does not consume a lot of power.
 
@@ -27,7 +27,7 @@ On a Raspberry Pi 3b+ the program performs around 0.5 milion loops per second. A
 
 [**COZY on YouTube**]<a href="http://www.youtube.com/watch?feature=player_embedded&v=7b2-aXWt0z0
 " target="_blank"><img src="http://img.youtube.com/vi/7b2-aXWt0z0/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" /></a>
 
 
 [**Bubble shaped end result**]![Bubbles_PFW](https://user-images.githubusercontent.com/4964288/155994560-7ea86862-5faa-40c9-ac28-14ce38ce3d4e.jpg)
