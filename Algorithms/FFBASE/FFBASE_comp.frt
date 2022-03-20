@@ -46,6 +46,11 @@
         0 swap >number
         r> base !               \ reset base
         abort" unknown word or number "
+
+	state @ if 
+		postpone literal
+	then 
+
     then
   then
 ; \ =============================
