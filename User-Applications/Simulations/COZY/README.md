@@ -25,12 +25,11 @@ On a Raspberry Pi 3b+ the program performs around 0.5 milion loops per second. A
 
 
 
-[**COZY on YouTube**]<a href="http://www.youtube.com/watch?feature=player_embedded&v=7b2-aXWt0z0
+[**see COZY running on YouTube**]<a href="http://www.youtube.com/watch?feature=player_embedded&v=7b2-aXWt0z0
 " target="_blank"><img src="http://img.youtube.com/vi/7b2-aXWt0z0/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="600" height="450" border="10" /></a>
 
 
-[**Bubble shaped end result**]![Bubbles_PFW](https://user-images.githubusercontent.com/4964288/155994560-7ea86862-5faa-40c9-ac28-14ce38ce3d4e.jpg)
 
 
 
