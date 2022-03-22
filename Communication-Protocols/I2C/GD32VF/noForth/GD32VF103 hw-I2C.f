@@ -1,4 +1,4 @@
-(* GD32VF103 bitbang I2C driver
+(* GD32VF103 hardware I2C driver
 
 Values for CRL/CRH-Registers:
  0:  Analog Input
