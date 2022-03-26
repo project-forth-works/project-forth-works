@@ -12,6 +12,6 @@ adjustable output power, CRC, etc.
 
 ## Software
 
-- [**MSP430G2553 noForth**](noForth-G2553), implementation of the nRF24L01+ driver with examples  
-- [**MSP430F149 noForth**](noForth-F149), implementation of the nRF24L01+ driver with examples  
+- [**MSP430G2553 & MSP430F149 noForth**](noForth-G2553%20&%20F149), implementation of the nRF24L01+ driver with examples  
+- [**MSP430FR5949 noForth**](noForth-FR59xx), implementation of the nRF24L01+ driver with examples  
 Etc.  

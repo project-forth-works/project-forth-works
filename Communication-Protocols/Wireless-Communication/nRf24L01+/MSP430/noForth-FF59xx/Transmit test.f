@@ -9,10 +9,11 @@ Transmit T & receive a count as answer
 
 *)
 
+v: inside also
 value WAIT      \ Hold on/off period time
 : KICK-NRF24    ( -- )
     0 to #me  55 to #ch  1 to rf
-    spi-setup  5 ms  setup24L01
+    spi-setup  5 ms  setup24L01  7 >len
     1 set-dest  get-status .  troff ;
 
 : TRANSMIT1     ( delay -- )
@@ -20,7 +21,7 @@ value WAIT      \ Hold on/off period time
     ." Transmitter " #me . space
     begin
         cr  ch T xemit  #me 1 .r    \ Transmit T, show myself
-        response? if                \ Wait for an answer
+        response? dup . if                \ Wait for an answer
             xkey emit               \ Get it & show
             space 5 pay> 6 pay> b+b u. \ Fetch counter, show & wait
             wait ms
@@ -29,6 +30,7 @@ value WAIT      \ Hold on/off period time
 
 : TEST1     50 transmit1 ;
 
+v: fresh
 ' test1  to app
 shield TRANSMIT\
 freeze
