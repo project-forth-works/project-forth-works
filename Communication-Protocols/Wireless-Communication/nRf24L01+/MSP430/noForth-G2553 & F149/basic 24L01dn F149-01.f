@@ -1,6 +1,6 @@
-\ This version-01, USCI_B0 runs on noForth MC(V)149 version 200202ff. 
+\ This version-01, USART1 runs on noForth MC(V)149 version 200202ff. 
 \
-\ USCI hardware SPI on MSP430F149 using port-5 & port-2.
+\ USART hardware SPI on MSP430F149 using port-5 & port-2.
 \ SPI i/o interfacing the nRF24L01 with two or more F149 boards
 \
 \ Connect the SPI lines of USUART1 P5.3=CLOCKPULSE, P5.1=DATA-IN, P5.2=DATA-OUT
@@ -20,16 +20,16 @@
 \              | |                 |
 \              --|RST          XOUT|- Idem
 \                |                 |
-\          IRQ ->|P5.5         P5.2|-> Data Out (UCB0SIMO)
+\          IRQ ->|P5.5         P5.2|-> Data Out (SOMI1)
 \                |                 |
-\           CE <-|P5.4         P5.1|<- Data In (UCB0SOMI)
+\           CE <-|P5.4         P5.1|<- Data In (SIMO1)
 \                |                 |
-\          CSN <-|P5.0         P5.3|-> Serial Clock Out (UCB0CLK)
+\          CSN <-|P5.0         P5.3|-> Serial Clock Out (UCLK1)
 \                |                 |
 \          LED <-|2.0          P2.4|-> Power out
 \
 \ Concept: Willem Ouwerkerk & Jan van Kleef, october 2014
-\ Current version: Willem Ouwerkerk, 2 march 2022
+\ Current version: Willem Ouwerkerk, 26 march 2022
 \
 \ P2 & P5 are used for interfacing the nRF24L01+
 \ P5.0  - CSN                     \ SPI enable low      x1=Select
@@ -76,10 +76,10 @@
 \
 \ Dynamic payload length
 \
-\ 1) SPI-commands 60  - Leest lengte van ontvangen payload, die staat in het tweede byte
-\                 A8  - Zet lengte van payload on pipe 0 t/m 7 en 1 t/m 32 databytes (LSB eerst)
-\ 2) Registers    1C  - Activeer de dynamic payload voor een of meer 'data pipes'
-\                 1D  - Dynamic payload configuratie en aan/uit
+\ 1) SPI-commands 60  - Reads length of received payload, which is in the second byte
+\                 A8  - Set length of payload on pipe 0 to 7 and 1 to 32 data bytes (LSB first)
+\ 2) Registers    1C  - Activate the dynamic payload for one or more data pipes
+\                 1D  - Dynamic payload configuration on/off
 \
 \ Dynamic payload format from 1 to 32 bytes:
 \ |   0   |  1  |  2  |    3   |  4  |  5 to 31   |
@@ -135,7 +135,7 @@ end-code
 
 code CE-HIGH    ( -- )  10 # 31 & .b bis  next end-code
 code CE-LOW     ( -- )  10 # 31 & .b bic  next end-code
-: B0-SPI-SETUP  ( -- )
+: SPI-SETUP     ( -- )
     spi-on
     11 2A *bis      \ P2DIR     P2.0=Led, P2.4 is power out
 \   01 22 *bic      \ P1DIR     P1.0 is input
@@ -188,15 +188,17 @@ value RF              \ Contains nRF24 RF setup
 
 
 \ Dynamic payload additions
-20 constant #PAY            \ Payload size max. 32 bytes
-value PAY                   \ Contains current length of the payload
-: >LENGTH   ( +n -- )       1 max  #pay umin  to pay ; \ Set dynamic payload length
+20 constant #LEN            \ Payload size max. 32 bytes
+value LEN                   \ Contains current length of the payload
+value MLEN                  \ Remember length of received payload
+: >LEN      ( +n -- )       1 max  #len umin  to len ; \ Set dynamic payload length
+: NORM      ( -- )          3 >len ; \ Default payload length
 
 \ Elementary command set for the nRF24L01+
 : SETUP24L01    ( -- )
-    9 >length           \ Default payload length
-    3 1C write-reg      \ Allow dynamic payload on Pipe 0 & 1
-    6 1D write-reg      \ Enable dynamic payload, ACK on!
+												
+    norm 3 1C write-reg \ Allow dynamic payload on Pipe 0 & 1
+    4 1D write-reg      \ Enable dynamic payload, ACK payload on!
     0C 0 write-reg      \ Enable CRC, 2 bytes
     03 1 write-reg      \ Auto Ack pipe 0 & 1
     02 pipes-on         \ Pipe 1 on
@@ -212,19 +214,24 @@ value PAY                   \ Contains current length of the payload
 
 
 \ Format: Command, Dest.node, Org.node, Sub.node, Aux, Data-0, Data-1, .. to Data-x
-create 'READ    #pay allot  \ Receive buffer
-create 'WRITE   #pay allot  \ Transmit buffer
+create 'READ    #len allot  \ Receive buffer
+create 'WRITE   #len allot  \ Transmit buffer
 
-: WRITE-DTX? ( -- 0|20 )        \ Send #PAY bytes payload & leave 20 if an ACK was received
-    A9 spi-command 'write pay   \ Store dynamic payload for pipe-0
-    0 do  count spi-out  loop  drop  spi}
+\ : WRITE-ACK ( +n -- )
+\    7 and A8 or spi-command \ Store ACK payload for pipe +n
+\    'write len for  count spi-out  next  drop  spi} ;
+
+: WRITE-DTX? ( -- 0|20 )        \ Send #len bytes payload & leave 20 if an ACK was received
+    A0 spi-command 'write len   \ Store (dynamic) payload for pipe-0
+    for  count spi-out  next  drop  spi}
     ce-high  noop noop noop  ce-low     \ P2OUT  Transmit pulse on CE
     response? drop  7 read-reg 20 and ; \ Wait for ACK
     
-
 : READ-DRX? ( -- f )            \ Receive 1 to 32 bytes
-    60 read-reg dup 20 > if  flush-rx  drop false exit  then
-    61 spi-command  'read swap bounds
+    60 spi-command  0 spi-i/o spi} 
+    dup 20 > if  flush-rx  drop false exit  then
+\   t? if  ch D emit dup .  then
+    to mlen  61 spi-command  'read mlen bounds
     ?do  0 spi-i/o i c!  loop   spi}  true ;
 
 : '>PAY     ( +n -- a )     'write + ;  \ Leave address of TX payload
@@ -276,13 +283,15 @@ value #FAIL     \ Note XEMIT failures
 
 : XKEY          ( -- c )
     begin
-        begin
-            7 read-reg 40 and 0=    \ Payload received?
-        ack? and while              \ and IRQ noticed
-            setup24l01  read-mode   \ No, restart 24L01
-            response? drop
-        repeat
-        read-drx?       \ Yes read payload packet
+        #retry 0 do                 \ Do eight receive attempts
+            7 read-reg 40 and       \ Leave 40 when payload was received
+        ack?  and 0= while          \ and IRQ noticed, not?
+            setup24l01  read-mode   \ Then restart 24L01
+            response? drop          \ Pickup retry
+        loop
+        ce-low  0  exit     \ Failed, leave zero & to standby II
+        then
+        unloop  read-drx?   \ Yes, read payload packet
     until  0 pay>       \ Now read command from packet
     reset  flush-rx     \ Empty pipeline
     ce-low ;            \ To standby II

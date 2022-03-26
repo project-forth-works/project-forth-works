@@ -1,4 +1,4 @@
-\ This version-01, runs on noForth C2553 version 200202 & later.
+\ This version-01a, runs on noForth C2553 version 200202 & later.
 \
 \ SPI on MSP430G2553 using port-1 & port-2.
 \
@@ -30,7 +30,7 @@
 \          LED <-|2.0          P2.4|-> Power out
 \
 \ Concept: Willem Ouwerkerk & Jan van Kleef, october 2014
-\ Current version: Willem Ouwerkerk, 28 januari 2021
+\ Current version: Willem Ouwerkerk, 26 march 2022
 \
 \ Launchpad & Egel kit documentation for USCI SPI
 \
@@ -80,10 +80,10 @@
 \
 \ Dynamic payload length
 \
-\ 1) SPI-commands 60  - Leest lengte van ontvangen payload, die staat in het tweede byte
-\                 A8  - Zet lengte van payload on pipe 0 t/m 7 en 1 t/m 32 databytes (LSB eerst)
-\ 2) Registers    1C  - Activeer de dynamic payload voor een of meer 'data pipes'
-\                 1D  - Dynamic payload configuratie en aan/uit
+\ 1) SPI-commands 60  - Reads length of received payload, which is in the second byte
+\                 A8  - Set length of payload on pipe 0 to 7 and 1 to 32 data bytes (LSB first)
+\ 2) Registers    1C  - Activate the dynamic payload for one or more data pipes
+\                 1D  - Dynamic payload configuration on/off
 \
 \ Dynamic payload format from 1 to 32 bytes:
 \ |   0   |  1  |  2  |    3   |  4  |  5 to 31   |
@@ -103,18 +103,12 @@
 \ B+B     ( bl bh -- 16-bit ) Combine two bytes to a 16-bit word
 \ B-B     ( 16-bit -- bl bh ) Split 16-bit to a low byte & high byte
 \
-\ MSP430 assembly code for speed up:
-\ code IRQ?   ( -- flag )   \ Flag is true when IRQ = low
-\    tos sp -) mov
-\    20 # 28 & .b bit       \ P2IN
-\    tos tos subc
-\    tos adr ack? & mov     \ Save tos in ACK?
-\    next
-\ end-code
+\ : /MS       ( u -- )    0 ?do  140 0 do loop  loop ;
 \
-\ /MS routine for noForth:
-\ : /MS       ( u -- )    ms# >r  r@ 0A / to ms#  ms  r> to ms# ;
+\ value ACK?              \ Remember IRQ flag
+\ : IRQ?      ( -- flag )     20 28 bit* 0=  dup to ack? ;
 \
+
 
 hex
 \ NOTE: This value must be adjusted for different clock speeds & MPU's!!!
@@ -145,13 +139,15 @@ end-code
 
                     ( USCI-B0 SPI interface to nRF24L01+ )
 
-: B0-SPI-SETUP  ( -- )
+code CE-HIGH    ( -- )  D2F2 ,  29 , ( #8 29 & .b bis ) next end-code
+code CE-LOW     ( -- )  C2F2 ,  29 , ( #8 29 & .b bic ) next end-code
+: SPI-SETUP     ( -- )
     spi-on
     19 2A *bis      \ P2DIR     P2.3 is CE, P2.0=Led, P2.4 is power out
     20 2A *bic      \ P2DIR     P2.5 is input
     20 2F *bis      \ P2REN     P2.5 resistor on (IRQ)
     21 29 *bis      \ P2OUT     P2.5 pullup, led on
-    08 29 *bic ;    \ P2OUT     ce  = 0 (Red led off = 9)
+    ce-low ;        \           ce  = 0
 
 
                 ( Read and write to and from nRF24L01 )
@@ -183,7 +179,7 @@ value #ME             \ Later contains node number
 
 value RF              \ Contains nRF24 RF setup
 \ Bitrate conversion table: 0=250 kbit, 1=1 Mbit, 2=2 Mbit, 3=250 kBit.
-    20 c, 00 c, 08 c,  20 c, \ 250 kbit, 1 Mbit, 2 Mbit
+    20 c, 00 c, 08 c,  20 c, align \ 250 kbit, 1 Mbit, 2 Mbit
 : RF!   ( db bitrate -- )   b+b to rf ; \ Save RF-settings
 : RF@   ( -- db bitrate )   rf b-b ;    \ Get RF-settings
 
@@ -197,15 +193,16 @@ value RF              \ Contains nRF24 RF setup
 
 
 \ Dynamic payload additions
-20 constant #PAY            \ Payload size max. 32 bytes
-value PAY                   \ Contains current length of the payload
-: >LENGTH   ( +n -- )       1 max  20 umin  to pay ; \ Set dynamic payload length
+20 constant #LEN            \ Payload size max. 32 bytes
+value LEN                   \ Contains current length of the payload
+value MLEN                  \ Remember length of received payload
+: >LEN      ( +n -- )       1 max  #len umin  to len ; \ Set dynamic payload length
+: NORM      ( -- )          3 >len ; \ Default payload length
 
 \ Elementary command set for the nRF24L01+
 : SETUP24L01    ( -- )
-( ) 9 >length           \ Default payload length
-( ) 3 1C write-reg      \ Allow dynamic payload on Pipe 0 & 1
-( ) 6 1D write-reg      \ Enable dynamic payload, ACK on!
+    norm 3 1C write-reg \ Allow dynamic payload on Pipe 0 & 1
+    6 1D write-reg      \ Enable dynamic payload, ACK payload on!
     0C 0 write-reg      \ Enable CRC, 2 bytes
     03 1 write-reg      \ Auto Ack pipe 0 & 1
     02 pipes-on         \ Pipe 1 on
@@ -214,8 +211,6 @@ value PAY                   \ Contains current length of the payload
     1F 4 write-reg      \ Retry after 500 us & 15 retry's
     #ch >channel        \ channel #CH to start with
     rf@ >rf             \ 1 Mbps, max. power
-    #pay 11 write-reg   \ #pay bytes payload in P0
-    #pay 12 write-reg   \ #pay bytes payload in P1
     reset               \ Enable CRC, 2 bytes & reset flags
     flush-rx  flush-tx  \ Start empty
     wakeup  0F /ms      \ Power up
@@ -223,20 +218,24 @@ value PAY                   \ Contains current length of the payload
 
 
 \ Format: Command, Dest.node, Org.node, Sub.node, Aux, Data-0, Data-1, .. to Data-x
+create 'READ    #len allot  \ Receive buffer
+create 'WRITE   #len allot  \ Transmit buffer
 
-create 'READ    #pay allot  \ Receive buffer
-create 'WRITE   #pay allot  \ Transmit buffer
+\ : WRITE-ACK ( +n -- )
+\    7 and A8 or spi-command \ Store ACK payload for pipe +n
+\    'write len for  count spi-out  next  drop  spi} ;
 
-: WRITE-DTX? ( -- 0|20 )        \ Send #PAY bytes payload & leave 20 if an ACK was received
-    A9 spi-command 'write pay   \ Store dynamic payload for pipe-0
-    0 do  count spi-out  loop  drop  spi}
-    8 29 *bis  noop noop noop  8 29 *bic    \ P2OUT  Transmit pulse on CE
-    response? drop  7 read-reg 20 and ;     \ Wait for ACK
-    
+: WRITE-DTX? ( -- 0|20 )        \ Send #len bytes payload & leave 20 if an ACK was received
+    A0 spi-command 'write len   \ Store (dynamic) payload for pipe-0
+    for  count spi-out  next  drop  spi}
+    ce-high  noop noop noop  ce-low     \ P2OUT  Transmit pulse on CE
+    response? drop  7 read-reg 20 and ; \ Wait for ACK
 
-: READ-DRX? ( -- f )            \ Receive 1 to 32 bytes
-    60 read-reg dup 20 > if  flush-rx  drop false exit  then
-    61 spi-command  'read swap bounds
+: READ-DRX? ( -- f )                \ Receive 1 to 32 bytes
+    60 spi-command  0 spi-i/o spi}  \ Read payload size
+    dup 20 > if  flush-rx  drop false exit  then \ Check if invalid!
+\   t? if  ch D emit dup .  then    \ Possible debug info
+    to mlen  61 spi-command  'read mlen bounds
     ?do  0 spi-i/o i c!  loop   spi}  true ;
 
 : '>PAY     ( +n -- a )     'write + ;  \ Leave address of TX payload
@@ -248,12 +247,12 @@ create 'WRITE   #pay allot  \ Transmit buffer
                     ( Send and receive commands for nRF24L01 )
 
 : WRITE-MODE    ( -- )          \ Power up module as transmitter
-    8 29 *bic  wakeup           \ P2OUT  CE low, receive off, wakeup transmitter
+    ce-low  wakeup              \ Receive off, wakeup transmitter
     1 pipes-on  reset  2 /ms ;  \ Reset flags & pipe-0 active, wait 200 microsec.
 
 : READ-MODE     ( -- )
     0F 0 write-reg  2 pipes-on  \ Power up module as receiver, activate pipe-1
-    reset  8 29 *bis  2 /ms ;   \ P2OUT  Enable receive mode, wait 200 microsec.
+    reset  ce-high  2 /ms ;     \ Enable receive mode, wait 200 microsec.
 
 A constant #TRY                 \ Transmit attempts
 8 constant #RETRY               \ Re-transmit attempts for XEMIT
@@ -267,8 +266,8 @@ A constant #TRY                 \ Transmit attempts
 
 value #FAIL     \ Note XEMIT failures
 : BUSY      ( -- )
-    read-mode  40 0 do                  \ Wait while a channel is busy
-        4 /ms  9 read-reg 0=            \ Check for no carrier?
+    40 0 do                             \ Wait while a channel is busy
+        read-mode  2 /ms  9 read-reg 0= \ Check for no carrier?
         if  leave  then  ch . temit     \ Ready when no carrier
     loop ;
 
@@ -288,16 +287,18 @@ value #FAIL     \ Note XEMIT failures
 
 : XKEY          ( -- c )
     begin
-        begin
-            7 read-reg 40 and 0=    \ Payload received?
-        ack? and while              \ and IRQ noticed
-            setup24l01  read-mode   \ No, restart 24L01
-            response? drop
-        repeat
-        read-drx?        \ Yes read payload packet
-    until  0 pay>       \ Now read command from packet
-    reset  flush-rx     \ Empty pipeline
-    8 29 *bic ;         \ To standby II
+        #retry 0 do                 \ Do eight receive attempts
+            7 read-reg 40 and       \ Leave 40 when payload was received
+        ack?  and 0= while          \ and IRQ noticed, not?
+            setup24l01  read-mode   \ Then restart 24L01
+            response? drop          \ Pickup retry
+        loop
+        ce-low  0  exit     \ Failed, leave zero & to standby II
+        then
+        unloop  read-drx?   \ Yes, read payload packet
+    until  0 pay>           \ Now read command from packet
+    reset  flush-rx         \ Empty pipeline
+    ce-low ;                \ To standby II
 
 \ Set destination address to node from stack, receive address is my "me"
 : SET-DEST      ( node -- )

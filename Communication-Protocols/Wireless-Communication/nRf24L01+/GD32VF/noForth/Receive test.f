@@ -12,7 +12,7 @@ Recieve T, increase counter & transmit : and counter back
 
 : KICK-NRF24    ( -- )
     1 to #me  55 to #ch  1 to rf
-    spi-setup  5 ms  setup24L01
+    spi-setup  5 ms  setup24L01  7 >len
     0 set-dest  get-status .  troff ;
 
 \ Trace info: <cr> #me - T=" - counter
