@@ -199,7 +199,7 @@ new functions above the basic node command interpreter. These are:
 | `*COUNT`  | ( a -- +n )   | Leave number of nodes found in bitmap a |  
 | `>USER`   | ( a -- )      | Copy nodes to node accu for app programmer |  
 | `>WORK`   | ( a -- )      | Copy nodes to node accu for internal functions |  
-| `UP?`     | ( a -- 0\|+n -1 ) | Leave node number of the first used node in bitmap a & erase the bit |  
+| `NEXT?`   | ( a -- 0\|+n -1 ) | Leave node number of the first used node in bitmap a & erase the bit |  
 | `RUN`     | ( -- )        | Allow a program to run free |  
 | `HALT?`   | ( -- f )      | Alternative KEY? to stop node programs |  
 | `<WAIT>`  | ( +n -- )     | Wait +n milliseconds & respond to external network commands, leave after an } was received |  
@@ -212,7 +212,7 @@ hex
 : RUN-FORW  ( -- )      \ Running light on all outputs in my network
     run  begin
         all >user
-        begin  user up? while
+        begin  user next? while
         dup on  100 <wait>
         off  30 <wait>  repeat
     halt? until ;
