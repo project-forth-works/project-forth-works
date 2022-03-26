@@ -10,7 +10,7 @@
 : RUNNER    ( -- )      \ Running light on all outputs in my network
     run  begin
         all >user
-        begin  user up? while
+        begin  user next? while
         dup on  100 <wait>
         off  30 <wait>  repeat
     halt? until ;

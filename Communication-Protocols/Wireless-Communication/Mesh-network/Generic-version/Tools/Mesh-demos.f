@@ -1,6 +1,6 @@
 (* Educational demo applications
 
-    DOWN?     - Reverse order bit table node available test
+    PREV?     - Reverse order bit table node available test
     KNIGHT    - Wireless knight rider demo
     RUN-FORW  - Wireless clockwise running light
     RUN-BACKW - Anti clockwise running light
@@ -9,7 +9,7 @@
 
 *)
 
-: DOWN?     ( a -- false | node true )  \ Reverse order table readout
+: PREV?     ( a -- false | node true )  \ Reverse order table readout
     0 #n 1- do          \ Test all bits
         i over get* if  \ Node bit set?
             i swap *clr \ Clear it
@@ -18,20 +18,20 @@
     -1 +loop  drop  false ; \ Nothing found
 
 
-: KNIGHT   ( -- )      \ Knight rider on all outputs in my network
+: KNIGHT    ( -- )      \ Knight rider on all outputs in my network
     run  begin
         all >user  A0 <wait>
-\       begin  user up? while  on   80 <wait>  repeat
+\       begin  user next? while  on   80 <wait>  repeat
         begin  user >next? while  on   80 <wait>  repeat
         all >user  A0 <wait>
-        begin  user down? while  off  80 <wait>  repeat
+        begin  user prev? while  off  80 <wait>  repeat
     halt? until ;
 
 
 : RUN-FORW  ( -- )      \ Running light on all outputs in my network
     run  begin
         all >user
-        begin  user up? while
+        begin  user next? while
         dup on  100 <wait>
         off  30 <wait>  repeat
     halt? until ;
@@ -39,7 +39,7 @@
 : RUN-BACKW ( -- )      \ Running light on all outputs in my network
     run  begin
         all >user
-        begin  user down? while
+        begin  user prev? while
         dup on  100 <wait>
         off  30 <wait>  repeat
     halt? until ;
