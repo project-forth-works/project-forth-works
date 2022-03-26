@@ -18,9 +18,9 @@ these are used for the driver of the network layer.
 This driver uses **dynamic payload** to optimise the troughput of the network.
 
 - [Generic forth](Generic-version), version of the mesh network  
-- [MSP430G2553](G2553-4.1), noForth mesh network version  
-- [GD32VF103](GD32VF103-4.1), noForth mesh network version  
-- [MSP430F149](F149-4.1), noForth mesh network version  
+- [MSP430G2553 & MSP430F149](G2553-&-F149), noForth mesh network version  
+- [GD32VF103](GD32VF103), noForth mesh network version  
+- [MSP430FR5949](FR59xx), noForth mesh network version  
 
 ## Flexible RF settings
 

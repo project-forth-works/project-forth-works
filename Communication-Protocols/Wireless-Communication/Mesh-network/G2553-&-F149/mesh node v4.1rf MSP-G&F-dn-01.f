@@ -10,7 +10,7 @@
         Update-3, remove & add unstable node to keep
         the network as fast as possible.
     ***
-        Update-4 Add extra RF-data to SETRF and change
+        Update-4, Add extra RF-data to SETRF and change
         data address in >PAYLOAD & ADD-CONN was 6 'PAY now 5 'PAY
         New version of REGISTER with ask number!!
         Changed READ-RX & XEMIT? and ORG redefined as 2 PAY>
@@ -24,10 +24,15 @@
     ***
         Update-6, integrate dynamic payload
     ***
+        Update-7, Risc-V version
+    ***
+        Update-8, New dynamic payload & rf-error handling implementation
+                  Also >F is fixed by repairing READ-DRX?
+    ***
 
                                             1st         2nd    3th
         Basic 24l01 using usci 2021-01-13:  1464 bytes (1520) (1466/1476:1670) Small tools
-        Mesh node 4.x:                      2320 bytes (2666) (2880/3220:3364)
+        Mesh node 4.1:                      2320 bytes (2666) (2880/3220:3364)
         Total:                              3784 bytes (4186) (4346/4696:5034)
         Free with use of small tools:       3728 bytes (3316) (3158/2808:1930)
         Free RAM:                            140 bytes  (130)  (124/122:90)
@@ -46,11 +51,11 @@ Dynamic payload format from 1 to 32 bytes:
 
 hex
 \ Defining this node
-1 constant #TYPE         \ I am a power switch
-0 constant #SUB          \ I contain +n sub nodes
-10 constant #N           \ Max. number of nodes used
+ 1 constant #TYPE       \ I am a power switch
+ 0 constant #SUB        \ I contain +n sub nodes
+10 constant #N          \ Max. number of nodes used
 #n 8 /mod swap 0 > abs + \ Calculate rounded size
-   constant #MAP         \ Size of bitmap
+   constant #MAP        \ Size of bitmap
 
 \ EXEC handles execution tables, it needs the table address on the
 \ stack. Note that, all data needs te be cell aligned. The last command
@@ -92,7 +97,7 @@ code COUNT* ( a -- +n ) \ Count noted nodes
 end-code
 
 \ Leave node number of the first used node in bitmap & erase it
-: UP?       ( a -- false | node true )
+: NEXT?     ( a -- false | node true )
     #n 0 ?do            \ Test all bits
         i over get* if  \ Node bit set?
             i swap *clr  i true unloop exit
@@ -104,7 +109,7 @@ end-code
 value STOP?     \ Is -1 for stopping programs
 value ON?       \ Switch On/Off
 value PWR       \ nRF24 scan TX-power
-#PAY 5 - constant #B \ Databuffer size in payload
+#len 5 - constant #B \ Databuffer size in payload
 
 : ORG       ( -- node ) 2 pay> ;
 : .DB       ( +n -- )   3 and  -3 +  6 * .  ." db" ;
@@ -159,19 +164,15 @@ create MSTIMER  9382 ,  adr ms) ,  2402 ,  53B2 ,  adr ms) ,  1300 ,
 : (MS)      ( -- )      wait? if  ms) ?exit  ch ] temit  ready  then ; \ Timeout controller
 mstimer   FFF4 vec!     \ Install watchdog interrupt vector
 
-				  
-																					 
 
-
-\ DN: Use shortest payload length of 2!!
 \ Check any node with an noted RF-ERROR connection, take them
 \ into use again when they respond!
 \ This command must be executed in quiet periods only.
 \ Version with bitmap address on the stack, this may be used
 \ to regularly check every node in the network.
-: RF-CHECK      ( a -- )
-    pay >r  2 >length
-    dup count* 0= if  drop  r> >length  exit  then \ No faulty nodes, then ready
+: RF-RESTORE    ( a -- )
+    2 >len
+    dup count* 0= if  drop  norm  exit  then \ No faulty nodes, then ready
     #n 0 ?do                        \ Check all possible nodes
         i over get* if              \ Node marked as suppressed?
             i set-dest  write-mode  \ Yes, activate write mode
@@ -182,14 +183,20 @@ mstimer   FFF4 vec!     \ Install watchdog interrupt vector
             then
             flush-tx  reset
         then
-    loop  drop  read-mode  r> >length ;
+    loop  drop  read-mode  norm ;
+
+: RF-ERROR?     ( node -- flag )    \ Give true if node cannot be found
+    dup rf-error get* if            \ Unavailable?
+        rf-error rf-restore         \ Yes, try to restore
+        rf-error get* 0= exit       \ Succeeded?
+    then
+    dup - ;                         \ Node available
 
 
 \ Wait MS milliseconds & respond to external network commands
-\ Leave early on an answer command!
+\ Leave early after an answer command!
 value 'HANDLER \ Contains token of HANDLER)
 : <<WAIT>>    ( -- )
-    ms) dm 30 > if   RF-ERROR rf-check  then        \ Check lost connections
     read-mode  begin
         irq? if  xkey 'handler execute  then  (ms)  \ Now with HANDLER
     wait? 0= until  read-mode ;
@@ -217,14 +224,14 @@ value HOP#  \ Holds direct hopping node
 
 \ New version with releasing of a node when it does not respond
 : >NODE     ( node c -- )
-    over RF-ERROR get* if               \ Skip node if it was previously unresponsive
+    over RF-ERROR? if                   \ Skip node if it was previously unresponsive
         #retry to #fail  2drop  exit    \ Also skip <WAIT> behind it
     then
     swap  t? if  dup 1 .r  then  >dest  \ Set destination
     non? if  drop exit  then  xemit     \ When node unknown, skip XEMIT
     #fail #retry < ?exit  1 '>pay c@    \ No failure, then ready, or leave failed node
     t? if   dup 1 .r ch - emit  then    \  Show suppress of a failed node
-    dup direct get* 0=                  \ Not a direct node?  *WO*
+    dup direct get* 0=                  \ Not a direct node?
     if drop hop# then  RF-ERROR *set ;  \ Yes, replace with direct hopping node & note failure!
 
 \ Print all noted nodes from a bitmap
@@ -235,18 +242,18 @@ value HOP#  \ Holds direct hopping node
     loop  drop ;
 
 
-: <INFO     ( -- )      \ len = 5+2
+: <INFO     ( -- )          \ len = 5+2
 ( ) t? if  cr  ." Info>"  org .  then
-    #type 5 >pay        \ Node type
-    #sub 6 >pay         \ Number of sub nodes, 0 to 9
-(   ...  )              \ 8 to 12, max. nine sub node types
-    org ch @ >node  ;   \ Send data back
+    #type 5 >pay            \ Node type
+    #sub 6 >pay             \ Number of sub nodes, 0 to 9
+(   ...  )  7 >len          \ 8 to 12, max. nine sub node types
+    org ch @ >node  norm ;  \ Send data back
 
 : INFO>     ( -- )      \ Receive info from other nodes
     5 pay>  org  types + c!  ready ;
 
 
-\ Add all my connections to the payload! Note that the payload is 12 ( DN: +) bytes!
+\ Add all my connections to the payload! Note that the payload is 4 + 2*table length bytes!
 : ADD-CONN  ( -- )
     direct 0 >payload        \ Send my direct table  (2 bytes now)
     indirect #map >payload ; \ & indirect table      (2 bytes now)
@@ -255,11 +262,11 @@ value HOP#  \ Holds direct hopping node
 \ The maximum size of the table now is six bytes (48 nodes) due to the length
 \ of the usable payload of 12-bytes in the current payload of 17-bytes!!
 : <HOP      ( -- )
-    ch H temit  add-conn     \ Send my direct table & indirect table (len=5+4)
-    org ch ^ >node ;
+    ch H temit add-conn  9 >len \ Send my direct table & indirect table (len=5+4)
+    org ch ^ >node  norm ;
 
 : !HOPS     ( a -- )            \ Extend my indirect node tables
-    begin  dup up? while        \ Node found in table 'a'
+    begin  dup next? while      \ Node found in table 'a'
         dup all get* 0= if      \ Not yet present?
             dup indirect *set   \ Note an indirect node
             dup all *set        \ Extend all nodes table too
@@ -276,7 +283,8 @@ value HOP#  \ Holds direct hopping node
 
 
 create DATA-BUFFER #map 2* allot
-: <OK       ( -- )      add-conn  org ch } >node ; \ Return '}' answer to origin node (len=5+4)
+: <OK       ( -- )       \ Return '}' answer to origin node (len=5+4)
+    9 >len  add-conn  org ch } >node  norm ;
 
 : PING>     ( -- )
     5 'pay>  data-buffer 4 move \ Copy received data 
@@ -284,15 +292,15 @@ create DATA-BUFFER #map 2* allot
 
 \ Registration of new unregistered nodes
 : <GIVE-NO. ( -- )              \ This is network data command 'N' (5+1)
-    #n 0 ?do
+    6 >len  #n 0 ?do
         i all get* 0= if        \ Free node number found?
 \ )         cr ." No. " i .
             i 5 >pay            \ Yes, set number ready
             org ch # >node      \ and send it back to the requesting node
-            unloop  exit        \ ready
+            unloop  norm  exit  \ ready
         then
     loop
-    FF 5 >pay  org ch # >node ; \ No, all node numbers are occupied
+    FF 5 >pay  org ch # >node  norm ; \ No, all node numbers are occupied
 
 : GET-NO.>  ( -- )              \ This is node data command '#'
     5 pay> FF = ?abort          \ Abort if there are no more node numbers available
@@ -306,10 +314,10 @@ create DATA-BUFFER #map 2* allot
     5 'pay> !hops ;     \ Add possible but unlikely new indirect nodes
 
 : SIGN-UP   ( -- )      \ Copy #ME & NEW nodes table to blend into a network
-    direct >work        \ Add myself to all direct accessable nodes
-    begin  work up? while \ Use direct nodes
+    direct >work  7 >len  \ Add myself to all direct accessable nodes
+    begin  work next? while \ Use direct nodes
         direct 0 >payload  ch R >node \ Copy NEW nodes table to direct neighbours
-    repeat ;
+    repeat  norm ;
 
 : .NODES    ( -- )
     cr ."      All " all .map        \ Show all found nodes
@@ -321,7 +329,7 @@ create DATA-BUFFER #map 2* allot
     cr ." RF-error " rf-error .map
     cr ."     Node types "  #n 0 ?do  i all get* if types i + c@ . then  loop
     cr ."     Hop route: "  indirect >work
-    begin  work up? while  dup .  hops + c@ . space  repeat ;
+    begin  work next? while  dup .  hops + c@ . space  repeat ;
 
 \ Set a node table ready apart from myself
 : >WORK-ME    ( a -- )      >work  #me work *clr ;
@@ -331,14 +339,14 @@ create DATA-BUFFER #map 2* allot
     indirect zero  types #n 0 fill ; \ Empty type table
 
 : >NODES    ( c ms -- )      \ Send node command to all nodes noted in WORK
-    >r  begin  work up? while  over >node  r@ <wait>  repeat
+    >r  begin  work next? while  over >node  r@ <wait>  repeat
     drop  rdrop  0 to #fail ;
 
+\ DN: use shortest payload length (2)
 \ 0 scan = max. 4 meters  ( 1 wall )    2 scan = max. 10 meters ( 1 wall )
 \ 4 scan = max. 10 meters ( 2 walls )   6 scan = max. .. meters ( .. )
 : SCANX     ( -- )
-    pay  2 >length
-    t? if  cr pwr .db ."  sx " then \ Show scan power
+    2 >len  t? if cr pwr .db ."  sx " then \ Show scan power
     pwr rf@ nip >rf                 \ Set scan power
     delete-mesh  #n for             \ Scan all nodes
         i set-dest  write-mode      \ Set node address
@@ -348,7 +356,7 @@ create DATA-BUFFER #map 2* allot
             t? if  i 1 .r  ." + "  then \ Show addition
         then
         flush-tx  reset             \ Restore nRF24
-    next  >length  .nodes  read-mode rf@ >rf ; \ Restore normal RF power
+    next  norm  read-mode rf@ >rf ; \ Restore normal RF power
 
 : >OTHERS   ( c -- )    80 >nodes ;
 : *SCANX    ( -- )      scanx  org ch } >node ;
@@ -397,7 +405,7 @@ create 'COMMANDS    ( -- addr )
 \   ch ? ,  ' ping> ,       \ Note an error response  *WO*
   ( Finish )
     -1 ,    ' comm-error ,  \ Message on an command error
-	align
+    align
 
 
 \ Commands to other nodes directly
@@ -418,12 +426,15 @@ create 'COMMANDS    ( -- addr )
     1 pay> #me = if         \ Packet for me?
         'commands exec      \ Yes, execute command
     else
-        1 pay> t? if dup 1 .r then >dest \ No, fetch & set hop destination
-        'read 'write #pay move  \ Copy RX- to TX-payload
-        org 2 >pay              \ Use same origin
-        non? 0= if              \ Node known?
-            dup xemit  ch > temit \ Yes, relay packet, print hop symbol
-        then  drop
+        1 pay> rf-error? 0= if
+            mlen >len                   \ Original payload length
+            1 pay> t? if dup 1 .r then >dest \ No, fetch & set hop destination
+            'read 'write mlen move      \ Copy RX- to TX-payload
+            org 2 >pay                  \ Use same origin
+            non? 0= if                  \ Node known?
+                dup xemit  ch > temit   \ Yes, relay packet, print hop symbol
+            then
+        then  drop  norm                \ Restore payload length
     then  read-mode ;
 
 : HANDLER)  ( c -- )
@@ -449,30 +460,29 @@ chere  -1 ,  to #me     \ Headerless node data address
     5 ms  setup24L01            \ Wakeup & init. nRF24
     #me set-dest  run           \ Init. addresses & to run mode
     .status  tron               \ Print status, tracer on
-    power-off  0 to on?         \ Output off
+    power-off  0 to on?
     ready  1 0 *bis  int-on     \ IE1  Activate <WAIT>
     ['] handler)  to 'handler   \ Add NODE handler to <<WAIT>>
     ['] xkey)  to 'key  read-mode ; \ Add KEY & node handler to KEY
 
 
-\ Send Forth command string of max. #PAY-5 bytes to remote node
-: >F)       ( node a u -- )  \ Send string a u to node
-    pay >r  #pay >length     \ Max. payload length (dn)
-    >r  r@ 4 >pay            \ String length to admin byte
-    5 '>pay r> #b umin move  \ Copy command to payload
-    ch F >node  r> >length ; \ Send command
+\ Send Forth command string of max. #LEN-5 bytes to remote node
+: >F)       ( node a u -- ) \ Send string a u to node
+    #len >len  >r r@ 4 >pay \ Max. payload, string length to admin byte
+    5 '>pay r> #b umin move \ Copy command to payload
+    ch F >node  norm ;      \ Send command
 
 : >F        ( node ccc -- ) 0 parse  >f) ;
 
 : >ALL      ( a u -- )      \ Send string a u to all nodes
     2>r  all >work-me       \ Do send to all but myself
-    begin  work up? while  2r@ >f)  repeat
+    begin  work next? while  2r@ >f)  repeat
     cr  2r> evaluate ;      \ Execute string on myself
 
 
 : INFO?     ( -- f )        \ 'f' is true when all info is gathered
     -1  all >work
-    begin  work up? while
+    begin  work next? while
         types + c@ 0<> and
     repeat ;
 
@@ -486,7 +496,7 @@ chere  -1 ,  to #me     \ Headerless node data address
 : REGISTER  ( -- )              \ Register a single node to the mesh network
     ." From " .status           \ Show nRF24 status
     #me FF <> ?exit  scanx  cr  \ Exit when not FF
-    direct >work work up? 0= ?abort \ Get first occupied node number?
+    direct >work work next? 0= ?abort \ Get first occupied node number?
     cr  ch N >node  40 <wait>   \ Yes ask first free node there
     #ch  pwr  rf@  #me setrf    \ Renew node with received number and current RF-settings
     sign-up  cr  hop  cr        \ Add my node to the network do HOP
