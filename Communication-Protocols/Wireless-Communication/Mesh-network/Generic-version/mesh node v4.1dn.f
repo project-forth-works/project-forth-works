@@ -53,7 +53,7 @@ hex
  1 constant #TYPE           \ I am a power switch
  0 constant #SUB            \ I contain +n sub nodes
 10 constant #N              \ Max. number of nodes used
-##n 8 /mod swap 0 > abs +   \ Calculate rounded size
+#n 8 /mod swap 0 > abs +    \ Calculate rounded size
    constant #MAP            \ Size of bitmap
 
 \ EXEC handles execution tables, it needs the table address on the
