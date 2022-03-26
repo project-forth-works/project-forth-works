@@ -1,4 +1,4 @@
-\ Basic nRF24 bidirectional TRANSMIT & RECEIVE routines
+\ Basic nRF24 bidirectional TRANSMIT routine
 \
 \ Transmit T & receive : and a count as answer
 \
@@ -12,7 +12,7 @@
 0 value WAIT      \ Hold on/off period time
 : KICK-NRF24    ( -- )
     0 to #me  55 to #ch  1 to rf
-    spi-setup  5 ms  setup24L01
+    spi-setup  5 ms  setup24L01  7 >len
     1 set-dest  get-status .  troff ;
 
 : TRANSMIT      ( delay -- )

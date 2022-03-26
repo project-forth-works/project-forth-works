@@ -201,7 +201,7 @@ code CE-LOW     ( -- )  C2F2 ,  29 , ( #8 29 & .b bic ) next end-code
 : NORM      ( -- )          3 >len ; \ Default payload length
 
 \ Elementary command set for the nRF24L01+
-: SETUP24L01    ( -- )											
+: SETUP24L01    ( -- )                                          
     norm 3 1C write-reg \ Allow dynamic payload on Pipe 0 & 1
     6 1D write-reg      \ Enable dynamic payload, ACK payload on!
     0C 0 write-reg      \ Enable CRC, 2 bytes
@@ -233,13 +233,13 @@ create 'WRITE   #pay allot  \ Transmit buffer
     ce-high  noop noop noop  ce-low     \ P2OUT  Transmit pulse on CE
     response? drop  7 read-reg 20 and ; \ Wait for ACK
 
-
 : READ-DRX? ( -- f )                \ Receive 1 to 32 bytes
     60 spi-command  0 spi-i/o spi}  \ Read payload size
     dup 20 > if  flush-rx  drop false exit  then \ Check if invalid!
 \   t? if  ch D emit dup .  then    \ Possible debug info
     to mlen  61 spi-command  'read mlen bounds
     ?do  0 spi-i/o i c!  loop   spi}  true ;
+
 : '>PAY     ( +n -- a )     'write + ;  \ Leave address of TX payload
 : >PAY      ( b +n -- )     '>pay c! ;  \ Store byte for TX payload
 : 'PAY>     ( +n -- a )     'read + ;   \ Leave address of RX payload
@@ -301,6 +301,7 @@ A constant #TRY                 \ Transmit attempts
     until  0 pay>           \ Now read command from packet
     reset  flush-rx         \ Empty pipeline
     ce-low ;                \ To standby II
+
 \ Set destination address to node from stack, receive address is my "me"
 : SET-DEST      ( node -- )
     dup >r  1 >pay  #me 2 >pay      \ Set Destination & origin nodes
