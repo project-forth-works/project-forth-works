@@ -194,7 +194,7 @@ new functions above the basic node command interpreter. These are:
 | `DIRECT`  | ( -- a )      | Address of a BIT-table with direct accessable nodes |  
 | `INDIRECT`| ( -- a )      | Address of a BIT-table with indirect accessable nodes |  
 | `#MAP`    | ( -- +n )     | Leave the size of a bitmap |  
-| `GET*`    | ( +n a -- )   | Node +n present in bit-array a? |  
+| `GET*`    | ( +n a -- 0\|b ) | Check if node +n present in bit-array a? |  
 | `*CLR`    | ( +n a -- )   | Remove node +n from bit-array a |  
 | `*COUNT`  | ( a -- +n )   | Leave number of nodes found in bitmap a |  
 | `>USER`   | ( a -- )      | Copy nodes to node accu for app programmer |  
