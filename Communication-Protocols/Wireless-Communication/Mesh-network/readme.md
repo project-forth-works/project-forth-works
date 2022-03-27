@@ -12,7 +12,7 @@ The transceiver used here is the nRf24L01 or the Chinese clone named
 ## Built on top
 
 The basis for this example are these files: [SPI](../../SPI/), 
-[Basic 24L01dn](../nRf24L01+/basic%2024L01dn%20G2553-01.f) file
+[Basic 24L01dn](../nRf24L01+/basic%2024L01dn%20G2553-01a.f) file
 and the [bit array](https://github.com/project-forth-works/project-forth-works/tree/main/Data-Structures/Bit-Array), 
 these are used for the driver of the network layer.
 This driver uses **dynamic payload** to optimise the troughput of the network.
