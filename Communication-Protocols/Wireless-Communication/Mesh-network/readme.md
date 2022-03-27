@@ -67,7 +67,7 @@ end-code
 
 decimal
 : MS        ( ms -- )        
-    104000 *            \ Convert MS to CPU ticks
+    104000 *            \ Convert MS to CPU ticks (CPU-clock/1000)
     tick >r             \ Save tick counter
     begin
         tick r@ -       \ Calc. ticks passed
@@ -209,13 +209,13 @@ new functions above the basic node command interpreter. These are:
 #### Generic forth example code
 ```forth
 hex
-: RUN-FORW  ( -- )      \ Running light on all outputs in my network
-    run  begin
-        all >user
-        begin  user next? while
-        dup on  100 <wait>
+: RUN-FORW  ( -- )              \ Running light on all outputs in my network
+    run  begin                  \ Reset stop flag
+        all >user               \ Copy all nodes table to user table
+        begin  user next? while \ Get next available node number
+        dup on  100 <wait>      \ Activate output on that node shortly
         off  30 <wait>  repeat
-    halt? until ;
+    halt? until ;               \ Until a key is pressed or a STOP command was received
 ```
    ***
    
