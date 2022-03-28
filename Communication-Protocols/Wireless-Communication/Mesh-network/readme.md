@@ -1,5 +1,7 @@
 # Mesh network
-![mesh in action](https://user-images.githubusercontent.com/11397265/157903902-66324963-a68f-43bf-bdf6-fc22b96b761f.jpg)
+![mesh in action](https://user-images.githubusercontent.com/11397265/157903902-66324963-a68f-43bf-bdf6-fc22b96b761f.jpg)  
+**Three Egel-kits communicating**  
+
 
 ## The idea
 
@@ -21,6 +23,15 @@ This driver uses **dynamic payload** to optimise the troughput of the network.
 - [MSP430G2553 & MSP430F149](G2553-&-F149), noForth mesh network version  
 - [GD32VF103](GD32VF103), noForth mesh network version  
 - [MSP430FR5949](FR59xx), noForth mesh network version  
+
+### Files needed to build a functioning node
+- [A SPI driver for your CPU](https://github.com/project-forth-works/project-forth-works/blob/main/Communication-Protocols/SPI/GD32VF/noForth/SPI0%20v100.f), the example link goes to the GD32VF103 driver
+- [A driver for the used transceiver](https://github.com/project-forth-works/project-forth-works/blob/main/Communication-Protocols/Wireless-Communication/nRf24L01%2B/GD32VF/noForth/basic%2024L01dn%20GD32VF-01a.f), again for the GD32 Risc-V MPU and some tools
+- [Then the mesh network layer](GD32VF103/mesh%20node%20v4.1rf%20GD32dn-01a.f), and we should have a functioning node
+- [Finally you may add some tools](GD32VF103/Tools), a network build routine, PING, etc.
+
+For noForth and especially for the [Egel-kit](https://www.tindie.com/products/Willem_O/egel-kit-board-set-for-msp430g2553-no-parts/) you are ready now. The photo on top shows you three Egel-kits communicating :)  
+When you use another MPU and/or Forth system you may adapt the [generic version](Generic-version) to your needs.
 
 ## Flexible RF settings
 
@@ -222,10 +233,10 @@ hex
 - [BUILD](Generic-version/Tools/Build%20(3.9d).f), constructs a (hopping) mesh network  
 - [PING](Generic-version/Tools/Ping-2.f), check node connection/availability  
 - [DEMO's](Generic-version/Tools/Mesh-demos.f), that activate the node outputs in different ways  
-- [Simple demo](Generic-version/Tools/automesh.f), Primitive network build routine & running light demo
+- [Simple demo](Generic-version/Tools/automesh.f), primitive network build routine & running light demo  
 
    ***
    
 **All steps taken by the `BUILD` routine**  
-![Build done color](https://user-images.githubusercontent.com/11397265/157910410-addf6e4d-2e14-478c-8426-47e8435576b7.jpg)
+![Build done color](https://user-images.githubusercontent.com/11397265/157910410-addf6e4d-2e14-478c-8426-47e8435576b7.jpg)  
 
