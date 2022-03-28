@@ -22,6 +22,6 @@ The following program is around 10* times faster than a simple counting routine 
 decimal
 ```
 
-** Population count on Wikipedia: **
+**Population count on Wikipedia:**
 [Wikipedia - Hamming Weight](https://en.wikipedia.org/wiki/Hamming_weight) 
 
