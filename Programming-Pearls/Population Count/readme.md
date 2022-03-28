@@ -1,6 +1,6 @@
 ### Population Count
 
-Population count, or **popcount**, is counting the number of set bits in a byte or word (or whatever your computer uses). It i also known as Hamming Weigth (see below for a link).
+Population count, or **popcount**, is counting the number of set bits in a byte or word (or whatever your computer uses). It is also known as Hamming Weigth (see below for a link).
 There is a surprisingly large range of algorithms where a popcount is usefull. For instance it is handy when handling interrupts, or when indexing used file blocks on a storage medium, or in cryptology. And chess-programs seem to use it in the valuation of a board. Anyhow, the common factor in most of these uses is that speed is essential and so most modern processors have an opcode for doing a popcount.
 
 For processors which lack such an opcode, and for Forths implementations which lack a popcount primitive, here an algorithms to quickly get the count of set bits.
