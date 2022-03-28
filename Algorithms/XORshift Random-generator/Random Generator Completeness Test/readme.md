@@ -58,12 +58,28 @@ To raise complexity of a random-generator, it is possible to multiply the output
  24=>           0 25=>           0 26=>           0
  27=>           0 28=>           0 29=>           0
  30=>           0 31=>           0 32=>           0
- ```  
+ ```
+ 
+And this is how the popcounts look with a high quality 32 bit generator with a 256 bit domain ( **xoxhiro256** from D. Blackman and S. Vigna). The normal distribution can almost be felt...
+ 
+ ```
+   0=>           0  1=>           0  2=>           0
+  3=>           0  4=>           0  5=>           6
+  6=>          52  7=>         237  8=>        1406
+  9=>        6292 10=>       24445 11=>       84668
+ 12=>      254086 13=>      672015 14=>     1567053
+ 15=>     3230909 16=>     5898377 17=>     9542529
+ 18=>    13661188 19=>    17303565 20=>    19326867
+ 21=>    18960579 22=>    16292092 23=>    12174977
+ 24=>     7844886 25=>     4313613 26=>     1994819
+ 27=>      763860 28=>      233027 29=>       55479
+ 30=>        9614 31=>        1031 32=>          56
+ ```
 
 ##### Runtime and performance observations
 
-The runtime on a Raspberry 3b+ with wabiForth for this check is ~24 minutes (and 5 sec to generate the report).
-The limiting factor is in fact not the speed of the CPU but the speed of the memory-bus and cache. This routine is the most cache-**in**efficient possible. In >99,99% of cases setting a bit in the array requires the reading and writing of a complete 64 byte cache line. And a bit is set 4294967296 times. That takes a while...
+The runtime on a Raspberry 3b+ with wabiForth for this check is around 24 minutes (and 5 sec to generate the report).
+The limiting factor is in fact not the speed of the CPU but the speed of the memory-bus and cache. This routine is the most cache-**in**efficient routine possible. In >99,99% of cases setting a bit in the array requires the reading and writing of a complete 64 byte cache line. And a bit is set 4294967296 times. That takes a while...
 The resulting memory bandwith is ~380 MB/s. Well under the 1100 MB/s available to wabiForth on a Raspberry pi 3+. But taking into account that the cache-system is stressed to the max for all aspects, this is respectable and leaves only little room for improvement.
 
 
