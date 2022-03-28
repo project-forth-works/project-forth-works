@@ -222,10 +222,10 @@ hex
 - [BUILD](Generic-version/Tools/Build%20(3.9d).f), constructs a (hopping) mesh network  
 - [PING](Generic-version/Tools/Ping-2.f), check node connection/availability  
 - [DEMO's](Generic-version/Tools/Mesh-demos.f), that activate the node outputs in different ways  
-- [Simple demo](Generic-version/Tools/automesh.f), Primitive network build routine & running light demo
+- [Simple demo](Generic-version/Tools/automesh.f), primitive network build routine & running light demo  
 
    ***
    
 **All steps taken by the `BUILD` routine**  
-![Build done color](https://user-images.githubusercontent.com/11397265/157910410-addf6e4d-2e14-478c-8426-47e8435576b7.jpg)
+![Build done color](https://user-images.githubusercontent.com/11397265/157910410-addf6e4d-2e14-478c-8426-47e8435576b7.jpg)  
 
