@@ -12,7 +12,7 @@ The transceiver used here is the nRf24L01 or the Chinese clone named
 ## Built on top
 
 The basis for this example are these files: [SPI](../../SPI/), 
-[Basic 24L01dn](../nRf24L01+/basic%2024L01dn%20G2553-01.f) file
+[Basic 24L01dn](../nRf24L01+/basic%2024L01dn%20G2553-01a.f) file
 and the [bit array](https://github.com/project-forth-works/project-forth-works/tree/main/Data-Structures/Bit-Array), 
 these are used for the driver of the network layer.
 This driver uses **dynamic payload** to optimise the troughput of the network.
@@ -67,7 +67,7 @@ end-code
 
 decimal
 : MS        ( ms -- )        
-    104000 *            \ Convert MS to CPU ticks
+    104000 *            \ Convert MS to CPU ticks (CPU-clock/1000)
     tick >r             \ Save tick counter
     begin
         tick r@ -       \ Calc. ticks passed
@@ -194,7 +194,7 @@ new functions above the basic node command interpreter. These are:
 | `DIRECT`  | ( -- a )      | Address of a BIT-table with direct accessable nodes |  
 | `INDIRECT`| ( -- a )      | Address of a BIT-table with indirect accessable nodes |  
 | `#MAP`    | ( -- +n )     | Leave the size of a bitmap |  
-| `GET*`    | ( +n a -- )   | Node +n present in bit-array a? |  
+| `GET*`    | ( +n a -- 0\|b ) | Check if node +n present in bit-array a? |  
 | `*CLR`    | ( +n a -- )   | Remove node +n from bit-array a |  
 | `*COUNT`  | ( a -- +n )   | Leave number of nodes found in bitmap a |  
 | `>USER`   | ( a -- )      | Copy nodes to node accu for app programmer |  
@@ -209,13 +209,13 @@ new functions above the basic node command interpreter. These are:
 #### Generic forth example code
 ```forth
 hex
-: RUN-FORW  ( -- )      \ Running light on all outputs in my network
-    run  begin
-        all >user
-        begin  user next? while
-        dup on  100 <wait>
+: RUN-FORW  ( -- )              \ Running light on all outputs in my network
+    run  begin                  \ Reset stop flag
+        all >user               \ Copy all nodes table to user table
+        begin  user next? while \ Get next available node number
+        dup on  100 <wait>      \ Activate output on that node shortly
         off  30 <wait>  repeat
-    halt? until ;
+    halt? until ;               \ Until a key is pressed or a STOP command was received
 ```
    ***
    
