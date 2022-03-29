@@ -9,7 +9,9 @@ The following program is around 10* times faster than a simple counting routine 
 
 
 ##### Population Count - Forth routine
-```hex
+
+```
+hex
 : popcount ( number -- no_of_bits_in_number )
 	dup  1 rshift 55555555 and -
 	dup  33333333 and
