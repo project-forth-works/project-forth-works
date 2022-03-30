@@ -28,8 +28,8 @@ adjustable output power, CRC, etc.
 - And one MPU with: **Receive test.f**
 
 Load the **Range checker G2553 usci.f** on the boards when you want to check out
-busy channels or the placing of transceivers.
-See [here](#custom_anchor_name) for the words.  
+busy channels or the placing of transceivers.  
+See [here for a description](#custom_anchor_name) of the words.  
 
 
 ## Basic nRF24L01+ commands
