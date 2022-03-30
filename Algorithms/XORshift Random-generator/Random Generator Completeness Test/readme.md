@@ -4,7 +4,7 @@ There are many different tests to assess the quality of a random-number generato
 Presented here is a test for completeness.
 Linear Pseudorandom Number Generators have an exact amount of numbers they generate before the return to their starting point (wrap around). A good generator generates all possible numbers exactly once before wrapping around. During the development of specific variants of such generators it is usefull to be able to do such a check.
 
-The method used here is brute-force. It needs a decent CPU and at least 512 MB of continuous memory to run in a rasenable time. But a Raspberry Pi has enough memeory and is fast enough to run a check in reasonable time.
+The method used here is brute-force. It needs a decent CPU and at least 512 MB of continuous memory to run in a reasonable time. But a Raspberry Pi has enough memeory and is fast enough to run a check in reasonable time.
 
 ##### It functions thus:
 
