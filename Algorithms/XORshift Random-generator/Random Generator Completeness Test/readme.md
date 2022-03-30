@@ -1,14 +1,15 @@
 ### Random Generator Completeness Test
 
-There are many different tests to test the quality of a random-number generator. The Diehard suite of tests from Prof. G. Marsaglia was the first in wide-spread use, and a lot more tests have been developped since.
-One test is a test for completeness.
+There are many different tests to assess the quality of a random-number generator. The Diehard suite of tests from Prof. G. Marsaglia was the first in wide-spread use, and a lot more tests have been developped since.
+Presented here is a test for completeness.
 Linear Pseudorandom Number Generators have an exact amount of numbers they generate before the return to their starting point (wrap around). A good generator generates all possible numbers exactly once before wrapping around. During the development of specific variants of such generators it is usefull to be able to do such a check.
 
-Presented here is a brute-force checking tool. It needs a decent CPU and at least 512 MB of continuous memory to run. But a Raspberry Pi is fast enough and has enough memory to run a check in reasonable time.
+The method used here is brute-force. It needs a decent CPU and at least 512 MB of continuous memory to run in a rasenable time. But a Raspberry Pi has enough memeory and is fast enough to run a check in reasonable time.
 
 ##### It functions thus:
 
-```	clear the 512 MB bit-array
+```
+	clear the 512 MB bit-array
 	reset the random generator under test
 	4294967296 0 DO
 		get a random number from generator under test
@@ -25,9 +26,11 @@ Presented here is a brute-force checking tool. It needs a decent CPU and at leas
 	show the popcount array in a clear way
 ```	
 
+##### Reporting the results:
 
-This is the report generated. It shows how often each of the 33 possible populations counts where seen. Shown is a 32 bit LPNG which is complete.
-There are 134217727 population bit counts with a value 32, and there is 1 popcount with a value of 31. Which is exactly what is expected as these generators have a period of 2^32-1, a 0 is never generated -> 1 popcount with the value 31 and the rest with value 32.
+The report is the only 'smart' part of this program. It does a popcount of each of the 134217728 32 bits numbers in the array. As a second step it shows an overview of the totals of each of the 33 possible populations counts.
+
+The first report shows a 32 bit LPNG which is complete: there are 134217727 population bit counts with a value of 32, and 1 popcount with a value of 31. This is exactly as expected. These generators have a period of 2^32-1, the 0 is never generated; so there is 1 popcount with the value 31 and the rest with value 32.
 
 ```
   0=>           0  1=>           0  2=>           0                                       
@@ -44,7 +47,7 @@ There are 134217727 population bit counts with a value 32, and there is 1 popcou
  ```
 
 
-To raise complexity of a random-generator, it is possible to multiply the output with a constant factor. For an example see the random generator ofr MeCrisp-quintus. The multiplication factor is critical. The following table shows the effect of using a wrong multiplication factor. The generator only generates 25% of the possible numbers (but these 4 times in a complete cycle). It is clear that the factor used in the MeCrisp is obviously correct!
+To raise complexity of a random-generator, it is possible to multiply the output with a constant factor. For an example see the random generator of MeCrisp-quintus. You cannot just use any multiplication factor. The following table shows the effect of using a wrong multiplication factor. In this case the generator only generates 25% of the possible numbers (but these 4 times in a complete cycle). The factor used in the MeCrisp generator is obviously correct!
   
 ```
   0=>           0  1=>           0  2=>           0
@@ -79,7 +82,7 @@ And this is how the popcounts look with a high quality 32 bit generator with a 2
 ##### Runtime and performance observations
 
 The runtime on a Raspberry 3b+ with wabiForth for this check is around 24 minutes (and 5 sec to generate the report).
-The limiting factor is in fact not the speed of the CPU but the speed of the memory-bus and cache. This routine is the most cache-**in**efficient routine possible. In >99,99% of cases setting a bit in the array requires the reading and writing of a complete 64 byte cache line. And a bit is set 4294967296 times. That takes a while...
+The limiting factor is not the speed of the CPU, but the speed of the memory-bus and cache. This routine is the most cache-**in**efficient routine possible. In >99,99% of cases setting a bit in the array requires the reading and writing of a complete 64 byte cache line. Setting a bit 4294967296 times takes a while...
 The resulting memory bandwith is ~380 MB/s. Well under the 1100 MB/s available to wabiForth on a Raspberry pi 3+. But taking into account that the cache-system is stressed to the max for all aspects, this is respectable and leaves only little room for improvement.
 
 
