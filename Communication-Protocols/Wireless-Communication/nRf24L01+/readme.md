@@ -22,14 +22,14 @@ adjustable output power, CRC, etc.
 
 
 ### File load order for a test
-- SPI driver for your chips on two boards
+- SPI driver for your MPU on two boards
 - Adapted version of: **basic 24L01dn G2553-01a.f** file on two boards
-- One MPU with: **Transmit test.f**
-- And one MPU with: **Receive test.f**
+- One MPU board with: **Transmit test.f**
+- And one MPU board with: **Receive test.f**
 
 Load the **Range checker G2553 usci.f** on the boards when you want to check out
 busy channels or the placing of transceivers.  
-See [here for a description](#custom_anchor_name) of the words.  
+See [here for a description](#range&disturbance-test) of the words.  
 
 
 ## Basic nRF24L01+ commands
@@ -62,7 +62,7 @@ See [here for a description](#custom_anchor_name) of the words.
 | `TEST1`        | ( -- )          | Send a `T` every 50 milliseconds, display answer |  
 | `RECEIVER`     | ( -- )          | Receive command, incr. counter & send it back |  
 
-<a name="custom_anchor_name"></a>
+<a name="range&disturbance-test"></a>
  #### Range & disturbance test commands
 
 |    Command     |       Stack      |           Function          |  
