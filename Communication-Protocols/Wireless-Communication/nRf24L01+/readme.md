@@ -29,7 +29,7 @@ adjustable output power, CRC, etc.
 
 Load the **Range checker G2553 usci.f** on the boards when you want to check out
 busy channels or the placing of transceivers.
-See [here](check) for the words.  
+See [here](range-&-disturbance-test-commands) for the words.  
 
 
 ## Basic nRF24L01+ commands
@@ -54,7 +54,7 @@ See [here](check) for the words.
 | `SET-DEST`     | ( +n -- )       | Set address of destination nRF24 to +n |  
 
 
-**Bidirectional demo commands**  
+#### Bidirectional demo commands
 
 |    Command    |      Stack      |           Function          |  
 | --------------| --------------- | --------------------------- |  
@@ -63,8 +63,7 @@ See [here](check) for the words.
 | `RECEIVER`     | ( -- )          | Receive command, incr. counter & send it back |  
 
 
- [check]
- **Range & disturbance test commands**
+ #### [Range & disturbance test commands]
 
 |    Command     |       Stack      |           Function          |  
 | ---------------| ---------------- | --------------------------- |  
@@ -75,7 +74,7 @@ See [here](check) for the words.
 
    ***
    
-**Bidirectional transmit & receive test in action**  
+#### Bidirectional transmit & receive test in action
 
 https://user-images.githubusercontent.com/11397265/154994487-bffd043c-1e07-403d-8e72-6fbb5ada894f.mp4  
 
