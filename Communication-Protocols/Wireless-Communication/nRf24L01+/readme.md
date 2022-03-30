@@ -55,7 +55,7 @@ See [here for a description](#range&disturbance-test) of the words.
 
 
 <a name="bidirectional-demo"></a>
-#### Bidirectional demo commands
+### Bidirectional demo commands
 
 |    Command    |      Stack      |           Function          |  
 | --------------| --------------- | --------------------------- |  
@@ -64,7 +64,7 @@ See [here for a description](#range&disturbance-test) of the words.
 | `RECEIVER`     | ( -- )          | Receive command, incr. counter & send it back |  
 
 <a name="range&disturbance-test"></a>
- #### Range & disturbance test commands
+ ### Range & disturbance test commands
 
 |    Command     |       Stack      |           Function          |  
 | ---------------| ---------------- | --------------------------- |  
@@ -75,7 +75,7 @@ See [here for a description](#range&disturbance-test) of the words.
 
    ***
    
-#### Bidirectional transmit & receive test in action
+### Bidirectional transmit & receive test in action
 
 https://user-images.githubusercontent.com/11397265/154994487-bffd043c-1e07-403d-8e72-6fbb5ada894f.mp4  
 
