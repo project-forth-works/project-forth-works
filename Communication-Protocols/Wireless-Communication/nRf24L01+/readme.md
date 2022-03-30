@@ -21,6 +21,17 @@ adjustable output power, CRC, etc.
 - [**GD32VF**](GD32VF), implementation(s) of a nRF24L01+ driver for GD32VF103  
 
 
+### File load order for a test
+- SPI driver for your chips on two boards
+- Adapted version of: **basic 24L01dn G2553-01a.f** file on two boards
+- One MPU with: **Transmit test.f**
+- And one MPU with: **Receive test.f**
+
+Load the **Range checker G2553 usci.f** on the boards when you want to check out
+busy channels or the placing of transceivers.
+See [here](check) for the words.  
+
+
 ## Basic nRF24L01+ commands
 
 |    Command     |      Stack      |           Function          |  
@@ -52,7 +63,8 @@ adjustable output power, CRC, etc.
 | `RECEIVER`     | ( -- )          | Receive command, incr. counter & send it back |  
 
 
-**Range & disturbance test commands**
+ [check]
+ **Range & disturbance test commands**
 
 |    Command     |       Stack      |           Function          |  
 | ---------------| ---------------- | --------------------------- |  
