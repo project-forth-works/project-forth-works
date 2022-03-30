@@ -24,7 +24,7 @@ adjustable output power, CRC, etc.
 ### File load order for a test
 - SPI driver for your MPU on two boards
 - Adapted version of: **basic 24L01dn G2553-01a.f** file on two boards
-- One MPU board with: **Transmit test.f**
+- One MPU board with: **Transmit test.f** [See demo commands](#bidirectional-demo)
 - And one MPU board with: **Receive test.f**
 
 Load the **Range checker G2553 usci.f** on the boards when you want to check out
@@ -54,6 +54,7 @@ See [here for a description](#range&disturbance-test) of the words.
 | `SET-DEST`     | ( +n -- )       | Set address of destination nRF24 to +n |  
 
 
+<a name="bidirectional-demo"></a>
 #### Bidirectional demo commands
 
 |    Command    |      Stack      |           Function          |  
