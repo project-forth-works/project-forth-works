@@ -229,8 +229,8 @@ create 'WRITE   #pay allot  \ Transmit buffer
 
 : WRITE-DTX? ( -- 0|20 )        \ Send #len bytes payload & leave 20 if an ACK was received
     A0 spi-command 'write len   \ Store (dynamic) payload for pipe-0
-    for  count spi-out  next  drop  spi}
-    ce-high  noop noop noop  ce-low     \ P2OUT  Transmit pulse on CE
+    0 ?do  count spi-out  loop  drop  spi}
+    ce-high  noop noop noop  ce-low     \ Generate 10 µs transmit pulse on CE
     response? drop  7 read-reg 20 and ; \ Wait for ACK
 
 : READ-DRX? ( -- f )                \ Receive 1 to 32 bytes
