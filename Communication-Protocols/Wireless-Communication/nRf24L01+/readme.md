@@ -29,7 +29,7 @@ adjustable output power, CRC, etc.
 
 Load the **Range checker G2553 usci.f** on the boards when you want to check out
 busy channels or the placing of transceivers.
-See [here](range-&-disturbance-test-commands) for the words.  
+See [here](#custom_anchor_name) for the words.  
 
 
 ## Basic nRF24L01+ commands
@@ -62,8 +62,8 @@ See [here](range-&-disturbance-test-commands) for the words.
 | `TEST1`        | ( -- )          | Send a `T` every 50 milliseconds, display answer |  
 | `RECEIVER`     | ( -- )          | Receive command, incr. counter & send it back |  
 
-
- #### [Range & disturbance test commands]
+<a name="custom_anchor_name"></a>
+ #### Range & disturbance test commands
 
 |    Command     |       Stack      |           Function          |  
 | ---------------| ---------------- | --------------------------- |  
