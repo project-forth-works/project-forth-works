@@ -19,7 +19,7 @@ and the [bit array](https://github.com/project-forth-works/project-forth-works/t
 these are used for the driver of the network layer.
 This driver uses **dynamic payload** to optimise the troughput of the network.
 
-- [Generic forth](Generic-version), version of the mesh network  
+- [Generic forth](Generic-Forth), version of the mesh network  
 - [MSP430G2553 & MSP430F149](G2553-&-F149), noForth mesh network version  
 - [GD32VF103](GD32VF103), noForth mesh network version  
 - [MSP430FR5949](FR59xx), noForth mesh network version  
@@ -230,10 +230,10 @@ hex
 ```
    ***
    
-- [BUILD](Generic-version/Tools/Build%20(3.9d).f), constructs a (hopping) mesh network  
-- [PING](Generic-version/Tools/Ping-2.f), check node connection/availability  
-- [DEMO's](Generic-version/Tools/Mesh-demos.f), that activate the node outputs in different ways  
-- [Simple demo](Generic-version/Tools/automesh.f), primitive network build routine & running light demo  
+- [BUILD](Generic-Forth/Tools/Build%20(3.9d).f), constructs a (hopping) mesh network  
+- [PING](Generic-Forth/Tools/Ping-2.f), check node connection/availability  
+- [DEMO's](Generic-Forth/Tools/Mesh-demos.f), that activate the node outputs in different ways  
+- [Simple demo](Generic-Forth/Tools/automesh.f), primitive network build routine & running light demo  
 
    ***
    
