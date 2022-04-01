@@ -24,7 +24,7 @@ This driver uses **dynamic payload** to optimise the troughput of the network.
 - [GD32VF103](GD32VF103), noForth mesh network version  
 - [MSP430FR5949](FR59xx), noForth mesh network version  
 
-### Files needed to build a functioning node
+### Files required to build a working node
 
 - [An SPI driver for your CPU](https://github.com/project-forth-works/project-forth-works/blob/main/Communication-Protocols/SPI/GD32VF/noForth/SPI0%20v100.f), the example link goes to the GD32VF103 driver
 - [A driver for the used transceiver](https://github.com/project-forth-works/project-forth-works/blob/main/Communication-Protocols/Wireless-Communication/nRf24L01%2B/GD32VF/noForth/basic%2024L01dn%20GD32VF-01a.f), again for the GD32 Risc-V MPU and some tools
