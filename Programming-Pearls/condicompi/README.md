@@ -40,6 +40,21 @@ is supposed to describe a condition. If it holds then the sequence between `[IF]
 be nested inside any of the above sequences. 
 `[IF]`, `[ELSE]`, `[THEN]` are immediate words, i.e. they execute even if other words are currently beeing compiled.
 
+One drawback of `[IF]` shows up, if you try to use it inside definitions (in compilation mode): Although `[IF]` itself is immediate and thus will execute if used 
+inside a definition, the *sequence of words that puts a value on the stack* needs to be executed as well (and not compiled into the definition). Because of this
+the sequence typically is enclosed in brackets itself to enforce its execution:
+
+Inside a definition:
+```forth
+: «someword» ( ... -- ... )
+    [ «some sequence of words that puts a value on the stack» ]
+    [IF]
+    ...
+    [THEN]
+    ...
+;
+```
+
 ### Variant based conditional compilation
 
 In this programming pearl Albert Nijhof shows how to do conditional compilation, i.e. processing parts of the programm text depending on some conditions.
@@ -104,6 +119,8 @@ The `nip` in line 10 just gets rid of the address that is no longer useful at th
 
 So the length is appropriate as the condition value that can be passed to `[IF]` (being 0 in the one case not zero in the other). Line 11 invokes `[IF]`. As it is an immediate word and we don't want to execute it while defining `[IF` but later, when `[IF` is executed itself, we need to `POSTPONE` its execution.
 
+As `[IF` parses the input stream for the variant symbols it can be use outside and inside definitions alike. It thus avoids the above mentioned drawback of `[IF]`.
+
 That's it the ICE principle in action: A nice custom syntax that allows for a concise notation.
 
 ---
@@ -111,70 +128,58 @@ That's it the ICE principle in action: A nice custom syntax that allows for a co
 Albert's explanation and test examples:
 
 ```forth
-    14  (*
-    15      [IF A]    -code- [THEN]   \ -code- is only for variant A
-    16      [IF AB]   -code- [THEN]   \ for A and B
-    17      [IF ACDE] -code- [THEN]   \ for A, C, D and E
-    18  
-    19  Je wilt een generieke code schrijven die
-    20  slechts in enkele varianten iets verschilt.
-    21  Voorwaardelijke compilatie kan een oplossing zijn.
-    22      Geef elke variant een letter.
-    23      [IF leest het volgende "woord" uit de invoerstroom.
-    24  
-    25  You want to write a generic code
-    26  that differs only slightly in some variants.
-    27  Conditional compilation can be a solution.
-    28      Name each variant with a letter.
-    29      [IF reads the next "word" from the input stream.
-    30  
-    31  Sie wollen einen generischen Code schreiben der sich
-    32  nur in einigen Varianten geringfügig unterscheidet.
-    33  Die bedingte Kompilierung kann eine Lösung sein.
-    34      Ordnen Sie jeder Variante einen Buchstaben zu.
-    35      [IF liest das nächste "Wort" aus dem Eingabestrom.
-    36  *)
-    37  
-    38  \ ----- Test
-    39  char A to variant
-    40  [IF AC]    1 [ELSE] 0 [THEN] .
-    41  [IF CA]    1 [ELSE] 0 [THEN] .
-    42  [IF B]     1 [ELSE] 0 [THEN] .
-    43  [IF BCEFD] 1 [ELSE] 0 [THEN] .
-    44  [IF 13%A]  1 [ELSE] 0 [THEN] .
-    45  [IF ]      1 [ELSE] 0 [THEN] .
-    46  : test1 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;
-    47  char C to variant
-    48  : test2 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;
-    49  test1
-    50  test2
-    51  
-    52  (*
-    53  ----- Test results
-    54  char A to variant  OK
-    55  [IF AC]    1 [ELSE] 0 [THEN] . 1  OK
-    56  [IF CA]    1 [ELSE] 0 [THEN] . 1  OK
-    57  [IF B]     1 [ELSE] 0 [THEN] . 0  OK
-    58  [IF BCEFD] 1 [ELSE] 0 [THEN] . 0  OK
-    59  [IF 13%A]  1 [ELSE] 0 [THEN] . 1  OK
-    60  [IF ]      1 [ELSE] 0 [THEN] . 0  OK
-    61  : test1 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;  OK
-    62  char C to variant  OK
-    63  : test2 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;  OK
-    64  test1 0  OK
-    65  test2 1  OK
-    66  ( Have a look at SEE TEST1 and SEE TEST2 )
-    67  
-    68  ----- noForth code (VALUE and BL-WORD)
-    69  value VARIANT
-    70  : [IF ( ccc] -- )       \ ccc is case-sensitive
-    71      bl-word dup c@ 1 max
-    72      begin 1 /string dup
-    73            while over c@ variant =
-    74      until then  nip
-    75      postpone [IF] ; immediate
-    76  *)
-    77  \ <><>
+    (*
+        [IF A]    -code- [THEN]   \ -code- is only for variant A
+        [IF AB]   -code- [THEN]   \ for A and B
+        [IF ACDE] -code- [THEN]   \ for A, C, D and E
+    
+    You want to write a generic code
+    that differs only slightly in some variants.
+    Conditional compilation can be a solution.
+        Name each variant with a letter.
+        [IF reads the next "word" from the input stream.
+    *)
+    
+    \ ----- Test
+    char A to variant
+    [IF AC]    1 [ELSE] 0 [THEN] .
+    [IF CA]    1 [ELSE] 0 [THEN] .
+    [IF B]     1 [ELSE] 0 [THEN] .
+    [IF BCEFD] 1 [ELSE] 0 [THEN] .
+    [IF 13%A]  1 [ELSE] 0 [THEN] .
+    [IF ]      1 [ELSE] 0 [THEN] .
+    : test1 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;
+    char C to variant
+    : test2 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;
+    test1
+    test2
+    
+    (*
+    ----- Test results
+    char A to variant  OK
+    [IF AC]    1 [ELSE] 0 [THEN] . 1  OK
+    [IF CA]    1 [ELSE] 0 [THEN] . 1  OK
+    [IF B]     1 [ELSE] 0 [THEN] . 0  OK
+    [IF BCEFD] 1 [ELSE] 0 [THEN] . 0  OK
+    [IF 13%A]  1 [ELSE] 0 [THEN] . 1  OK
+    [IF ]      1 [ELSE] 0 [THEN] . 0  OK
+    : test1 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;  OK
+    char C to variant  OK
+    : test2 [IF BCEFD] 1 [ELSE] 0 [THEN] . ;  OK
+    test1 0  OK
+    test2 1  OK
+    ( Have a look at SEE TEST1 and SEE TEST2 )
+    
+    ----- noForth code (VALUE and BL-WORD)
+    value VARIANT
+    : [IF ( ccc] -- )       \ ccc is case-sensitive
+        bl-word dup c@ 1 max
+        begin 1 /string dup
+              while over c@ variant =
+        until then  nip
+        postpone [IF] ; immediate
+    *)
+    \ <><>
 ```
 ---
 
