@@ -38,7 +38,7 @@ Standard Forth proposes to have the immediate words `[IF]`, `[ELSE]` and `[THEN]
 is supposed to describe a condition. If it holds then the sequence between `[IF]` and `[ELSE]` is processed, if it does not hold, the sequence between `[ELSE]` and `[THEN]`is processed.  
 `[ELSE]` can be ommited and `[IF]`, `[ELSE]`, `[THEN]` can 
 be nested inside any of the above sequences. 
-`[IF]`, `[ELSE]`, `[THEN]` are immediate words, i.e. they execute even if other words are currently beeing compiled.
+`[IF]`, `[ELSE]`, `[THEN]` are immediate words, i.e. they execute even if other words are currently being compiled.
 
 One drawback of `[IF]` shows up, if you try to use it inside definitions (in compilation mode): Although `[IF]` itself is immediate and thus will execute if used 
 inside a definition, the *sequence of words that puts a value on the stack* needs to be executed as well (and not compiled into the definition). Because of this
