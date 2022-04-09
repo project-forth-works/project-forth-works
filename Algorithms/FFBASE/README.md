@@ -12,7 +12,9 @@ So, for instance:
 ```
 Creates a word, called `HX. `HX` will set the numeric base to 16, but ONLY for the word following it. It deals correctly with definitions being compiled, definitions being executed and values.
 
-The name `FFBASE`, by the way, come from the Dutch word 'even'. It means 'for a short while'. This in colloquial language is pronounced 'effen', which is also the plural of 'F'. So `FFBASE` in Dutch is pronounced 'EffenBase' and it gives a different numeric base for a very short while.
+The name `FFBASE`, by the way, come from the Dutch word 'even'. It means 'for a short while'. This in colloquial language is pronounced 'effen', which is also the plural of 'F'. So `FFBASE` in Dutch is pronounced 'EffenBase' and it gives a different numeric base for a very short while.  
+
+It should be mentioned that in this phrase `: .hex  hx . ;`  `BASE` is set to hex while `.` (dot) is compiled! So this `HX` has no effect.  
 
 
 ## Pseudo code
