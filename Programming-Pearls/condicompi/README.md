@@ -16,7 +16,7 @@ In Forth you can switch between I, C, E arbitrarily.
 While interpreting you can make 
 a definition via `:` or any other defining word and you can execute words by just putting their parameters on the stack and then call words by mentioning their names.  
 While compiling you can enclose program text to be interpreted (and executed) in `[` and `]`.  
-Forth even executes *immediate compiling words* always indendent whether of not it just interprets or compiles other words.
+Forth even executes *immediate compiling words* always intendent whether of not it just interprets or compiles other words.
 
 ### `[IF]` `[ELSE]` `[THEN]`
 
@@ -105,7 +105,7 @@ The currently selected variant to be processed is supposed to be stored in the F
 Line 7 parses the input stream up to the next space, i.e. just including the trailing `]`. 
 The resulting string (address before the first character and its length) is on the stack at the end of line 7. (`1 max` deals with an empty string.) 
 
-Lines 8-10 then look in loop wether or not the string contains the (symbol denoting the) current variant by inspecting the  string one character after the other: `1 /string` adjust the length and the address so that the length is the number of characters that still need to be inspected. If threre are no more then the loop ends.
+Lines 8-10 then look in loop wether or not the string contains the (symbol denoting the) current variant by inspecting the  string one character after the other: `1 /string` adjusts the length and the address so that the length is the number of characters that still need to be inspected. If there are no more then the loop ends.
 The address is corrected so that it refers to the next character to be inspected.
 
 Line 9 then checks that character against the variant symbol. If it is found then the loop also stops.
@@ -119,7 +119,7 @@ The `nip` in line 10 just gets rid of the address that is no longer useful at th
 
 So the length is appropriate as the condition value that can be passed to `[IF]` (being 0 in the one case not zero in the other). Line 11 invokes `[IF]`. As it is an immediate word and we don't want to execute it while defining `[IF` but later, when `[IF` is executed itself, we need to `POSTPONE` its execution.
 
-As `[IF` parses the input stream for the variant symbols it can be use outside and inside definitions alike. It thus avoids the above mentioned drawback of `[IF]`.
+As `[IF` parses the input stream for the variant symbols it can be used outside and inside definitions alike. It thus avoids the above mentioned drawback of `[IF]`.
 
 That's it the ICE principle in action: A nice custom syntax that allows for a concise notation.
 
