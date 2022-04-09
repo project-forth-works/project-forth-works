@@ -2,8 +2,7 @@
 
 ## The idea
 
-When you have multiple processes that need to start at one point. Finishes at another point, 
-in the same time frame, you need something like PiliPlop. It uses a Bresenham like algorithm. 
+When a number of different processes are to start at the same time and also be terminated at the same time, you need something like PiliPlop. It uses a Bresenham like algorithm. 
 Original idea [Albert Nijhof](https://home.hccnet.nl/anij/ec/ec207a.html). Examples are:  
 
   - A plotter
