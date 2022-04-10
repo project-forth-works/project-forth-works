@@ -147,7 +147,7 @@ used. You can also use (7, 9, 8).
 - [ARM](ARM), more on the ARM specific random implementation  
 - [GD32VF103](GD32VF), implementations for the Risc-V  
 - [MSP430](MSP430), implementations for the TI MSP430 series  
-
+- [The random test program](Random%20Generator%20Completeness%20Test), presented here is a test for completeness  
 #### A few points to note:
 
 There is no limit to the number of seeds. If you want to use a thousand
