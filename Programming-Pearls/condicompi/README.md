@@ -16,7 +16,7 @@ In Forth you can switch between I, C, E arbitrarily.
 While interpreting you can make 
 a definition via `:` or any other defining word and you can execute words by just putting their parameters on the stack and then call words by mentioning their names.  
 While compiling you can enclose program text to be interpreted (and executed) in `[` and `]`.  
-Forth even executes *immediate compiling words* always intendent whether of not it just interprets or compiles other words.
+Forth even executes *immediate compiling words* always intended whether of not it just interprets or compiles other words.
 
 ### `[IF]` `[ELSE]` `[THEN]`
 
