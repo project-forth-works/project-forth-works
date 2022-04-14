@@ -16,7 +16,7 @@ This i a one cell array on a machine with 16-bit cell size. Three of the 16-bits
 A note on `?ABORT` noForth uses the name of the word in which ?ABORT is included as the error message. 
 In the example code below, the message "Error from LOC" is printed. 
 This is useful for adding clear error messages to small embedded systems.
-It is also an extra motivation to use meaningfull names :)  
+It is also an extra motivation to use meaningful names :)  
 
 ## Pseudo code for a bit array
 

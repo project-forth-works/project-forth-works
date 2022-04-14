@@ -8,7 +8,7 @@ Like a [Buffer](../Buffer/README.md) an array stores a sequence of entries (aka 
 
 A buffer is characterized by its buffer-base-address and its size only and you can manage the buffer content as you like.
 One popular way to manage a buffer is to number the items from 0 to the capacity-1 (where capacity is the number of items that
-can be stored in the buffer) and use the addresse caculation
+can be stored in the buffer) and use the address calculation
 
 ```
     entry-address = buffer-base-address + index * entry-size
@@ -22,9 +22,9 @@ item-address of the item requested.
 
 As with buffers you need to allocate memory for arrays.
 
-A typical way to accomplish this in Forth is to use *defining words* to encapsulate that behavior:
+A typical way to accomplish this in Forth is to use *defining words* to encapsulate that behaviour:
 
-- the defining part allocates the appropriate memory of `capacity * entry-size` bytes. As you propably want to read and 
+- the defining part allocates the appropriate memory of `capacity * entry-size` bytes. As you probably want to read and 
   write entries, the allocation takes place in RAM.
 - the action part (does> part) does the address calculation.
 
