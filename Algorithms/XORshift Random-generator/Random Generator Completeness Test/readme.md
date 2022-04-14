@@ -1,10 +1,10 @@
 ### Random Generator Completeness Test
 
-There are many different tests to assess the quality of a random-number generator. The Diehard suite of tests from Prof. G. Marsaglia was the first in wide-spread use, and a lot more tests have been developped since.
+There are many different tests to assess the quality of a random-number generator. The Diehard suite of tests from Prof. G. Marsaglia was the first in wide-spread use, and a lot more tests have been developed since.
 Presented here is a test for completeness.
-Linear Pseudorandom Number Generators have an exact amount of numbers they generate before the return to their starting point (wrap around). A good generator generates all possible numbers exactly once before wrapping around. During the development of specific variants of such generators it is usefull to be able to do such a check.
+Linear Pseudorandom Number Generators have an exact amount of numbers they generate before the return to their starting point (wrap around). A good generator generates all possible numbers exactly once before wrapping around. During the development of specific variants of such generators it is useful to be able to do such a check.
 
-The method used here is brute-force. It needs a decent CPU and at least 512 MB of continuous memory to run in a reasonable time. But a Raspberry Pi has enough memeory and is fast enough to run a check in reasonable time.
+The method used here is brute-force. It needs a decent CPU and at least 512 MB of continuous memory to run in a reasonable time. But a Raspberry Pi has enough memory and is fast enough to run a check in reasonable time.
 
 ##### It functions thus:
 
@@ -82,7 +82,7 @@ And this is how the popcounts look with a high quality 32 bit generator with a 2
 ##### Runtime and performance observations
 
 The runtime on a Raspberry 3b+ with wabiForth for this check is around 24 minutes (and 5 sec to generate the report).
-The limiting factor is not the speed of the CPU, but the speed of the memory-bus and cache. This routine is the most cache-**in**efficient routine possible. In >99,99% of cases setting a bit in the array requires the reading and writing of a complete 64 byte cache line. Setting a bit 4294967296 times takes a while...
-The resulting memory bandwith is ~380 MB/s. Well under the 1100 MB/s available to wabiForth on a Raspberry pi 3+. But taking into account that the cache-system is stressed to the max for all aspects, this is respectable and leaves only little room for improvement.
+The limiting factor is not the speed of the CPU, but the speed of the memory-bus and cache. This routine is the most cache-**in**efficient routine possible. In >99,99% of cases setting a bit in the array requires the reading and writing off a complete 64 byte cache line. Setting a bit 4294967296 times takes a while...
+The resulting memory bandwidth is ~380 MB/s. Well under the 1100 MB/s available to wabiForth on a Raspberry pi 3+. But taking into account that the cache-system is stressed to the max for all aspects, this is respectable and leaves only little room for improvement.
 
 
