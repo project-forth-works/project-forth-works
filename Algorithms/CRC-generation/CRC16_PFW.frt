@@ -28,7 +28,7 @@ hex
 
 decimal
 : tst2
-	0000									\ start-value
+	0000									\ start-value=CRC-16/XMODEM
 	49 crc16
 	50 crc16
 	51 crc16
