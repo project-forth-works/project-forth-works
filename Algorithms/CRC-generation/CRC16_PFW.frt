@@ -13,7 +13,7 @@ hex
         THEN
     LOOP ;
 
-: tst
+: tst1
 	ffff									\ start-value
 	f0 crc16
 	f0 crc16
@@ -26,3 +26,16 @@ hex
 	84 crc16
 	. ;
 
+decimal
+: tst2
+	0000									\ start-value
+	49 crc16
+	50 crc16
+	51 crc16
+	52 crc16
+	53 crc16
+	54 crc16
+	55 crc16
+	56 crc16
+	57 crc16
+	.hex ;
