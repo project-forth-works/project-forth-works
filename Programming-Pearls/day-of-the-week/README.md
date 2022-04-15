@@ -56,7 +56,7 @@ First let's assume all element strings of the sequence have the same length.
 
 Then the start address of the string n in the sequence can be calculated by
 
-    «address of string n» = «start-address of seqence» + n * «fixed length of element strings»
+    «address of string n» = «start-address of sequence» + n * «fixed length of element strings»
 
 In Forth that looks like the definition of `.DAY` in line 8-11. The fixed length here is 3.
 The sequence has 8 elements. `7 umin` (line 9) is a bounds check, that maps every value outside the 
@@ -76,7 +76,7 @@ string by string basis to find the nth string.
 The definition of `.DAY` in line 17 to 23 shows how to encode the length of the element strings 
 and traverse the sequence.  
 The range check in line 18 is as described above.  
-The represented sequence (line 19) now has a length byte in front of each element string. Charater '1' represents
+The represented sequence (line 19) now has a length byte in front of each element string. Character '1' represents
 the length 1, '2' the length 2 and so on. Lengths greater 9 would be represented by characters ':', ';', '<'
 according to the ASCII character encoding but that is not necessary in this example.
 
@@ -88,7 +88,7 @@ be defined as `: c@+ ( c-addr1 -- c-addr2 u )  DUP 1 + SWAP c@ ;` assuming a byt
 machine (i.e. 1 CHARS = 1).  
 The surrounding `?DO LOOP` iterates n times so it leaves the address of the nth element string. Memory at 
 that address holds the encoded length that is fetched (line 22, `COUNT`) and transformed to the actual length
-by subtractig the character value of '0'. Having address and length of the element string `type` displays it.
+by subtracting the character value of '0'. Having address and length of the element string `type` displays it.
 The trailing "day " line 23 completes the weekday (every weekday in english ends in "day").
 
 If n is out of range 0 to 6 then `.DAY` works as follows:  
@@ -110,12 +110,12 @@ available that lays down a string character by character at `HERE` in the dictio
 
 Line 30 gives the name `(MESES)` to the sequence (start address of the string representing the sequence).   
 Line 31 and 32 use `M,` to store two parts of the string. Both lines parse a quote (")
-terminated string and then lay it down in the dictionary. For systems that require aligned disctionary addresses
+terminated string and then lay it down in the dictionary. For systems that require aligned dictionary addresses
 the `ALIGN` in line 33 pads the dictionary so `HERE` will be a cell aligned address.
 
 The definition of `.MES` (line 34-37) is similar to `.DAY` (line 17-23) only that indices n for months go from
-1 to 12 (not 0 to 7 as before). Also spanish month names do not have a common ending, so the element string is
-all that is displayd (no "day ").
+1 to 12 (not 0 to 7 as before). Also Spanish month names do not have a common ending, so the element string is
+all that is displayed (no "day ").
 
 ## Summary
 

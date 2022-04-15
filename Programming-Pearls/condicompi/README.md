@@ -6,8 +6,8 @@ Conditional compilation lets you selectively process program text depending on c
 
 One of Forth strengths is its ICE (interpret, compile, execute) concept: You can
 
-- **interpret** expressions while the programm text is processed,
-- **compile** function definitions (words) to caputure actions for reuse, and
+- **interpret** expressions while the program text is processed,
+- **compile** function definitions (words) to capture actions for reuse, and
 - **execute** these words with different parameters
 
 within the same program text.
@@ -36,7 +36,7 @@ Standard Forth proposes to have the immediate words `[IF]`, `[ELSE]` and `[THEN]
 
 `«some sequence of words that puts a value on the stack»`
 is supposed to describe a condition. If it holds then the sequence between `[IF]` and `[ELSE]` is processed, if it does not hold, the sequence between `[ELSE]` and `[THEN]`is processed.  
-`[ELSE]` can be ommited and `[IF]`, `[ELSE]`, `[THEN]` can 
+`[ELSE]` can be omitted and `[IF]`, `[ELSE]`, `[THEN]` can 
 be nested inside any of the above sequences. 
 `[IF]`, `[ELSE]`, `[THEN]` are immediate words, i.e. they execute even if other words are currently being compiled.
 
@@ -57,7 +57,7 @@ Inside a definition:
 
 ### Variant based conditional compilation
 
-In this programming pearl Albert Nijhof shows how to do conditional compilation, i.e. processing parts of the programm text depending on some conditions.
+In this programming pearl Albert Nijhof shows how to do conditional compilation, i.e. processing parts of the program text depending on some conditions.
 
 The idea here is to have a convenient conditional compilation syntax that can distinguish given variants.
 A *variant* is a specific (named) configuration that the program should be adapted to, such as a specific kind of arithmetic it should use or the presence of certain features.  
@@ -80,7 +80,7 @@ we would like to write
 [THEN]
 ```
 
-So what we need is to define a new immediate word **`[IF`** that parses the input stream for variant symbols up to a closing `]`, determines the disjunction, puts a appropriate value (flag) on the stack and the invokes `[IF]`.
+So what we need is to define a new immediate word **`[IF`** that parses the input stream for variant symbols up to a closing `]`, determines the disjunction, puts an appropriate value (flag) on the stack and the invokes `[IF]`.
 
 Here is Albert's code that does just that.
 
@@ -105,15 +105,15 @@ The currently selected variant to be processed is supposed to be stored in the F
 Line 7 parses the input stream up to the next space, i.e. just including the trailing `]`. 
 The resulting string (address before the first character and its length) is on the stack at the end of line 7. (`1 max` deals with an empty string.) 
 
-Lines 8-10 then look in loop wether or not the string contains the (symbol denoting the) current variant by inspecting the  string one character after the other: `1 /string` adjusts the length and the address so that the length is the number of characters that still need to be inspected. If there are no more then the loop ends.
+Lines 8-10 then look in loop wether or not the string contains the (symbol denoting the) current variant by inspecting the  string one character after the other: `1 /string` adjusts the length and the address so that the length is the number of characters that still need to be inspected. If there are no more than the loop ends.
 The address is corrected so that it refers to the next character to be inspected.
 
 Line 9 then checks that character against the variant symbol. If it is found then the loop also stops.
 
 Note, that the loop is quite uncommon. It is a `BEGIN` `WHILE` `UNTIL` `THEN` loop that has two exits: 
 
-1. exit when there are no more characters to be processed (the length became 0) and the variant symbol has not been encoutered.
-2. exit when the current variant symbol is encoutered (the length then is not equal to zero) before the end of the string.
+1. exit when there are no more characters to be processed (the length became 0) and the variant symbol has not been encountered.
+2. exit when the current variant symbol is encountered (the length then is not equal to zero) before the end of the string.
 
 The `nip` in line 10 just gets rid of the address that is no longer useful at that place.
 
