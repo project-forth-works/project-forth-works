@@ -17,7 +17,7 @@ Click [here if you want to read more about **Project Forth Works**](https://Proj
 - [****Data-Structures****](Data-Structures) ; Primitive circular buffer, etc.  
 - [****System-Software****](System-Software) ; Assembler, Disassembler, etc.  
 - [****Programming-Tools****](Programming-Tools) ; Development support, helpers  
-- [****Programming Pearls****](Programming-Pearls) ; Examples of idomatic (Forth) programming style  
+- [****Programming Pearls****](Programming-Pearls) ; Examples of idiomatic (Forth) programming style  
 - [****User-Applications****](User-Applications) ; Games, Robotics, etc.  
-- [****Curiosites****](Curiosities) ; Not so serious contributions but interesting and/or entertaining.  
+- [****Curiosities****](Curiosities) ; Not so serious contributions but interesting and/or entertaining.  
 - [****Sensors****](Sensors) ; Electronic sensors for measuring temperature, distance, etc.  
