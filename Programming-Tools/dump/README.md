@@ -16,9 +16,9 @@ One way to implement DUMP is to iterate in a loop line by line through memory. S
 at the start address and increment the address by 16 in each loop iteration. (If you want a different number of bytes in each line, adjust accordingly).
 
 When you display memory in a single line you first output the current address and then have two loops that run one after the other iterating both from 0 to 15.
-The first loop outputs bytes with two hexadecimal digits (or in decimal, or whatever you intend) and the second loop ouputs the indivual bytes as ASCII characters.
+The first loop outputs bytes with two hexadecimal digits (or in decimal, or whatever you intend) and the second loop outputs the individual bytes as ASCII characters.
 
-As some characters might control the output in a special way (so called control character such as 07 bell, 0A linefeed, 0C formfeed) it is wise to just ouput a period 
+As some characters might control the output in a special way (so called control character such as 07 bell, 0A linefeed, 0C formfeed) it is wise to just output a period 
 instead of the actual character, in order to get a well formatted display.
 
 
@@ -30,7 +30,7 @@ Function: dump-line ( address -- )
   output ":" and some space
   
   LOOP i from 0 to 15:
-     output byte in memory at (address+i) as two hexdecimal digits (or in another radix if desired)
+     output byte in memory at (address+i) as two hexadecimal digits (or in another radix if desired)
      output some space
   
   LOOP i from 0 to 15:
@@ -62,7 +62,7 @@ x 100 dump
 03D6F4: 5F 13 00 00                                       _... ok
 ```
 
-As the original Minimal Forth has no output facility other than `emit` and `.s` (specificly no number formatting and no `.` or `.r´)
+As the original Minimal Forth has no output facility other than `emit` and `.s` (specifically no number formatting and no `.` or `.r´)
 this implementation seems to be over complicated.
 
 We extended Minimal Forth to [**GenericForth**](https://github.com/Project-Forth-Works/Project-Forth-Works.github.io/blob/main/minimalforth.md) to get a
