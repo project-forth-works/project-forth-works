@@ -1,3 +1,5 @@
+\ CRC16 for XMODEM
+
 hex
 1021 CONSTANT crc-polynomial ( CCITT )
 
