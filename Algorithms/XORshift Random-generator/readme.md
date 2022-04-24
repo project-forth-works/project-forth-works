@@ -23,7 +23,7 @@ with a left shift.
 
 The actual number of bits used for the 3 shifts is critical.
 For a 32bit generator there are exactly 648 valid combinations. The
-favorite combination of Marsaglia was (13, 17, 5) which is
+favourite combination of Marsaglia was (13, 17, 5) which is
 used here.
 
 For 16bit generators only a few valid combinations
@@ -76,12 +76,12 @@ variable seed
 ### Adding a second (or more) seed.
 For the 32 bit version 1 seed is not enough to pass the DIEHARD quality tests, at least 2 seeds are needed. Adding an extra seed takes a few extra steps.
 
--   first seed is input to the three cyles
+-   first seed is input to the three cycles
 -   do the 3 cycles and return the final result
 -   update the seeds: second seed is copied into the first seed
 -   OR result of the 3 cycles with the value of the second seed
 
-This way of adding more seeds can be done at infinitum. The more seeds you add, the longer the wrap-to-zero period. With two 32 bit seeds, the wrap-to-zero period is 2^64-1 values.
+This way of adding more seeds can be done ad infinitum. The more seeds you add, the longer the wrap-to-zero period. With two 32 bit seeds, the wrap-to-zero period is 2^64-1 values.
 
 
 ### The algorithm with 2 seeds in pseudo-code
@@ -180,6 +180,6 @@ At least one seed must have one of the bits set for the generator to work.
 
 - [DIEHARD](https://en.wikipedia.org/wiki/Diehard_tests), Description of the Diehard tests
 - George Marsaglia, [XORShift Random Number Generators](https://www.jstatsoft.org/index.php/jss/article/view/v008i14/xorshift.pdf), Journal of Statistical Software 2003.
-- [Chapter 70 of the Egel-project](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e070), shows some other random-generators and a grafical test based on DIEHARD to show the effect of low-quality generators.
+- [Chapter 70 of the Egel-project](https://home.hccnet.nl/willem.ouwerkerk/egel-for-msp430/egel%20for%20launchpad.html#e070), shows some other random-generators and a graphical test based on DIEHARD to show the effect of low-quality generators.
 
 

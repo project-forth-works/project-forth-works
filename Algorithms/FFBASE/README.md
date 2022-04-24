@@ -2,7 +2,7 @@
 
 ## The idea
 
-Quite often a programmer needs to switch the numerical base for just a word or a number. In the worst case this involves saving the old BASE, setting BASE to the wanted value and than restoring the old BASE. A lot of code for just one word/definition. 
+Quite often a programmer needs to switch the numerical base for just a word or a number. In the worst case this involves saving the old BASE, setting BASE to the wanted value and then restoring the old BASE. A lot of code for just one word/definition. 
 
 The routine FFBASE enables the creation of precursor words which, just for the next definition or number, temporarily set the base to another.
 
@@ -30,7 +30,7 @@ Function: FFBASE
   		{get state}
   		IF compiling and ccc=not_immediate
   			{compile XT and temp_base as literals and postpone (BASE)
-  		IF interpeting or ccc=immediate
+  		IF interpreting or ccc=immediate
   			{call (BASE) with XT and temp_base on stack}
   		IF not found in dictionary
   			{convert to number using temp_base and put on stack}
@@ -42,9 +42,9 @@ Definitions assumed to be available in your Forth: `WORD`, `EVALUATE`, `COUNT`
 
 ****generic Forth****
 
-See seperate file: [FFBASE_comp.frt](FFBASE_comp.frt)
+See separate file: [FFBASE_comp.frt](FFBASE_comp.frt)
 
 
 ## Implementations
 
-The generic Forth version should run on the majority of Forth implementations. It is sucesfully tested on iForth and wabiForth. However in the present form it does not run on MeCrisp for reasons unknown to me.
+The generic Forth version should run on the majority of Forth implementations. It is successfully tested on iForth and wabiForth. However in the present form it does not run on MeCrisp for reasons unknown to me.

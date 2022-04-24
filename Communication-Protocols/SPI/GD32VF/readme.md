@@ -12,5 +12,5 @@ For these systems there is SPI in bitbang and/or hardware version:
 
 The hardware user manual of the [GD32F103](http://www.gd32mcu.com/download/down/document_id/181/path_type/1)
 may be used to get some additional info on the GD32VF103 chips!  
-**But take care the site is by current browser standards seen as a security risc!**
+**But take care the site is by current browser standards seen as a security risk!**
 

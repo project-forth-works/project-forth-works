@@ -4,7 +4,7 @@
 
 The Forth version of the randomisation routines is the same on any processor as only standard Forth words are used. But the ARM-processor can do do a neat
 trick: it can do q cycle (dup, shift and xor) in 1 opcode!! And as
-most Forths include an assembler it is an interesting excersise to see how
+most Forths include an assembler it is an interesting exercise to see how
 much faster the routine is when coded in assembly.
 This example is coded using wabiForth on a Raspberry 3b+, but the principle is the same for any ARMv8 Aarch32 processor.
 
@@ -31,7 +31,7 @@ code: ASMRANDOM ( address_seed -- rndm_val )
 
 ### Comparison of Forth vs assembly
 
-Tested with wabiForth on Raspberry 3b+ @ 1.5 Ghz  
+Tested with wabiForth on Raspberry 3b+ @ 1.5 GHz  
 Here some simple benchmarks which compare the 1 and 2 seed
 versions coded in Forth and the 1 seed version in assembly. Just
 to get an idea about execution-speeds. 

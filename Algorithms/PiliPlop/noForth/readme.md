@@ -2,7 +2,7 @@
 
 This file must be loaded above [WS2812 simple G2553.f](https://github.com/Project-Forth-Works/Communication-protocols/blob/main/SPI/MSP430/noForth/WS2812%20simple%20G2553.f)
 or [WS2812 simple FR5949.f](https://github.com/Project-Forth-Works/Communication-protocols/blob/main/SPI/MSP430/noForth/WS2812%20simple%20FR5949.f).  
-It makes the colors flow over from one to the other!
+It makes the colours flow over from one to the other!
 
 | File name | Commands | Purpose |  
 | ------------------- | ------------------- | ---------------------- |

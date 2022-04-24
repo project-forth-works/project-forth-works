@@ -2,9 +2,9 @@
 
 **The PFW universal I2C drivers**
 The I2C protocol is a must-have for any microcontroller. It opens up access to IO-expanders, real-time clocks, more memory and much much more. But starting with I2C in Forth might seem a daunting task.
-To help you use, and understand, the I2C protocol, PFW has developped a universal set of drivers for 3 different hardware platforms (MSP430, Risc-V, Raspberry/ARM). At the top level the drivers are the same for each platform. For instance, a device-driver for a LCD-display developped for the MSP430 will also work on the other plaforms. This makes developping new high-level drivers simple as there are always examples available to base your new driver on.
+To help you use, and understand, the I2C protocol, PFW has developed a universal set of drivers for 3 different hardware platforms (MSP430, Risc-V, Raspberry/ARM). At the top level the drivers are the same for each platform. For instance, a device-driver for a LCD-display developed for the MSP430 will also work on the other platforms. This makes developing new high-level drivers simple as there are always examples available to base your new driver on.
 The drivers are structured into 3 classical layers. First a small hardware specific layer for each of the platforms (both a bitbang and internal version for each). On top of this sits a universal high level abstraction layer. And on top of this sit the actual device drivers. 
-Amazingly the hardware specific layer is very small, a few definitions is all that is needed for each platfrom. And this although the internal I2C-hardware for the 3 platforms is very different.
+Amazingly the hardware specific layer is very small, a few definitions is all that is needed for each platform. And this although the internal I2C-hardware for the 3 platforms is very different.
 
 With these drivers, the use of I2C should not be a problem for anyone. Have fun exploring and using I2C-devices!
 
@@ -37,7 +37,7 @@ With these drivers, the use of I2C should not be a problem for anyone. Have fun 
   ***
 ### Pseudo code for low level bitbang I2C ###
 
-This pseudo code is without the use of clock streching. This is only necessary when you use a multi master system or I2C slaves implemented on slow microcontrollers.
+This pseudo code is without the use of clock stretching. This is only necessary when you use a multi master system or I2C slaves implemented on slow microcontrollers.
 Note that the used example works on on a chip with a push/pull output ports
 
 ```
