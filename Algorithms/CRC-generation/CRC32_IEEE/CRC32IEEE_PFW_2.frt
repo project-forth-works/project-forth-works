@@ -17,7 +17,7 @@ EDB88320 constant crc-polynomial ( reversed IEEE )
 
 : CRCS ( addr len -- crc )
 	0 to counter
-	0 -rot
+	0 -rot									\ 0 = inverted start number...
 	bounds do
 		i  c@
 		counter 4 < if compl8b then			\ invert first 4 chars
@@ -35,20 +35,16 @@ EDB88320 constant crc-polynomial ( reversed IEEE )
 	-1 xor									\ invert output
 	counter correctcrc
 ;
+decimal
 
+\ ********  TEST  ***********
 
-s" 123456789" 	sliteral ts9 ( CBF43926 )
-s" 1" 			sliteral ts1 ( 83DCEFB7 )
-s" 12" 			sliteral ts2 ( 4F5344CD )
-s" 123" 		sliteral ts3 ( 884863D2 )
-s" 1234" 		sliteral ts4 ( 9BE3E0A3 )
+cr
+s" 123456789" crcs .hex ( CBF43926 )
+s" 1"         crcs .hex ( 83DCEFB7 )
+s" 12"        crcs .hex ( 4F5344CD )
+s" 123"       crcs .hex ( 884863D2 )
+s" 1234"      crcs .hex ( 9BE3E0A3 )
 
-: tst
-	ts1 crcs cr .hex
-	ts2 crcs cr .hex
-	ts3 crcs cr .hex
-	ts4 crcs cr .hex
-	ts9 crcs cr .hex
-;
 decimal
 
