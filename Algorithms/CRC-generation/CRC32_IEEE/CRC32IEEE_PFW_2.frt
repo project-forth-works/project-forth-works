@@ -23,12 +23,11 @@ hex
 
 \ ********  TEST  ***********
 
-cr
-s" 123456789" crc32_ieee .hex ( CBF43926 )
-s" 1"         crc32_ieee .hex ( 83DCEFB7 )
-s" 12"        crc32_ieee .hex ( 4F5344CD )
-s" 123"       crc32_ieee .hex ( 884863D2 )
-s" 1234"      crc32_ieee .hex ( 9BE3E0A3 )
-
+hex cr
+s" 123456789" crc32_ieee . ( CBF43926 )
+s" 1"         crc32_ieee . ( 83DCEFB7 )
+s" 12"        crc32_ieee . ( 4F5344CD )
+s" 123"       crc32_ieee . ( 884863D2 )
+s" 1234"      crc32_ieee . ( 9BE3E0A3 )
 decimal
 
