@@ -3,8 +3,7 @@
 hex
 EDB88320 constant crc-polynomial ( reversed IEEE )
 
-: compl8b ( ch -- ^ch )
-	FF xor ;
+: compl8b ( ch -- ^ch ) FF xor ;
 
 : correctcrc ( crc count -- cor_crc )
 \ needed for strings of 1, 2 and 3 chars - I do not know why!!!
@@ -15,7 +14,7 @@ EDB88320 constant crc-polynomial ( reversed IEEE )
 
 0 value counter
 
-: CRCS ( addr len -- crc )
+: CRC32_IEEE ( addr len -- crc )
 	0 to counter
 	0 -rot									\ 0 = inverted start number...
 	bounds do
@@ -40,11 +39,11 @@ decimal
 \ ********  TEST  ***********
 
 cr
-s" 123456789" crcs .hex ( CBF43926 )
-s" 1"         crcs .hex ( 83DCEFB7 )
-s" 12"        crcs .hex ( 4F5344CD )
-s" 123"       crcs .hex ( 884863D2 )
-s" 1234"      crcs .hex ( 9BE3E0A3 )
+s" 123456789" crc32_ieee .hex ( CBF43926 )
+s" 1"         crc32_ieee .hex ( 83DCEFB7 )
+s" 12"        crc32_ieee .hex ( 4F5344CD )
+s" 123"       crc32_ieee .hex ( 884863D2 )
+s" 1234"      crc32_ieee .hex ( 9BE3E0A3 )
 
 decimal
 
