@@ -1,5 +1,4 @@
 \ crc32b-IEEE - this implementation (C) 2022 - J.J. HOEKSTRA
-forget crc32ieee : CRC32IEEE ;
 
 hex
 EDB88320 constant crc-polynomial ( reversed IEEE )
@@ -8,6 +7,7 @@ EDB88320 constant crc-polynomial ( reversed IEEE )
 	FF xor ;
 
 : correctcrc ( crc count -- cor_crc )
+\ needed for strings of 1, 2 and 3 chars - I do not know why!!!
 	dup 3 > if drop           exit then
 	dup 3 = if drop    FF xor exit then
 	    2 = if       FFFF xor exit then
