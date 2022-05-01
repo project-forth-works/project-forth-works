@@ -1,25 +1,24 @@
 \ crc32b-IEEE - this implementation (C) 2022 - J.J. HOEKSTRA
+\ CRC_IEEE takes a start address and length of a byte-array as input
+\ and produces the 32bit CRC according to the IEEE standard
 
 hex
-EDB88320 constant crc-polynomial ( reversed IEEE )
-
+EDB88320 constant crc-polynomial        \ reversed IEEE polynomial
 
 : CRC32_IEEE ( addr len -- crc )
-	FFFFFFFF -rot							\ FFFFFFFF = start-value CRC
-	bounds do
-		i  c@ xor
-		8 0 do
-			dup 1 and if 					\ lsb = '1'?
-				1 rshift
-				crc-polynomial xor
-      		else
-				1 rshift
-       		then
+    FFFFFFFF -rot                       \ FFFFFFFF = start-value CRC
+    bounds do
+        i  c@ xor
+        8 0 do
+            dup 1 and if                \ lsb = '1'?
+                1 rshift
+                crc-polynomial xor
+            else
+                1 rshift
+            then
         loop
     loop
-	-1 xor									\ invert output
-;
-
+    -1 xor ;                            \ invert output
 
 \ ********  TEST  ***********
 
