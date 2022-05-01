@@ -3,38 +3,23 @@
 hex
 EDB88320 constant crc-polynomial ( reversed IEEE )
 
-: compl8b ( ch -- ^ch ) FF xor ;
-
-: correctcrc ( crc count -- cor_crc )
-\ needed for strings of 1, 2 and 3 chars - I do not know why!!!
-	dup 3 > if drop           exit then
-	dup 3 = if drop    FF xor exit then
-	    2 = if       FFFF xor exit then
-		           FFFFFF xor ;
-
-0 value counter
-
+hex
 : CRC32_IEEE ( addr len -- crc )
-	0 to counter
-	0 -rot									\ 0 = inverted start number...
+	FFFFFFFF -rot							\ FFFFFFFF = start-value CRC
 	bounds do
-		i  c@
-		counter 4 < if compl8b then			\ invert first 4 chars
-		xor
+		i  c@ xor
 		8 0 do
-			DUP 1 AND IF 					\ lsb = '1'?
+			dup 1 and if 					\ lsb = '1'?
 				1 rshift
-				crc-polynomial XOR
-      		ELSE
+				crc-polynomial xor
+      		else
 				1 rshift
-       		THEN
+       		then
         loop
-    	1 +to counter
     loop
 	-1 xor									\ invert output
-	counter correctcrc
 ;
-decimal
+
 
 \ ********  TEST  ***********
 
