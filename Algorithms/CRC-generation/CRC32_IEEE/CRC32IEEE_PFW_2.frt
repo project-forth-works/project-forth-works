@@ -33,16 +33,15 @@ EDB88320 constant crc-polynomial ( reversed IEEE )
     	1 +to counter
     loop
 	-1 xor									\ invert output
-	counter correctcrc
+\	counter correctcrc
 ;
 
 
 s" 123456789" 	sliteral ts9 ( CBF43926 )
-s" 1" 			sliteral ts1 (  )
-s" 12" 			sliteral ts2 (  )
-s" 123" 		sliteral ts3 (  )
-s" 1234" 		sliteral ts4 (  )
-
+s" 1" 			sliteral ts1 ( 83DCEFB7 )
+s" 12" 			sliteral ts2 ( 4F5344CD )
+s" 123" 		sliteral ts3 ( 884863D2 )
+s" 1234" 		sliteral ts4 ( 9BE3E0A3 )
 
 : tst
 	ts1 crcs cr .hex
@@ -50,6 +49,7 @@ s" 1234" 		sliteral ts4 (  )
 	ts3 crcs cr .hex
 	ts4 crcs cr .hex
 	ts9 crcs cr .hex
+	ts1a crcs cr .hex
 ;
 decimal
 
