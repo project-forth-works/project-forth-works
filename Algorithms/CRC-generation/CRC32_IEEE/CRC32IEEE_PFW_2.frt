@@ -3,7 +3,7 @@
 hex
 EDB88320 constant crc-polynomial ( reversed IEEE )
 
-hex
+
 : CRC32_IEEE ( addr len -- crc )
 	FFFFFFFF -rot							\ FFFFFFFF = start-value CRC
 	bounds do
@@ -23,7 +23,7 @@ hex
 
 \ ********  TEST  ***********
 
-hex cr
+cr
 s" 123456789" crc32_ieee . ( CBF43926 )
 s" 1"         crc32_ieee . ( 83DCEFB7 )
 s" 12"        crc32_ieee . ( 4F5344CD )
