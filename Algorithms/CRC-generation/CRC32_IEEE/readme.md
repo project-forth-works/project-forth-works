@@ -9,19 +9,19 @@ If you look at the implementation that you will see that the CRC is shifted to r
 EDB88320 constant crc-polynomial ( reversed IEEE )
 
 hex
-: CRC32_IEEE ( addr len -- crc )			\ input is address and length
-	FFFFFFFF -rot							\ FFFFFFFF = start-value CRC
-	bounds do
-		i  c@ xor
-		8 0 do
-			dup 1 and if 					\ if lsb = '1' do rshift and xor
-				1 rshift
-				crc-polynomial xor
-      		else							\ otherwise only a rshift
-				1 rshift
-       		then
+: CRC32_IEEE ( addr len -- crc )            \ input is address and length
+    FFFFFFFF -rot                           \ FFFFFFFF = start-value CRC
+    bounds do
+        i  c@ xor
+        8 0 do
+            dup 1 and if                    \ if lsb = '1' do rshift and xor
+                1 rshift
+                crc-polynomial xor
+            else                            \ otherwise only a rshift
+                1 rshift
+            then
         loop
     loop
-	-1 xor									\ invert output
+    -1 xor                                  \ invert output
 ;
 ```
