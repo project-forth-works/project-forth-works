@@ -56,7 +56,7 @@ Words with hardware dependencies:
 : **BIC  ( mask addr -- )   >r  invert  r@ @ and  r> ! ;
 : BIT**  ( mask addr -- 0|b ) @ and ;
 
-1 cells 8 * constant #BITS  \ Bits in a cell
+8 cells  constant #BITS    \ Bits in a cell
 
 : >LEN   ( a1 -- #n )       @ #bits * ; \ Length in bits of bit array a1
 : >ADR   ( a1 -- a2 )       cell+ @ ;   \ Start address of bit array a1
