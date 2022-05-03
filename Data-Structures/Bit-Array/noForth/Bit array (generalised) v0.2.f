@@ -21,7 +21,7 @@ Note that: The defining word BITARRAY has two entries. The first line
 *)
 
 hex
-1 cells 8 * constant #BITS  \ Bits in a cell
+8 cells  constant #BITS \ Bits in a cell
 : >LEN      ( a1 -- #n )    @ #bits * ; \ Length in bits of bit array a1
 : >ADR      ( a1 -- a2 )    cell+ @ ;   \ Start address of bit array a1
 
