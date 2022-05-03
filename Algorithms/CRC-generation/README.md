@@ -14,9 +14,9 @@ It is also good to realise that there are many, many, many different CRC-standar
 
 The start-value is critical: start with 0xFFFF and you have the CCITT version of CRC-16, start with 0x0000 and you have the CRC-a6 as used in the XMODEM data-transfer protocol.  
 
-[CRC16](CRC16_PFW.frt): CRC-16 sample implementation  
-[CRC32C](CRC32C): 32bit CRC according to Castagnoli  
-[CRC32-IEEE](CRC32_IEEE): IEEE 32bit CRC standard protocol  
+- [CRC16](CRC16_PFW.frt): CRC-16 sample implementation  
+- [CRC32C](CRC32C): 32bit CRC according to Castagnoli  
+- [CRC32-IEEE](CRC32_IEEE): IEEE 32bit CRC standard protocol  
 
 
 ### Pseudo code
