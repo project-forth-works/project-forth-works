@@ -4,7 +4,7 @@ Since the first implementation of a CRC to detect errors it has been discussed w
 The discussion on which polynomial is the best was only answered by Koopman in 1999 by testing ALL 32b polynomials against bit-detecting criteria.
 
 
-####Generic Forth example:
+#### Generic Forth example:
 
 CRC32_CAST takes a start address and length of a byte-array as input
 and produces the 32bit CRC according to Castagnoli
