@@ -17,7 +17,7 @@ It is good to notice that the fractional part forms a linear interpolation betwe
 
 As example we look at the routine for a 16b Forth. The other example is suitable for all Forth implementations.
 
-```
+```forth
 
 : 2LOG16b ( u -- y )
     16 0 do
@@ -42,7 +42,7 @@ As example we look at the routine for a 16b Forth. The other example is suitable
 
 The general version is suitable for all Forth-implementations which have a multiple of 8 bits as cell-width. It functions in exactly the same way as the 16b example above. But during compilation it calculates the, for that Forth-implementation relevant, values for the do**...**loop, shift and subtraction.
 
-```
+```forth
 : 2LOG ( u -- y )
     [ 8 cells ] literal 0 do                \ #bits/cell
         s>d if  2*
