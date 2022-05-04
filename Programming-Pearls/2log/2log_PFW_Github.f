@@ -22,6 +22,7 @@ hex : -2LOG ( logx -- x )
     >r  r@ FF and 100 or
     r>  8 rshift 8 - s>d
     if abs rshift else lshift then ;
+decimal
 
 \ a very conveniant square
 : SQRT ( u -- y ) 							\ y = sqrt( u ) (unexpectedly accururate)
