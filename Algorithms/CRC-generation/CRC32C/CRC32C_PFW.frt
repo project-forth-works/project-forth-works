@@ -23,10 +23,10 @@ hex
 \ ********  TEST  ***********
 
 cr
-s" 123456789" crc32_cast .hex ( E3069283 )
-s" 1"         crc32_cast .hex ( 90F599E3 )
-s" 12"        crc32_cast .hex ( 7355C460 )
-s" 123"       crc32_cast .hex ( 107B2FB2 )
-s" 1234"      crc32_cast .hex ( F63AF4EE )
+s" 123456789" crc32_cast u. ( E3069283 )
+s" 1"         crc32_cast u. ( 90F599E3 )
+s" 12"        crc32_cast u. ( 7355C460 )
+s" 123"       crc32_cast u. ( 107B2FB2 )
+s" 1234"      crc32_cast u. ( F63AF4EE )
 decimal
 
