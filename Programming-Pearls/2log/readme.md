@@ -22,8 +22,8 @@ As example we look at the routine for a 16b Forth. The other example is suitable
 : 2LOG16b ( u -- y )
     16 0 do
         s>d if
-            2* 8 rshift                 \ lineaire interpolatie
-            15 i -                      \ logaritmische klasse
+            2* 8 rshift                 \ linear interpolation
+            15 i -                      \ logarithmic class
             8 lshift or leave
         then 2*
     loop ;
@@ -46,8 +46,8 @@ The general version is suitable for all Forth-implementations which have a multi
 : 2LOG ( u -- y )
     [ 8 cells ] literal 0 do                \ #bits/cell
         s>d if  2*
-            [ 8 cells 8 - ] literal rshift  \ lineaire interpolatie
-            [ 8 cells 1- ]  literal  i -    \ logaritmische klasse
+            [ 8 cells 8 - ] literal rshift  \ linear interpolation
+            [ 8 cells 1- ]  literal  i -    \ logarithmic class
             8 lshift or leave
         then 2*
     loop ;
