@@ -15,10 +15,7 @@ looking at the number to be converted in binary representation:
 It is good to notice that the fractional part forms a linear interpolation between two consecutive log numbers. For most purposes that is accurate enough.
 
 
-
-![2log_graph width=400 height=200](https://user-images.githubusercontent.com/4964288/167205050-76579ac1-2707-4037-9d6d-2a5452b601b5.png)
-
-<img src="https://user-images.githubusercontent.com/4964288/167205050-76579ac1-2707-4037-9d6d-2a5452b601b5.png" alt="drawing" width="400" height="200"/>
+<img src="https://user-images.githubusercontent.com/4964288/167205050-76579ac1-2707-4037-9d6d-2a5452b601b5.png" alt="drawing" width="500" height="250"/>
 
 
 
