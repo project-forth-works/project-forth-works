@@ -16,7 +16,7 @@ It is good to notice that the fractional part forms a linear interpolation betwe
 
 
 
-![2log_graph](https://user-images.githubusercontent.com/4964288/167205050-76579ac1-2707-4037-9d6d-2a5452b601b5.png width="450" height="250")
+![2log_graph](https://user-images.githubusercontent.com/4964288/167205050-76579ac1-2707-4037-9d6d-2a5452b601b5.png)
 
 
 
