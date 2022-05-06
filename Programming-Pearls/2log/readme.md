@@ -9,14 +9,14 @@ The 2LOG routine produces as output a fixed floating point number with 8 bits af
 
 looking at the number to be converted in binary representation:
 (see grafic below)
-1 take the bit-position+1 of the first set bit as number before the decimal point
-2 as 8 bit fraction take the highest 8 bits following the most most significant set bit. If there are less than 8 bits, pad the end with cleared bits up to 8 bits.
+- step 1: take the bit-position+1 of the first set bit as number before the decimal point
+- step 2: as 8 bit fraction take the highest 8 bits following the most most significant set bit. If there are less than 8 bits, pad the end with cleared bits up to 8 bits.
 
 It is good to notice that the fractional part forms a linear interpolation between two consecutive log numbers. For most purposes that is accurate enough.
 
 
 
-![2log_graph](https://user-images.githubusercontent.com/4964288/167205050-76579ac1-2707-4037-9d6d-2a5452b601b5.png)
+![2log_graph](https://user-images.githubusercontent.com/4964288/167205050-76579ac1-2707-4037-9d6d-2a5452b601b5.png width="450" height="250")
 
 
 
