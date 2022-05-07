@@ -1,7 +1,7 @@
 ### CRC-32C
 
 Since the first implementation of a CRC to detect errors it has been discussed which polynomial has the highest chance of detecting multi-bit errors. Every polynomial can detect a 1 bit error. But the ability of detecting errors in more than 1 bit depends strongly on the polynomial. Castagnoli proposed an alternative polynomial ( 0x1EDC6F41 ) which has a better capability than the IEEE polynomial to detect multi-bit errors.
-The discussion on which polynomial is the best was only answered by Koopman in 1999 by testing ALL 32b polynomials against bit-detecting criteria.
+The discussion on which polynomial is the best was only answered by Koopman in 2002 by testing ALL 32b polynomials against bit-detecting criteria.
 
 
 #### Generic Forth example:
