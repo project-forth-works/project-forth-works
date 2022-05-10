@@ -8,6 +8,9 @@ It is interesting to note that for Ethernet frame lengths this polynomial is opt
 
 [Here a link to the CRC-page of Philip Koopman at Carnegie Mellon University] (https://users.ece.cmu.edu/~koopman/crc/)
 
+[and the link to the paper mentioned above]
+(https://users.ece.cmu.edu/~koopman/networks/dsn02/dsn02_koopman.pdf)
+
 
 
 #### Generic Forth example:
