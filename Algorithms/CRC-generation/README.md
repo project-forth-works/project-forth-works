@@ -48,7 +48,7 @@ The generic Forth version should run on all Forth implementations.
 hex
 1021 CONSTANT crc-polynomial ( CCITT )
 
-: crc16 ( n ch--n)
+: CRC16 ( n ch--n)
 	8 lshift XOR
 	8 0 DO
 		DUP 8000 AND IF 					\ msb = '1'?
@@ -60,7 +60,7 @@ hex
         THEN
     LOOP ;
 
-: tst
+: TST
 	ffff									\ start-value
 	f0 crc16
 	f0 crc16
