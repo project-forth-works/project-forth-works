@@ -44,7 +44,7 @@ The generic Forth version should run on all Forth implementations.
 
 ## Generic Forth
 
-``` 
+```forth 
 hex
 1021 CONSTANT crc-polynomial ( CCITT )
 
@@ -53,7 +53,7 @@ hex
 	8 0 DO
 		DUP 8000 AND IF 					\ msb = '1'?
 			2*
-			FFFF AND						\ needed for systems with > 16 bits
+			FFFF AND					\ needed for systems with > 16 bits
 			crc-polynomial XOR
         ELSE
 			2*
