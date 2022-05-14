@@ -3,7 +3,7 @@
 
   Connect the I2C-print from the Forth users group or any other module
   with I2C compatible chip{s} and connect the power lines. P1.6 to SDA and
-  P1.7 to SCL, note that two 10k pullup resistors has te be mounted, that's it.
+  P1.7 to SCL, note that two 10k pull-up resistors has te be mounted, that's it.
 
   User words:  I2C-ON  {I2C-WRITE  {I2C-READ   I2C}
                BUS@  BUS!  DEVICE!  {DEVICE-OK?}
