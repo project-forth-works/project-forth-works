@@ -26,6 +26,7 @@ As example we look at the routine for a 16b Forth. The other example is suitable
 
 ```forth
 
+decimal
 : 2LOG16b ( u -- y )
     16 0 do
         s>d if
