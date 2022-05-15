@@ -8,9 +8,9 @@ An example explains the idea: a set of data is used to generate a number, the CR
 
 The same principle can be used in any situation where a check on the integrity of data is needed.
 
-It is good to realise that such a check is not fully waterproof. With a 16bit CRC-code, the change of accidentally having a correct code is 1:65536. But for most applications this is already enough.
+A CRC-check is not fully waterproof. With a 16bit CRC-code, the change of accidentally not finding an error is 1:65536. But for most applications this is good enough. And if you need better protection, use a 32bit CRC or combine 2 or more 16bit CRC-checks.
 
-It is also good to realise that there are many, many, many different CRC-standards. They all have the same principle but differ in details. This is all not that relevant when using it for yourself, but finding the correct version for existing protocol is not always easy. For an example see the CRC16 for NRF24.
+It is also good to realise that there are a lot of different CRC-standards. They all have the same principle but differ in details. This is not that relevant when using it for yourself, but finding the correct version for existing protocol is not always easy. For an example see the CRC16 for NRF24.
 
 The start-value is critical: start with 0xFFFF and you have the CCITT version of CRC-16, start with 0x0000 and you have the CRC-16 as used in the XMODEM data-transfer protocol.  
 
@@ -40,11 +40,11 @@ Function: CRC16 ( oldCRC databyte -- newCRC )
 
 ### Implementations
 
-The generic Forth version should run on all Forth implementations.
+The generic 16 bit Forth version should run on all Forth implementations.
 
 ## Generic Forth
 
-``` 
+```forth 
 hex
 1021 CONSTANT crc-polynomial ( CCITT )
 
