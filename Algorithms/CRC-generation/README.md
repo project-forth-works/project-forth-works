@@ -75,3 +75,5 @@ hex
 
 ```
 
+If you are interested, have a look at [a discussion of the mathematical background](crc-math.md)
+
