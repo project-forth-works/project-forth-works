@@ -52,7 +52,7 @@ We can multiply (x<sup>2</sup> + 1) by (x<sup>2</sup>) and get x<sup>4</sup>+x<s
 
 Similar to prime numbers some polynomials cannot be expressed as a product of two other polynomials. For example there are no proper factors for x<sup>2</sup> + x + 1. Such polymials are called *irreducible*. (Note that x<sup>2</sup>+1 is not irreducible over W<sub>2</sub> as (x+1) * (x+1) = x<sup>2</sup> + x + x + 1 = x<sup>2</sup> + 1 with coefficients from W<sub>2</sub>).
 
-If you divide polynomials you get - similar to the notion of remainders in integer division - *remainder polynomials*. 
+If you divide polynomials you get - similar to the notion of remainders in integer division - *polynomial remainders*. 
 
 ### Polynomial Quotient Rings with respect to an Irreducible Polynomial
 
