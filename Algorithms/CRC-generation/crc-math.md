@@ -13,12 +13,12 @@ All rings dispite their elements share these common properties.
 
 There are rings with infinite many members such as the ring of integers.
 
-There are also rings with a finite number of members. If you take a number n you can consider all numbers that have the same remainder divided by n to be equivalent. This leads to quotient rings having the elements 0 to n-1. Addition and multiplication wrap around `mod p`.  
+There are also rings with a finite number of members. If you take a number n you can consider all numbers that have the same remainder divided by n to be equivalent. This leads to quotient rings having the elements 0 to n-1. Addition and multiplication wrap around mod p.  
 If n is a prime number the rings have additional beneficial properties. They are fields and there is always a unique factorization of any ring member into prime factors. On important prime quotient ring is W<sub>2</sub> = { 0, 1 } that is suitable to represent single bits. 
 
-Computer scientists are interested in rings that have 2^n (for some n, e.g. 16 or 32) elements as typical computer memory cells hold n bits.
+Computer scientists are interested in rings that have 2<sup>n</sup> (for some n, e.g. 16 or 32) elements as typical computer memory cells hold n bits.
 
-Quotient rings based on *polynomials* indeed have 2^n members and are thus good for giving memory cells a mathematical interpretion and making use of their mathematical properties. Again polynomial rings with "prime" polynomials, so called *irreducible* polynoms, have the unique factorization property.
+Quotient rings based on *polynomials* indeed have 2<sup>n</sup> members and are thus good for giving memory cells a mathematical interpretion and making use of their mathematical properties. Again polynomial rings with "prime" polynomials, so called *irreducible* polynoms, have the unique factorization property.
 
 So let's look at polynomials. We will concentrate on a special kind of polynomials that is well suited for our application area.
 
@@ -26,40 +26,40 @@ A polynomial is an entity with the following definition:
 
 ### Polynomials
 
-Assume we have a single symbol `x` a so called *generator variable*.  
-Assume we have a set of coefficients `C` which itself is a commutative ring with appropriate addition and multiplication. For our purpose assume that C is the quotient ring W<sub>2</sub> based on the prime `2` with the members `0` and `1`. 
+Assume we have a single symbol x a so called *generator variable*.  
+Assume we have a set of coefficients C which itself is a commutative ring with appropriate addition and multiplication. For our purpose assume that C is the quotient ring W<sub>2</sub> based on the prime 2 with the members 0 and 1. 
 
-A polynomial over W<sub>2</sub> with generator `x` has the form:
+A polynomial over W<sub>2</sub> with generator x has the form:
 
-a<sub>n</sub>x^n + a<sub>n-1</sub>x<sup>n-1</sup> + … + a<sub>1</sub>x + a<sub>0</sub>
+a<sub>n</sub>x<sup>n</sup> + a<sub>n-1</sub>x<sup>n-1</sup> + … + a<sub>1</sub>x + a<sub>0</sub>
 
-where a<sub>i</sub> ∈ W<sub>2</sub> so can only be `0` or `1`.
+where a<sub>i</sub> ∈ W<sub>2</sub> so can only be 0 or 1.
 
-The *degree* of the polynomial is the exponent i of the largest x^i with a non zero coefficient a<sub>i</sub>.
+The *degree* of the polynomial is the exponent i of the largest x<sup>i</sup> with a non zero coefficient a<sub>i</sub>.
 
-The set of polynomials over W<sub>2</sub> with generator `x` is infinite.
+The set of polynomials over W<sub>2</sub> with generator x is infinite.
 
-Note that different from high school the variable `x` never gets a value when we think of polynomials this way. We're not interested in evaluating polynomials but only in their properties as entities. We use them as self contained atomic elements, as values of their own for computation.
+Note that different from high school the variable x never gets a value when we think of polynomials this way. We're not interested in evaluating polynomials but only in their properties as entities. We use them as self contained atomic elements, as values of their own for computation.
 
 
 ### Polynomial Multipication and Division
 
 We can add and multiply polynomials and similar to integers we can think of division of polynomials.
 
-As an example let's add (x^2 + 1) and (x^2). With integer coefficients this would lead to 2x^2 + 1 but as our coefficients are from W<sub>2</sub> the calculation 1 + 1 equals 0 and so (x^2 + 1) + (x^2) = 1.
+As an example let's add (x<sup>2</sup> + 1) and (x<sup>2</sup>). With integer coefficients this would lead to 2x<sup>2</sup> + 1 but as our coefficients are from W<sub>2</sub> the calculation 1 + 1 equals 0 and so (x<sup>2</sup> + 1) + (x<sup>2</sup>) = 1.
 
-We can multiply (x^2 + 1) by (x^2) and get x^4+x^2. And we can divide (x^4+x^2) by (x^2 + 1) giving x^2.
+We can multiply (x<sup>2</sup> + 1) by (x<sup>2</sup>) and get x<sup>4</sup>+x<sup>2</sup>. And we can divide (x<sup>4</sup>+x<sup>2</sup>) by (x<sup>2</sup> + 1) giving x<sup>2</sup>.
 
-Similar to prime numbers some polynomials cannot be expressed as a product of two other polynomials. For example there are no proper factors for x^2 + x + 1. Such polymials are called *irreducible*. (Note that x^2+1 is not irreducible over W<sub>2</sub> as (x+1) * (x+1) = x^2 + x + x + 1 = x^2 + 1 with coefficients from W<sub>2</sub>).
+Similar to prime numbers some polynomials cannot be expressed as a product of two other polynomials. For example there are no proper factors for x<sup>2</sup> + x + 1. Such polymials are called *irreducible*. (Note that x<sup>2</sup>+1 is not irreducible over W<sub>2</sub> as (x+1) * (x+1) = x<sup>2</sup> + x + x + 1 = x<sup>2</sup> + 1 with coefficients from W<sub>2</sub>).
 
 If you divide polynomials you get - similar to the notion of remainders in integer division - *remainder polynomials*. 
 
 ### Polynomial Quotient Rings with respect to an Irreducible Polynomial
 
-If we take an irreducible polynomial `p` and we look at the quotient ring R<sub>p</sub> with respect to `p` then this ring has all the polynomial remainders of `p` as its members. If `p` is of degree n then R<sub>p</sub> has 2^n members.
-`p` is called the *generator polynomial*.
+If we take an irreducible polynomial p and we look at the quotient ring R<sub>p</sub> with respect to p then this ring has all the polynomial remainders of p as its members. If p is of degree n then R<sub>p</sub> has 2<sup>n</sup> members.
+p is called the *generator polynomial*.
 
-Every larger polynomial can be mapped into one of the polynomials in R<sub>p</sub> by dividing it by `p` and determining its remainder.
+Every larger polynomial can be mapped into one of the polynomials in R<sub>p</sub> by dividing it by p and determining its remainder.
 
 ## Cyclic Redundancy Check
 
@@ -80,7 +80,7 @@ Assuming the first coefficient is always 1 this polynomial can be represented as
     16  1  1 1 98 7654 3210
         5  2 1
 
-Similar to paper and pencil division with numbers we divide by the generator polynomial by subtraction according to place. As the coefficients are from W<sub>2</sub> adding and subtracting can be implemented by the bit-wise-`xor`-operation.
+Similar to paper and pencil division with numbers we divide by the generator polynomial by subtraction according to place. As the coefficients are from W<sub>2</sub> adding and subtracting can be implemented by the bit-wise-xor-operation.
 
 The bits of the message are inspected one after the other and if possible the generator polynomial is subtracted at the inspected position. 
 
