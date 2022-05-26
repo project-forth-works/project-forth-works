@@ -69,7 +69,7 @@ Because network commands can get lost, an important feature is a time-out on the
 This time-out must be constructed with a built-in timer or by using a built-in cycle counter 
 if present on the microcontroller used.  
 This is code example is for the GD32VF103 Risc-V microcontroller:
-```fort
+```forth
 hex
 code TICK   ( -- u )    \ Read half (low 32-bits) of 64-bit rdcycle counter
     sp -) tos .mov
@@ -132,26 +132,26 @@ is evaluated, an error leaves this loop too.
 
 #### Example code
 ```forth
-hex  0 value LEN  create BUF 20 allot
+hex  0 value NR  create BUF 20 allot
 : GET?      ( -- 0|1B )
     0  key? if                              \ Key pressed?
         key dup 1B = if  or  exit  then     \ Yes, exit on escape char!
         dup 0D = if                         \ Is it ENTER?
-            drop  space  buf len evaluate   \ Yes, interpret string
-            0 to len  cr                    \ New line
+            drop  space  buf nr evaluate    \ Yes, interpret string
+            0 to nr  cr                     \ New line
             t? 0= if  ." N>"  then          \ Display prompt when tracer is off
         else
             dup 8 = if                      \ Is it backspace?
                 emit bl emit 8 emit  -1     \ Yes, remove char
             else
-                dup emit  buf len + c!  1   \ Normal char, show & save
+                dup emit  buf nr + c!  1    \ Normal char, show & save
             then
-            +to len                         \ Adjust length
+            +to nr                         \ Adjust number of chars
         then
     then ;
 
 : NODE     ( -- )
-    startnode  ( tron )  troff  0 to len
+    startnode  ( tron )  troff  0 to nr
     begin  begin  handler? until  get? until ;
 ```
 
