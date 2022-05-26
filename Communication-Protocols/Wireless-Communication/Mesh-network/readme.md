@@ -7,7 +7,7 @@
 
 Using standard wireless transceivers to form a self constructing mesh network.
 Basically each node has the same structure, the only difference is the node address.
-The transceiver used here is the nRf24L01 or the Chinese clone named 
+The transceiver used here is the nRF24L01 or the Chinese clone named 
 [SI24R1](https://datasheet.lcsc.com/lcsc/2202241830_Nanjing-Zhongke-Microelectronics-Si24R1_C14436.pdf).
 
 
@@ -49,7 +49,7 @@ the following parameters:
 ## Payload structure
 
 The **Dynamic payload** format is 1 to 32 bytes. For this implementation
-the minimum payload size is 2 bytes (the command and destination). 
+the minimum payload size is 3 bytes (the command, destination & origin). 
 This is because the node handler does a check on the destination before accepting
 a command. The complete payload is described in the table below.
 
@@ -93,8 +93,8 @@ from the addressed node but only within the given time period.
 
 ## Node command interpreter
 
-Here is a complete list of the comans of the node command interpreter.
-It is also known as the handler within this code example.
+Here is a complete list of the commands of the node command interpreter.
+It is also known as *the handler* within this code example.
 
 |   Token    | Function          |  
 | :--------: | ----------------- |  
@@ -181,10 +181,10 @@ This switch alternately activates the words `ALL-ON` or `ALL-OFF`.
 | `.STATUS` | ( -- )    | Show most important RF data |  
 | `.ALL`    | ( -- )    | Show network connection data |  
 | `REGISTER` | ( -- )   | Connect myself to an existing network |  
-| `ON`      | ( +n -- ) | Activate power ouput on node +n |  
-| `OFF`     | ( +n -- ) | Deactivate power ouput on node +n |  
-| `ALL-ON`  | ( -- )    | Activate all ouputs on the network |  
-| `ALL-OFF` | ( -- )    | Deactivate all ouputs on the network |  
+| `ON`      | ( +n -- ) | Activate power output on node +n |  
+| `OFF`     | ( +n -- ) | Deactivate power output on node +n |  
+| `ALL-ON`  | ( -- )    | Activate all outputs on the network |  
+| `ALL-OFF` | ( -- )    | Deactivate all outputs on the network |  
 | `STOP`    | ( +n -- ) | Halt any free running program on node +n |  
 | `>F`      | ( +n ccc -- ) | Execute the forth word ccc on node +n |   
 | `SCANX`   | ( -- )    | Scan & note direct accessible nodes |  
@@ -211,10 +211,10 @@ new functions above the basic node command interpreter. These are:
 | `*COUNT`  | ( a -- +n )   | Leave number of nodes found in bitmap a |  
 | `>USER`   | ( a -- )      | Copy nodes to node accu for app programmer |  
 | `>WORK`   | ( a -- )      | Copy nodes to node accu for internal functions |  
-| `NEXT?`   | ( a -- 0\|+n -1 ) | Leave node number of the first used node in bitmap a & erase the bit |  
+| `NEXT?`   | ( a -- 0\|u -1 ) | Leave node number of the first used node in bitmap a & erase the bit |  
 | `RUN`     | ( -- )        | Allow a program to run free |  
 | `HALT?`   | ( -- f )      | Alternative KEY? to stop node programs |  
-| `<WAIT>`  | ( +n -- )     | Wait +n milliseconds & respond to external network commands, leave after an } was received |  
+| `<WAIT>`  | ( +n -- )     | Wait +n milliseconds & respond to external network commands, leave after an } (answer command) was received |  
 | `>OTHERS` | ( c -- )      | Send node command c to all nodes noted in WORK with a timeout of 128 ms |  
 | `FINISH`  | ( -- )        | End network buildup with adding node type information |  
 
