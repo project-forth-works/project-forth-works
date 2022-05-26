@@ -206,16 +206,16 @@ new functions above the basic node command interpreter. These are:
 | `DIRECT`  | ( -- a )      | Address of a BIT-table with direct accessable nodes |  
 | `INDIRECT`| ( -- a )      | Address of a BIT-table with indirect accessable nodes |  
 | `#MAP`    | ( -- +n )     | Leave the size of a bitmap |  
-| `GET*`    | ( +n a -- 0\|b ) | Check if node +n present in bit-array a? |  
-| `*CLR`    | ( +n a -- )   | Remove node +n from bit-array a |  
+| `GET*`    | ( u a -- 0\|b ) | Check if node +n present in bit-array a? |  
+| `*CLR`    | ( u a -- )    | Remove node +n from bit-array a |  
 | `*COUNT`  | ( a -- +n )   | Leave number of nodes found in bitmap a |  
 | `>USER`   | ( a -- )      | Copy nodes to node accu for app programmer |  
 | `>WORK`   | ( a -- )      | Copy nodes to node accu for internal functions |  
 | `NEXT?`   | ( a -- 0\|u -1 ) | Leave node number of the first used node in bitmap a & erase the bit |  
 | `RUN`     | ( -- )        | Allow a program to run free |  
 | `HALT?`   | ( -- f )      | Alternative KEY? to stop node programs |  
-| `<WAIT>`  | ( +n -- )     | Wait +n milliseconds & respond to external network commands, leave after an } (answer command) was received |  
-| `>OTHERS` | ( c -- )      | Send node command c to all nodes noted in WORK with a timeout of 128 ms |  
+| `<WAIT>`  | ( u -- )      | Wait +n milliseconds & respond to external network commands, leave after an } was received |  
+| `>OTHERS` | ( c -- )      | Send node command c to all nodes noted in WORK with a timeout of 1024 ms |  
 | `FINISH`  | ( -- )        | End network buildup with adding node type information |  
 
 #### Generic forth example code
