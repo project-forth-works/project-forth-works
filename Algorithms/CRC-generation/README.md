@@ -17,7 +17,8 @@ The start-value is critical: start with 0xFFFF and you have the CCITT version of
 - [CRC16](CRC16): CRC-16 sample implementation  
 - [CRC32-IEEE](CRC32_IEEE): IEEE 32bit CRC standard protocol  
 - [CRC32-Castagnoli](CRC32C): 32bit CRC according to Castagnoli  
-- [CRC32-Koopman](CRC32_KOOP): 32bit CRC according to Philip Koopman  
+- [CRC32-Koopman](CRC32_KOOP): 32bit CRC according to Philip Koopman 
+- [CRC mathematical background](crc-math.md): If you are interested, have a look at a background discussion 
 
 
 ### Pseudo code
@@ -75,5 +76,5 @@ hex
 
 ```
 
-If you are interested, have a look at [a discussion of the mathematical background](crc-math.md).
+<!-- If you are interested, have a look at [a discussion of the mathematical background](crc-math.md). -->
 
