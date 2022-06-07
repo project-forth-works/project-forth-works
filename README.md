@@ -7,7 +7,7 @@ With this project we would like to embrace our differences. And start sharing, d
 
 The core idea of this project is to use a simple, generic version of Forth to spread ideas, algorithms, protocols, applications and hardware drivers. This generic version of Forth guarantees that it can be understood and used by (almost) everybody in the Forth-community. 
 
-Click [here if you want to read more about **Project Forth Works**](https://Project-Forth-Works.github.io/)
+[Click here for an introduction to **Project Forth Works**](https://Project-Forth-Works.github.io/)
   *** 
 ### We have until now the following categories:
 
