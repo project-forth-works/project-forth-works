@@ -8,28 +8,29 @@ pick up all network data. It does so by checking only the first three of the fiv
 When the received records do not overflow the 32 bytes data buffer we can inspect all the
 received data! Note: The third received byte contains a field with the received record length!
 
-<plaatje>
+![afbeelding](https://user-images.githubusercontent.com/11397265/172347230-b23f0068-8415-48a7-991b-ecdfb5e9244d.png)
+  **The record format as used by the nRF24L01+**  
 
 ### Pseudo code
 
 ```
 Function: CRC  ( x1 -- x2 )
-  Check if bit 15 of x1 is high, when it is high
-  shift x1 1 position left & AND with FFFF,
-  than XOR the result with the CCCITT polynomial (0x1021)
-  When bit 15 was low, just shift X1 1 bit to the left
+  Check if bit 15 of x1 is high, if it is high
+  move x1 1 position to the left & AND with FFFF
+  Then XOR the result with the CCITT polynomial (0x1021)
+  If bit 15 is low, X1 will only be shifted 1 bit to the left
 
 Function: CRC16  ( x1 b -- x2 )
-  Shift b 8 bits to the left, XOR it with x1
-  than call CRC 8 times, one time for each bit in the added byte
+  Shift byte 'b' 8 bits to the left, XOR it with x1
+  then call CRC 8 times, one time for each bit in the byte
 
 Function: CRCBIT  ( x1 b x2 )
-  AND b with 80 leaving only the highest bit of the byte b
+  AND the byte 'b' with 80 leaving the highest bit of the byte
   Shift the result 8 bits to the left and XOR with x1
-  after that call CRC one time and ready
+  after that call CRC one time
 
 Function: LASTBIT  ( a x1 #pay -- a x2 )
-  Add 3 to #pay, then add addres a to it
+  Add 3 to #pay, then add addres 'a' to it
   read the byte stored on that address
   finally call the crcbit
 
@@ -47,15 +48,14 @@ Function: CRC?  ( a #pay -- a f )
 ## Generic Forth example
 ```forth
 \ Check received nRF24L01+ message on correct CRC,
-\ note: that this is an optimised version!
-\ D310 =  -1 F0 CRC16  F0 CRC16  F0 CRC16
+\ Note: This version starts with a prepared polynomal
+\ This: D310  which is: -1 F0 CRC16  F0 CRC16  F0 CRC16
 \
 \ Extra words: H@ ( a -- x )  \ Fetch a 16-bit word
 
 hex
 create BUFFER  20 allot     \ Saved payload package
-\ Bitwise CRC check on received packets
-: CRC       ( x1 -- x2 )
+: CRC       ( x1 -- x2 )    \ Bitwise CRC check
     dup 8000 and if
         2* FFFF and  1021  xor  ( CRC-POLYNOMIAL CCITT )
     else
@@ -82,4 +82,4 @@ create BUFFER  20 allot     \ Saved payload package
     buffer r> 3 + + h@ ><  = ;              \ CRC correct?
 ```
 
-More info later on with the nRF24 sniffer implementation.
+More info later on with the nRF24L01+ data logger (sniffer) implementation.  
