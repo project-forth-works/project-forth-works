@@ -6,10 +6,14 @@ To build a data logger for the nRF24L01+ we need to check the incoming data reco
 This code example runs on noForth R for the RISC-V micro processor. It uses a trick to
 pick up all network data. It does so by checking only the first three of the five address bytes.
 When the received records do not overflow the 32 bytes data buffer we can inspect all the
-received data! Note: The third received byte contains a field with the received record length!
-
+received data! Note: The third received byte (Named PCF) contains a field with the received record length!
+  ***
+The packet format as used by the nRF24L01+  
 ![afbeelding](https://user-images.githubusercontent.com/11397265/172347230-b23f0068-8415-48a7-991b-ecdfb5e9244d.png)
-  **The record format as used by the nRF24L01+**  
+  ***
+The 9 bit Packet Control Field (PCF) in detail:
+![PCF](https://user-images.githubusercontent.com/11397265/172351455-75baab07-0bf7-44bc-87e4-f24474908fb2.jpg)
+  ***
 
 ### Pseudo code
 
