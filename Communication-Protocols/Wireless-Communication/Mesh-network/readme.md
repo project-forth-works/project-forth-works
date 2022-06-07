@@ -6,7 +6,7 @@
 ## The idea
 
 Using standard wireless transceivers to form a self constructing mesh network.
-Basically each node has the same structure, the only difference is the node address.
+Basically each node has the same structure, the only difference is the node address.  
 The transceiver used here is the nRF24L01 or the Chinese clone named 
 [SI24R1](https://datasheet.lcsc.com/lcsc/2202241830_Nanjing-Zhongke-Microelectronics-Si24R1_C14436.pdf).
 
@@ -65,10 +65,9 @@ a command. The complete payload is described in the table below.
 
 ## Time out on network commands
 
-Because network commands can get lost, an important feature is a time-out on the command response. 
-This time-out must be constructed with a built-in timer or by using a built-in cycle counter 
-if present on the microcontroller used.  
-This is code example is for the GD32VF103 Risc-V microcontroller:
+Since network commands can be lost, a time-out on the response to the transmitted command is necessary.
+This time-out can be constructed with a built-in timer, or alternatively by using a built-in cycle counter.  
+This code example is for the GD32VF103 Risc-V microcontroller:
 ```forth
 hex
 code TICK   ( -- u )    \ Read half (low 32-bits) of 64-bit rdcycle counter
@@ -88,7 +87,8 @@ decimal
 ```
 
 This structure is used in the word `<WAIT>` this word catches the response
-from the addressed node but only within the given time period.
+from the addressed node but only within the given time period.  
+An example: `: ON  ( node -- )  ch * >node 40 <wait> ; \ Send power on command`
 
 
 ## Node command interpreter
@@ -146,7 +146,7 @@ hex  0 value NR  create BUF 20 allot
             else
                 dup emit  buf nr + c!  1    \ Normal char, show & save
             then
-            +to nr                         \ Adjust number of chars
+            +to nr                          \ Adjust number of chars
         then
     then ;
 
