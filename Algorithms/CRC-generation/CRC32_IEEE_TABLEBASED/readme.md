@@ -3,6 +3,9 @@
 Generating a CRC is a pretty slow process. One way of speeding up this process is by using a table. This table contains pre-calculated values of the 8 shifts and XOR steps done for each byte added to a CRC.
 This saves time, as a major part of the work is be done only once, during initialisation.
 
+The shortest run-time for the standard crc test ("123456789") is 415 cycles on a Raspberry 3b+ whereas the default routine takes 1238 cycles -> The table-based routine is around 3* faster, at the cost of 1024 bytes for the table. If you wonder why it is not closer to 8*,this is because in the base-routine the xor with the polynomial only has to be done when the highest bit is set. This is the case in, on average, half of the cases.
+
+
 The code is split up in two sections: an initialisation part to create a table with values and a CRC-creation part which uses the table to quickly generate a CRC.
 
 If you look at the code you will see that the part which generates/fills the table looks very much the same as the code we used for the generation of a CRC in the other examples. Which is in fact logical!
