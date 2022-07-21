@@ -5,6 +5,10 @@
 \ this code implements the 32bit IEEE CRC ( ie with 04C11DB7 as polynomial )
 \ only uses core ANI forth definitions
 
+\ The shortest run-time for the standard crc test is 415 cycles on a Raspberry 3b+
+\ the default routine takes 1238 cycles -> the table-based routine is around 3* faster
+\ at the cost of 1024 bytes for the table
+
 hex
 
 EDB88320 constant CRCpolynomial \ =bit-reversed 04C11DB7
