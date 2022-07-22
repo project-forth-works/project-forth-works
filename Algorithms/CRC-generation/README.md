@@ -21,7 +21,7 @@ The start-value is critical: start with 0xFFFF and you have the CCITT version of
 - [CRC32-Castagnoli](CRC32C): 32bit CRC according to Castagnoli  
 - [CRC32-Koopman](CRC32_KOOP): 32bit CRC according to Philip Koopman 
 - [CRC-nRF24L01+](CRC-for-nRF24L01+): 16bit CRC CCITT as used in the nRF24L01+  
-- [CRC32_IEEE_TABLEBASED](Table based CRC32): 32bit IEEE CRC using tables  
+- [Table based CRC32](CRC32_IEEE_TABLEBASED): 32bit IEEE CRC using tables  
 
 ### Pseudo code
 ```
