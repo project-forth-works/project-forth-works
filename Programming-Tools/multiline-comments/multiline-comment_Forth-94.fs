@@ -74,7 +74,7 @@ A naive non nesting Forth-94 implementation may look like this:
 : (* ( -- )
     BEGIN
       BEGIN 
-        bl word count dup                \ next token available?
+        cr  bl word count dup            \ next token available?
       WHILE ( c-addr u )
          s" *)" compare 0= IF EXIT THEN  \ stop if end of comment found
       REPEAT 2drop
@@ -88,7 +88,7 @@ A version that allows for nesting comments:
    : (* ( -- )
        BEGIN
          BEGIN 
-           bl word count dup                           \ next token available?
+           cr  bl word count dup                       \ next token available?
          WHILE ( c-addr u )
             2dup s" *)" compare 0= IF 2drop EXIT THEN  \ stop if end of comment found
                  s" (*" compare 0= IF recurse THEN     \ start of nested comment
@@ -160,7 +160,7 @@ Here is Albert Nijhof's approach:
 : (*    ( -- )
    0   \ dummy
    begin begin begin   drop
-       refill 0= if exit then
+       cr  refill 0= if exit then
        bl word
        count        2 = until
        count [char] * = until
