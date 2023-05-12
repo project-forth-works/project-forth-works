@@ -2,7 +2,9 @@
 
 - [I2C](noForth), implementation for various MSP430 versions with EEPROM example for noForth.  
 
-https://user-images.githubusercontent.com/11397265/120888314-ea187f00-c5f7-11eb-93ff-4a76d4ff584a.mp4  
+
+https://github.com/project-forth-works/project-forth-works/assets/11397265/c7c32d3b-86bc-41b2-a852-d5b590293e54
+
 
 **Lecture timer with I2C OLED driver at work**  
 
@@ -13,3 +15,4 @@ https://user-images.githubusercontent.com/11397265/120888314-ea187f00-c5f7-11eb-
 - eUSCI
 
 ![i2c-smaller](https://user-images.githubusercontent.com/11397265/123473891-816e6200-d5f9-11eb-8d4b-fbcee92eba3c.jpg)
+
