@@ -25,7 +25,7 @@ hex
     10 8 do  i .i2c-target  loop ;
 
 : LAST-LINE     ( -- )
-    7 .i2c-column  8 0 do  i .i2c-target  loop
+    7 .i2c-column  78 70 do  i .i2c-target  loop
     ." sw sw sw sw ?? ?? ?? ??" ;
 
 : SCAN-I2C      ( -- )      \ Scan for all valid I2C bus addresses
