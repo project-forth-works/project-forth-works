@@ -51,10 +51,9 @@ i2c-on  4C device!  \ Set LM75 device address
 : .CELCIUS1         ( n -- )        2/ 3 .r  BA emit ." C " ;
 
 : TEMPERATURE1      ( -- )
-    i2c-on  4C device!
-    base @ >r decimal
+    i2c-on  base @ >r  decimal
     begin
-        temperature .celcius1  100 ms
+        4C device!  temperature .celcius1  100 ms
     key? until  r> base ! ;
 
 \ Show temperature in half degrees celsius
@@ -63,10 +62,9 @@ i2c-on  4C device!  \ Set LM75 device address
     0A * 2 / s>d <# # ch . hold #s #> type  BA emit ." C " ;
 
 : TEMPERATURE2      ( -- )
-    i2c-on  4C device!
-    base @ >r  decimal
+    i2c-on  base @ >r  decimal
     begin
-        temperature .celcius2  100 ms
+        4C device!  temperature .celcius2  100 ms
     key? until  r> base ! ;
 
 \ End ;;;
