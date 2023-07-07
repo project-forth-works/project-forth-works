@@ -64,7 +64,7 @@ hex
 : CLOCK     ( -- )
      i2c-on  base @ >r  decimal
      begin
-         get-sec  tik clock@  <> if
+         get-sec  tik @clock  <> if
             get-sec  tik !clock
             cr ." Time " .time 
          then
