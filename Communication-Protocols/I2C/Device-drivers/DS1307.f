@@ -16,7 +16,7 @@ hex
     1 {i2c-read  bus@ i2c} ;    \ Read data 
     
 \ Set & read time to/from DS1307. s(ec) m(in) and h(our) are in decimal!
-: SET-CLOCK ( s m h -- ) 2 !clock  >bcd 1 !clock  >bcd 0 !clock ;    
+: SET-CLOCK ( s m h -- ) >bcd 2 !clock  >bcd 1 !clock  >bcd 0 !clock ;    
 : GET-SEC   ( -- sec )   0 @clock bcd> ;
 : GET-MIN   ( -- min )   1 @clock bcd> ;
 : GET-CLOCK ( -- s m h ) get-sec  get-min  2 @clock bcd> ;
