@@ -604,10 +604,7 @@ align
     dm 36 2 xy" Characters" 
     dm 48 4 xy" by W.O." 
     key drop  &page
-    bl  4 0 do                  \ Show charcter set
-       0 i xy  ( new line )
-       20 0 do  dup &emit  1+  loop
-    loop  drop
+    80 bl do  i &emit  loop    	\ Show character set
     key drop  &page
     8 0 do                      \ Display @ pattern
         0 i xy  ( new line )
