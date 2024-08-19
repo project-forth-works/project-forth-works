@@ -3,7 +3,7 @@
 ## The idea
 
 (We define) A few words that make string manipulation in forth a little smoother.  
-Original idea [Albert van der Horst](https://home.hccnet.nl/a.w.m.van.der.horst/index.html). 
+Based on original ideas of Albert Nijhof and [Albert van der Horst](https://home.hccnet.nl/a.w.m.van.der.horst/index.html). 
 Examples are:  
 
 - Manipulate files
