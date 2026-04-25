@@ -453,9 +453,9 @@ create 'COMMANDS    ( -- addr )
     irq? if                 \ Payload packet received?
         xkey handler) false \ Yes, get it
     else                    \ No, own command
-        wait? ?dup 0= if
+        wait? 0= if
             ( event? )  switch?
-        then
+        else  false  then
     then  (ms)  led-off ;
 
 : XKEY)     ( -- c )    begin  handler? until  key) ;
